@@ -2,20 +2,21 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cw4cunqc0i2j5"
-path="res://.godot/imported/jeremy-thomas-E0AHdsENmDg-unsplash-2.webp-baa4acaf5a44d2dd3c65a8c3d6a236a0.ctex"
+uid="uid://dsyiunhna2edo"
+path.s3tc="res://.godot/imported/ReferenceCube1m_CubeMap.png-9c609b34f65c69ad5ef190084208f68c.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/jeremy-thomas-E0AHdsENmDg-unsplash-2.webp"
-dest_files=["res://.godot/imported/jeremy-thomas-E0AHdsENmDg-unsplash-2.webp-baa4acaf5a44d2dd3c65a8c3d6a236a0.ctex"]
+source_file="res://assets/models/ReferenceCube1m_CubeMap.png"
+dest_files=["res://.godot/imported/ReferenceCube1m_CubeMap.png-9c609b34f65c69ad5ef190084208f68c.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -23,7 +24,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -37,4 +38,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0
