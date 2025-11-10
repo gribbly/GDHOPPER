@@ -41,12 +41,7 @@ func start_game() -> void:
 
 func regenerate_level() -> void:
 	print("🌏 App.gd | regenerate_level()")
-	# Cleanly nuke and rebuild the level
-	if _level:
-		_level.queue_free()
-		await _level.tree_exited
-		_level = null
-	_load_fresh_level()
+	_load_fresh_level() # note: _swap_main will tear down and replace the existing level
 
 func _load_fresh_level() -> void:
 	print("🌏 App.gd | _load_fresh_level()")
