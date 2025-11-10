@@ -1,13 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://dmx3b61sxqsag"]
+[gd_scene load_steps=6 format=3 uid="uid://dmx3b61sxqsag"]
 
 [ext_resource type="Script" uid="uid://3kxw3p70bd58" path="res://scenes/game/level.gd" id="1_ah5nq"]
 [ext_resource type="PackedScene" uid="uid://bl7f4st4ckm45" path="res://assets/models/ReferenceCube1m.glb" id="2_gjy3i"]
 [ext_resource type="PackedScene" uid="uid://dkcgvvjuf5u4u" path="res://scenes/game/LevelLight.tscn" id="2_y0wjm"]
 [ext_resource type="PackedScene" uid="uid://dah8ugqwlrl" path="res://scenes/game/LevelCamera.tscn" id="3_alfq7"]
+[ext_resource type="PackedScene" uid="uid://dsvp6fxhcgyto" path="res://scenes/game/LevelCSG.tscn" id="4_ixotf"]
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_ah5nq")
+level_dimensions = Vector2(200, 100)
 level_light = ExtResource("2_y0wjm")
 level_camera = ExtResource("3_alfq7")
+level_csg = ExtResource("4_ixotf")
 
 [node name="ReferenceCube1m" parent="." instance=ExtResource("2_gjy3i")]

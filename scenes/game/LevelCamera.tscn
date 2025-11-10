@@ -1,8 +1,27 @@
-[gd_scene format=3 uid="uid://dah8ugqwlrl"]
+[gd_scene load_steps=5 format=3 uid="uid://dah8ugqwlrl"]
+
+[ext_resource type="Script" uid="uid://ch0f2cuafeybe" path="res://scenes/game/level_camera.gd" id="1_d5i1c"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0qp3d"]
+sky_top_color = Color(0.08790965, 0.5043236, 0.57984877, 1)
+sky_horizon_color = Color(0.40255466, 0.8980162, 0.9308503, 1)
+ground_bottom_color = Color(0.047310986, 0.2522025, 0.3006173, 1)
+ground_horizon_color = Color(0.45673555, 0.85152817, 0.9498634, 1)
+sun_angle_max = 212.0
+
+[sub_resource type="Sky" id="Sky_d5i1c"]
+sky_material = SubResource("ProceduralSkyMaterial_0qp3d")
+
+[sub_resource type="Environment" id="Environment_87tfo"]
+background_mode = 2
+sky = SubResource("Sky_d5i1c")
 
 [node name="LevelCamera" type="Node3D"]
+script = ExtResource("1_d5i1c")
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="LevelCamera3D" type="Camera3D" parent="."]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32)
+environment = SubResource("Environment_87tfo")
 projection = 1
 size = 100.0
