@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cuukee8iqf2h8"]
+
+[node name="Main" type="Node"]
+
+[node name="MainLayer" type="Node" parent="."]
+
+[node name="OverlayLayer" type="CanvasLayer" parent="."]

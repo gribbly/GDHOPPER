@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmx3b61sxqsag"]
+
+[ext_resource type="Script" uid="uid://csbkitgvk4ppd" path="res://scenes/game/light_rotator.gd" id="1_ah5nq"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_brvwl"]
+
+[node name="Level" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+mesh = SubResource("SphereMesh_brvwl")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -20)
+projection = 1
+size = 16.0
+
+[node name="LightRotator" type="Node3D" parent="."]
+script = ExtResource("1_ah5nq")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="LightRotator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+light_color = Color(0, 0.8965097, 0.8990981, 1)
+light_energy = 8.0
