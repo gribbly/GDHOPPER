@@ -1,6 +1,10 @@
 # /autoload/App.gd
 extends Node
 
+# TUNEABLES
+var debug_autostart := true
+var rh_print_verbosity_level = 3 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
+
 enum MainState { TITLE, PLAYING }
 var state: MainState = MainState.TITLE
 
@@ -10,14 +14,12 @@ var state: MainState = MainState.TITLE
 const TITLE_SCN := preload("res://scenes/ui/TitleScreen.tscn")
 const LEVEL_SCN := preload("res://scenes/game/Level.tscn")
 const PAUSE_SCN := preload("res://scenes/ui/PauseOverlay.tscn")
+const DEBUG_SCN := preload("res://scenes/ui/DebugOverlay.tscn")
 
 var _current_main: Node = null
 var _pause_overlay: Control = null
+var _debug_overlay: Control = null
 var _level: Node = null
-
-# TUNEABLES
-var debug_autostart := true
-var rh_print_verbosity_level = 3 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
 
 func _ready() -> void:
 	print("🌏 App.gd | Hello worlds...")
@@ -36,13 +38,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		if get_tree().paused:
 			resume_game()
 		else:
-			pause_game()	
+			App.pause_game()
 
 func show_title() -> void:
 	RH.print("🌏 App.gd | show_title()")
 	state = MainState.TITLE
 	_swap_main(TITLE_SCN.instantiate())
-	_clear_overlay()
+	_clear_overlays()
 	get_tree().paused = false
 
 func start_game() -> void:
@@ -64,16 +66,28 @@ func pause_game() -> void:
 	RH.print("🌏 App.gd | pause_game()", 1)
 	if state != MainState.PLAYING: return
 	if _pause_overlay: return
+	_clear_overlays()
 	_pause_overlay = PAUSE_SCN.instantiate()
 	overlay_layer.add_child(_pause_overlay)
-	get_tree().paused = true  # freeze gameplay
-	# ensure overlay still processes while paused:
-	_pause_overlay.process_mode = Node.PROCESS_MODE_ALWAYS 
+	get_tree().paused = true # freeze gameplay
+	# Ensure overlay still processes while paused:
+	_pause_overlay.process_mode = Node.PROCESS_MODE_ALWAYS
+
+func debug_pause_game() -> void:
+	RH.print("🌏 App.gd | debug_pause_game()", 1)
+	if state != MainState.PLAYING: return
+	if _debug_overlay: return
+	_clear_overlays()
+	_debug_overlay = DEBUG_SCN.instantiate()
+	overlay_layer.add_child(_debug_overlay)
+	get_tree().paused = true # freeze gameplay
+	# Ensure overlay still processes while paused:
+	_debug_overlay.process_mode = Node.PROCESS_MODE_ALWAYS
 
 func resume_game() -> void:
 	RH.print("🌏 App.gd | resume_game()", 1)
 	get_tree().paused = false
-	_clear_overlay()
+	_clear_overlays()
 
 func quit_to_title() -> void:
 	RH.print("🌏 App.gd | quit_to_title()")
@@ -92,8 +106,21 @@ func _swap_main(new_root: Node) -> void:
 	RH.print("🌏 App.gd | adding new_root")
 	main_layer.add_child(new_root)
 
-func _clear_overlay() -> void:
-	if _pause_overlay:
-		_pause_overlay.queue_free()
-		await _pause_overlay.tree_exited
-		_pause_overlay = null
+func _clear_overlays() -> void:
+	RH.print("🌏 App.gd | _clear_overlays()", 3)
+	var overlays := [
+		_pause_overlay,
+		_debug_overlay
+	]
+
+	for overlay in overlays:
+		if overlay:
+			RH.print("🌏 App.gd | freeing overlay %s" % overlay, 3)
+			overlay.queue_free()
+			await overlay.tree_exited
+			overlay = null
+
+	# if _pause_overlay:
+	# 	_pause_overlay.queue_free()
+	# 	await _pause_overlay.tree_exited
+	# 	_pause_overlay = null
