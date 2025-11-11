@@ -9,6 +9,10 @@ var csg_thickness := 32.0
 func _ready() -> void:
 	RH.print("🔪 level_csg.gd | ready()", 1)
 	SignalBus.connect("level_setup_complete", Callable(self, "_generate"))
+
+func _exit_tree() -> void:
+	RH.print("🔪 level_csg.gd | _exit_tree()", 3)
+	SignalBus.disconnect("level_setup_complete", Callable(self, "_generate"))
 	
 func _generate(level_dims: Vector2) -> void:
 	RH.print("🔪 level_csg.gd | _generate()", 1)
