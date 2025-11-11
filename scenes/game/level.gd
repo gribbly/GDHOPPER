@@ -14,7 +14,7 @@ var level_csg_instance: Node3D
 var debug_line_count := 0
 
 func _ready() -> void:
-	RH.print("🪨 level.gd | ready()", 1)
+	RH.print("🪨 level.gd | _ready()", 1)
 
 	RH.print("🪨 level.gd | 📐 debug_visuals.instantiate")
 	debug_visuals_instance = debug_visuals.instantiate()
