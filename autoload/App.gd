@@ -17,7 +17,7 @@ var _level: Node = null
 
 # TUNEABLES
 var debug_autostart := true
-var rh_print_verbosity_level = 3 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
+var rh_print_verbosity_level = 1 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
 
 func _ready() -> void:
 	print("🌏 App.gd | Hello worlds...")
