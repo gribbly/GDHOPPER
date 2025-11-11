@@ -4,6 +4,7 @@ extends Node
 # TUNEABLES
 var debug_autostart := true
 var rh_print_verbosity_level = 3 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
+var force_debug_info_panel_on = true
 
 enum MainState { TITLE, PLAYING }
 var state: MainState = MainState.TITLE
@@ -15,10 +16,12 @@ const TITLE_SCN := preload("res://scenes/ui/TitleScreen.tscn")
 const LEVEL_SCN := preload("res://scenes/game/Level.tscn")
 const PAUSE_SCN := preload("res://scenes/ui/PauseOverlay.tscn")
 const DEBUG_SCN := preload("res://scenes/ui/DebugOverlay.tscn")
+const DIP_SCN := preload("res://scenes/ui/DebugInfoPanel.tscn")
 
 var _current_main: Node = null
 var _pause_overlay: Control = null
 var _debug_overlay: Control = null
+var _debug_info_panel: Control = null
 var _level: Node = null
 
 func _ready() -> void:
@@ -26,6 +29,10 @@ func _ready() -> void:
 	print("🌏 App.gd | Welcome to ROCKHOPPER")
 
 	RH.set_rhprint_verbosity_level(rh_print_verbosity_level) # RH is an alias for Globals.gd, which is set up as an autoload in Project Settings
+
+	if force_debug_info_panel_on:
+		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug info panel on...")
+		RH.show_debug_info_panel = true
 	
 	if debug_autostart:
 		RH.print("🌏 App.gd | 🛠️ DEBUG - autostarting game...")
@@ -49,6 +56,7 @@ func show_title() -> void:
 
 func start_game() -> void:
 	RH.print("🌏 App.gd | start_game()")
+	show_debug_info_panel(RH.show_debug_info_panel)
 	state = MainState.PLAYING
 	_load_fresh_level()
 
@@ -89,8 +97,21 @@ func resume_game() -> void:
 	get_tree().paused = false
 	_clear_overlays()
 
+func show_debug_info_panel(show: bool) -> void:
+	RH.print("🌏 App.gd | show_debug_info_pane() - %s" % show, 1)
+	if show:
+		if _debug_info_panel: return
+		_debug_info_panel = DIP_SCN.instantiate()
+		overlay_layer.add_child(_debug_info_panel)
+	else:
+		if _debug_info_panel:
+			_debug_info_panel.queue_free()
+			await _debug_info_panel.tree_exited
+			_debug_info_panel = null
+
 func quit_to_title() -> void:
 	RH.print("🌏 App.gd | quit_to_title()")
+	show_debug_info_panel(false) # hide debug_info_panel in title screen, but don't touch global setting
 	show_title()
 
 func exit_game() -> void:
@@ -119,8 +140,3 @@ func _clear_overlays() -> void:
 			overlay.queue_free()
 			await overlay.tree_exited
 			overlay = null
-
-	# if _pause_overlay:
-	# 	_pause_overlay.queue_free()
-	# 	await _pause_overlay.tree_exited
-	# 	_pause_overlay = null
