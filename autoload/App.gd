@@ -17,13 +17,13 @@ var _level: Node = null
 
 # TUNEABLES
 var debug_autostart := true
-var rh_print_priority = 3 # only RH.prints with this priority or above will be output. Set this to 1 for minimal chatter.
+var rh_print_verbosity_level = 3 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
 
 func _ready() -> void:
 	print("🌏 App.gd | Hello worlds...")
 	print("🌏 App.gd | Welcome to ROCKHOPPER")
 
-	RH.set_rhprint_priority(rh_print_priority) # RH is an alias for Globals.gd, which is set up as an autoload in Project Settings
+	RH.set_rhprint_verbosity_level(rh_print_verbosity_level) # RH is an alias for Globals.gd, which is set up as an autoload in Project Settings
 	
 	if debug_autostart:
 		RH.print("🌏 App.gd | 🛠️ DEBUG - autostarting game...")
@@ -78,6 +78,10 @@ func resume_game() -> void:
 func quit_to_title() -> void:
 	RH.print("🌏 App.gd | quit_to_title()")
 	show_title()
+
+func exit_game() -> void:
+	RH.print("🌏 App.gd | exit_game()")
+	get_tree().quit()
 
 func _swap_main(new_root: Node) -> void:
 	if _current_main:

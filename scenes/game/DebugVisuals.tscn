@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dcaxlbfogl25t"]
+[gd_scene load_steps=5 format=3 uid="uid://dcaxlbfogl25t"]
 
 [ext_resource type="Script" uid="uid://cv8l5jbua868v" path="res://scenes/game/debug_visuals.gd" id="1_plono"]
 [ext_resource type="Script" uid="uid://be6tws8ipehtp" path="res://scenes/game/debug_immediate_mesh.gd" id="2_6qxek"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6qxek"]
+vertex_color_use_as_albedo = true
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_ydbis"]
 
@@ -10,5 +13,6 @@ script = ExtResource("1_plono")
 
 [node name="DebugImmediateMesh" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
+material_override = SubResource("StandardMaterial3D_6qxek")
 mesh = SubResource("ImmediateMesh_ydbis")
 script = ExtResource("2_6qxek")
