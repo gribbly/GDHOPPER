@@ -7,6 +7,8 @@ extends Control
 
 func _ready() -> void:
 	RH.print("📺 pause_overlay.gd | _ready()", 1)
+
+	# Button signals:
 	resume_btn.pressed.connect(func(): 
 		App.resume_game()
 	)

@@ -5,6 +5,11 @@ var rhprint_verbosity_level: int = 3 #lower verbosity level means you'll see les
 
 # Internal
 var rng := RandomNumberGenerator.new()
+var show_debug_info_panel := false:
+	get:
+		return show_debug_info_panel
+	set(value):
+		show_debug_info_panel = value
 
 func _ready() -> void:
 	rng.randomize()
