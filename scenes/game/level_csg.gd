@@ -22,14 +22,18 @@ func _generate(level_dims: Vector2) -> void:
 	the_rock.size = Vector3(level_dimensions.x, level_dimensions.y, csg_thickness)
 	%LevelCsgCombiner.add_child(the_rock)
 
-	# Carve a test cavern out of the_rock
+	# Carve som test caverns out of the_rock
+	for i in 5:
+		_test_cavern(64.0, 24.0) 
+
+func _test_cavern(p : float = 32, s : float = 32.0) -> void:
 	RH.print("🔪 level_csg.gd | carving test cavern...", 3)
 	var test_cavern := CSGBox3D.new()
-	var px = RH.get_random_float(-50.0, 50.0)
-	var py = RH.get_random_float(-50.0, 50.0)
+	var px = RH.get_random_float(-p, p)
+	var py = RH.get_random_float(-p, p)
 	test_cavern.position = Vector3(px, py, 0.0)
-	var sx = RH.get_random_float(25.0, 75.0)
-	var sy = RH.get_random_float(25.0, 75.0)
+	var sx = RH.get_random_float(-s, s)
+	var sy = RH.get_random_float(-s, s)
 	test_cavern.size = Vector3(sx, sy, csg_thickness * 2)
 	test_cavern.operation = CSGShape3D.OPERATION_SUBTRACTION
 	%LevelCsgCombiner.add_child(test_cavern)
