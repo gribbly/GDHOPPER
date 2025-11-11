@@ -14,3 +14,4 @@ func _ready() -> void:
 		App.resume_game()
 		App.quit_to_title()
 	)
+	resume_btn.grab_focus.call_deferred()

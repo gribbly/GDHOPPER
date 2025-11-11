@@ -13,10 +13,18 @@
   * Godot project name: GDHOPPER
 * Using GDScript
 * Default resolution is 1280x800 (primary target = Steam Deck)
-* Goal: Minimal dependencies
-* Goal: Clean, maintainable code, separated into simple units
-* Goal: Prefer readable and simple over "clever"
-* Goal: Only optimize when profiler says its necessary
+
+### Technical goals
+
+* Never drop below 60FPS during gameplay, on Steam Deck
+* Minimal dependencies
+* Clean, maintainable code, separated into focused units
+* Prefer readable and simple over "clever"
+* Only optimize when profiler says its necessary
+
+### Details and gotchas
+
+* When using SignalBus.connect in '_ready', you probably need to do SignalBus.disconnect in '_exit_tree'. See /scenes/game/level_csg.gd for an example.
 
 ## Game design
 
@@ -30,7 +38,7 @@ Which means:
 * Over a run, you'll upgrade your ship build with mods that give you cool and interesting capabilities.
 * Difficulty steadily increases over the course of the run - your build better keep up!
 
-Design goals:
+### Design goals
 
 1. Steam deck is primary platform
 2. ~30 minute runs (over multiple levels)

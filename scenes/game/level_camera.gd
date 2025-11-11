@@ -9,6 +9,10 @@ func _ready() -> void:
 	RH.print("📸 level_camera.gd | ready()", 1)
 	SignalBus.connect("level_setup_complete", Callable(self, "_adjust_size"))
 
+func _exit_tree() -> void:
+	RH.print("📸 level_camera.gd | _exit_tree()", 3)
+	SignalBus.disconnect("level_setup_complete", Callable(self, "_adjust_size"))	
+
 func _adjust_size(level_dims: Vector2) -> void:
 	RH.print("📸 level_camera.gd | _adjust_size()", 3)
 	var new_size = level_dims.y / 2.0

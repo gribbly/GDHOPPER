@@ -6,6 +6,7 @@ extends Control
 func _ready() -> void:
 	start_btn.pressed.connect(_on_start)
 	exit_btn.pressed.connect(_on_exit)
+	start_btn.grab_focus.call_deferred()
 
 func _on_start() -> void:
 	App.start_game()
