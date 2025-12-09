@@ -30,37 +30,11 @@ func _ready() -> void:
 	level_csg_instance = level_csg.instantiate()
 	add_child(level_csg_instance)
 
+	RH.print("🪨 level.gd | 📐 drawing level bounds - %s" % level_dimensions)
+	var level_bounds_start:=Vector3(0.0, 0.0, 34.0)
+	var level_bounds_endx:=Vector3(level_dimensions.x, 0.0, 34.0)
+	var level_bounds_endy:=Vector3(0.0, level_dimensions.y, 34.0)
+	debug_visuals_instance.rh_debug_line(level_bounds_start, level_bounds_endx, Color.RED)
+	debug_visuals_instance.rh_debug_line(level_bounds_start, level_bounds_endy, Color.GREEN)
+
 	SignalBus.emit_signal("level_setup_complete", level_dimensions)
-	
-	#temp - just while implementing/test debug_visuals
-	var timer := Timer.new()
-	timer.wait_time = 0.05
-	timer.autostart = true
-	timer.one_shot = false
-	add_child(timer)
-	timer.timeout.connect(_on_tick)
-
-func _on_tick() -> void:
-	_draw_debug_line()
-	debug_line_count += 1
-	if debug_line_count > 100:
-		debug_visuals_instance.clear()
-		debug_line_count = 0
-
-func _draw_debug_line() -> void:
-	var start = Vector3(0.0, 0.0, 30.0)
-
-	var x = RH.get_random_float(-200, 200)
-	var y = RH.get_random_float(-200, 200)
-	var end = Vector3(x, y, 30.0)
-
-	var colors := [
-		Color.RED,
-		Color.GREEN,
-		Color.BLUE,
-		Color.YELLOW,
-		Color.ORANGE,
-		Color.PURPLE
-	]
-
-	debug_visuals_instance.rh_debug_line(start, end, colors.pick_random())
