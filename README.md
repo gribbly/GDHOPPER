@@ -48,11 +48,17 @@ Which means:
 
 ### World
 
-The asteroid belt, far future. The belt is colonized. The inner edge (close to the sun) is under tight Imperium control - an authoritarian regime if you're not "us" you're the "them" underclass. The outer edge is more wild and free, and you'll increasingly encounter the weird, alien Kalgoor species.
+The asteroid belt, far future. The belt is colonized and heavily engineered to support the operation of ADONAI, the system-spanning AI that governs humanity. The inner edge (close to the sun) is under tight ADONAI control - including his human army, the "Imperium". The Imperium is a quasi-religious authoritarian cult that have devoted themselves to protecting STEVE and carrying out its wishes.
+
+The outer edge is more wild and free, and you'll increasingly encounter the weird, alien Kalgoor species. ADONAI hates the Kalgoor.
 
 Asteroids are called "rocks", and the brave pilots who fly from rock-to-rock and form the backbone of the economy are called "rockhoppers".
 
+Rocks are heavily modified from their natural state. Some rocks are icy, with compute modules embedded for cooling. Some are almost molten, with fission reactors embedded for power generation. Some are both.
+
 ### Story
+
+
 
 You are the daughter of legendary rockhopper Eve. At the start of the game, she and you stop at a nondescript depot rock to refuel. But suddenly Imperium forces swarm in, destroy her ship, and adbduct her, accusing her of treason. Just before she is dragged away, she entrusts you with a data cube that she mysteriously calls "Agent X". She tells you to get the cube to the outer edge of teh belt, and that it's can't into Imperium hands no matter what. She tells you to seek out "Mr Mystery" - he'll know what to do. Then she's gone.
 

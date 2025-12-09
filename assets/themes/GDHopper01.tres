@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b5bi4fj04uo05"]
+
+[ext_resource type="FontFile" uid="uid://b2jwfqdohqtjg" path="res://assets/fonts/PkgTTC-SGr-Iosevka-33.3.6/SGr-Iosevka-Regular.ttc" id="1_cuhqt"]
+
+[resource]
+default_font = ExtResource("1_cuhqt")
+default_font_size = 48

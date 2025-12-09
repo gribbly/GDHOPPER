@@ -26,6 +26,10 @@ App="*res://autoload/App.gd"
 window/size/viewport_width=1280
 window/size/viewport_height=800
 
+[gui]
+
+theme/custom="uid://b5bi4fj04uo05"
+
 [input]
 
 pause={
