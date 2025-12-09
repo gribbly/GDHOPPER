@@ -2,8 +2,8 @@
 extends Node
 
 # TUNEABLES
-var debug_autostart := true
 var rh_print_verbosity_level = 3 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
+var debug_autostart := true
 var force_debug_info_panel_on = true
 
 enum MainState { TITLE, PLAYING }
@@ -28,24 +28,31 @@ func _ready() -> void:
 	print("🌏 App.gd | Hello worlds...")
 	print("🌏 App.gd | Welcome to ROCKHOPPER")
 
-	RH.set_rhprint_verbosity_level(rh_print_verbosity_level) # RH is an alias for Globals.gd, which is set up as an autoload in Project Settings
+	# RH is an alias for Globals.gd, which is set up as an autoload in Project Settings
+	# This is configued in Project > Project Settings... > Globals
+	RH.set_rhprint_verbosity_level(rh_print_verbosity_level) 
 
-	if force_debug_info_panel_on:
-		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug info panel on...")
-		RH.show_debug_info_panel = true
-	
 	if debug_autostart:
 		RH.print("🌏 App.gd | 🛠️ DEBUG - autostarting game...")
 		start_game()
 	else:
 		show_title()
 
+	if force_debug_info_panel_on:
+		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug info panel on...")
+		RH.show_debug_info_panel = true
+	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		if get_tree().paused:
 			resume_game()
 		else:
 			App.pause_game()
+
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_R:
+			RH.print("🌏 App.gd | 🛠️ DEBUG - force regenerate level...")
+			regenerate_level()
 
 func show_title() -> void:
 	RH.print("🌏 App.gd | show_title()")

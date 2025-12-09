@@ -48,23 +48,19 @@ Which means:
 
 ### World
 
-The asteroid belt, far future. The belt is colonized and heavily engineered to support the operation of ADONAI, the system-spanning AI that governs humanity. The inner edge (close to the sun) is under tight ADONAI control - including his human army, the "Imperium". The Imperium is a quasi-religious authoritarian cult that have devoted themselves to protecting STEVE and carrying out its wishes.
+The asteroid belt, far future. The belt is colonized and heavily engineered to support the operation of ADONAI, the system-spanning AI that governs humanity. Asteroids are called "rocks", and the brave pilots who fly from rock-to-rock and form the backbone of the economy are called "rockhoppers". The outer edge is more wild and free, and you'll increasingly encounter the weird, alien Kalgoor species. ADONAI hates the Kalgoor.
 
-The outer edge is more wild and free, and you'll increasingly encounter the weird, alien Kalgoor species. ADONAI hates the Kalgoor.
-
-Asteroids are called "rocks", and the brave pilots who fly from rock-to-rock and form the backbone of the economy are called "rockhoppers".
+The inner edge (close to the sun) is under tight ADONAI control - including his human army, the "Imperium". The Imperium is a quasi-religious authoritarian cult that have devoted themselves to protecting ADONAI and advancing his aims. This includes violent oppression of the many workers on the rocks.
 
 Rocks are heavily modified from their natural state. Some rocks are icy, with compute modules embedded for cooling. Some are almost molten, with fission reactors embedded for power generation. Some are both.
 
 ### Story
 
-
-
-You are the daughter of legendary rockhopper Eve. At the start of the game, she and you stop at a nondescript depot rock to refuel. But suddenly Imperium forces swarm in, destroy her ship, and adbduct her, accusing her of treason. Just before she is dragged away, she entrusts you with a data cube that she mysteriously calls "Agent X". She tells you to get the cube to the outer edge of teh belt, and that it's can't into Imperium hands no matter what. She tells you to seek out "Mr Mystery" - he'll know what to do. Then she's gone.
+Born into a world of tight ADONAI control, you are the daughter of legendary rockhopper Eve. At the start of the game, she and you stop at a nondescript depot rock to refuel. But suddenly Imperium forces swarm in, destroy her ship, and adbduct her, accusing her of treason. Just before she is dragged away, she entrusts you with a data cube that she mysteriously calls "Agent X". She tells you to get the cube to the outer edge of the belt, and that it must not fall into Imperium hands no matter what. She tells you to seek out "Mr Mystery" - he'll know what to do. Then she's gone.
 
 Suddenly you are alone on the ship depot rock. The manager, who understands what happened and is sympathetic to you, gives you a crappy starter ship. You take it and start hopping rocks to the edge, to find Mr Mystery. With "Agent X", and (at first, unbeknownst to you) a stowaway who is a very cute cat.
 
-The world gets wilder and more dangerous as you approach the edge. You'll need to build you skills - and your ship - to cope with a wide range of unpredictable challenges.
+The world gets wilder and more dangerous as you approach the edge. You'll need to build your skills - and your ship - to reach the edge, escape the clutches of the increasingly desparate Imperium
 
 ### Game loop
 
