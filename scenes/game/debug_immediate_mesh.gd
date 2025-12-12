@@ -4,6 +4,8 @@ extends MeshInstance3D
 #	MeshInstance3D has an ImmediateMesh	
 # 	ImmediateMesh has a StandardMaterial with Vertex Color > Use as Albedo = true
 
+var _labels: Array[Label3D] = []
+
 func _ready() -> void:
 	RH.print("🔺 debug_immediate_mesh.gd | ready()", 1)
 
@@ -28,7 +30,12 @@ func label(pos: Vector3, msg: String, col: Color = Color.YELLOW) -> void:
 	the_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	the_label.position = pos
 	add_child(the_label)
+	_labels.append(the_label)
 
 func clear() -> void:
 	RH.print("🔺 debug_immediate_mesh.gd | clear()", 5)
 	mesh.clear_surfaces()
+	for label_node in _labels:
+		if is_instance_valid(label_node):
+			label_node.queue_free()
+	_labels.clear()
