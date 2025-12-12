@@ -8,6 +8,11 @@ var show_debug_info_panel := false:
 		return show_debug_info_panel
 	set(value):
 		show_debug_info_panel = value
+var show_debug_visuals := false:
+	get:
+		return show_debug_visuals
+	set(value):
+		show_debug_visuals = value
 
 func _ready() -> void:
 	rng.randomize()
