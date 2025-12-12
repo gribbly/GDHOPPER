@@ -19,6 +19,7 @@ const CAVERN_SIZE_MULTIPLIER_MIN := 0.8
 const CAVERN_SIZE_MULTIPLIER_MAX := 1.8
 
 # Internal
+var level_csg_combiner: Node3D = null;
 var level_dimensions: Vector2
 var shallow_y := 0.0
 var deep_y := 0.0
@@ -26,7 +27,8 @@ var deep_y := 0.0
 func _ready() -> void:
 	RH.print("🔪 level_csg.gd | ready()", 1)
 	SignalBus.connect("level_setup_complete", Callable(self, "_generate"))
-	csg_tunnels.init()
+	level_csg_combiner = %LevelCsgCombiner
+	csg_tunnels.set_combiner(level_csg_combiner)
 
 func _exit_tree() -> void:
 	RH.print("🔪 level_csg.gd | _exit_tree()")
@@ -46,7 +48,7 @@ func _generate(level_dims: Vector2) -> void:
 	the_rock.position = rock_position
 
 	the_rock.size = Vector3(level_dimensions.x, level_dimensions.y, csg_thickness)
-	%LevelCsgCombiner.add_child(the_rock)
+	level_csg_combiner.add_child(the_rock)
 
 	#we're going to do two horizontal passes:
 		#shallow - three caverns
@@ -87,6 +89,9 @@ func _generate(level_dims: Vector2) -> void:
 	cavern_pos.x = deep_xpos_2
 	_create_cavern(cavern_pos, cavern_size, "cavern 5")
 
+	#tunnel test
+	csg_tunnels.tunnel_test()
+
 func _create_cavern(pos: Vector2, size: Vector2, cavern_name: String = "cavern") -> void:
 	RH.print("🔪 level_csg.gd | creating a cavern...")
 	var cavern := CSGBox3D.new()
@@ -99,4 +104,4 @@ func _create_cavern(pos: Vector2, size: Vector2, cavern_name: String = "cavern")
 	var size_y = size.y * RH.get_random_float(CAVERN_SIZE_MULTIPLIER_MIN, CAVERN_SIZE_MULTIPLIER_MAX)
 	cavern.size = Vector3(size_x, size_y, csg_thickness)
 	cavern.operation = CSGShape3D.OPERATION_SUBTRACTION
-	%LevelCsgCombiner.add_child(cavern)
+	level_csg_combiner.add_child(cavern)
