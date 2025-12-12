@@ -2,6 +2,9 @@ extends Node3D
 
 # Assumes that LevelCSG.tscn has %LevelCsgCombiner
 
+@export var show_debug_visuals: bool
+@export var debug_visuals: PackedScene
+
 # Tuneables
 var csg_thickness := 32.0
 var min_cavern_size := 16.0
@@ -15,10 +18,14 @@ const CAVERN_SIZE_MULTIPLIER_MAX := 1.8
 var level_dimensions: Vector2
 var shallow_y := 0.0
 var deep_y := 0.0
+var debug_visuals_instance: Node3D
 
 func _ready() -> void:
 	RH.print("🔪 level_csg.gd | ready()", 1)
 	SignalBus.connect("level_setup_complete", Callable(self, "_generate"))
+	RH.print("🔪 level_csg.gd | 📐 debug_visuals.instantiate")
+	debug_visuals_instance = debug_visuals.instantiate()
+	add_child(debug_visuals_instance)
 
 func _exit_tree() -> void:
 	RH.print("🔪 level_csg.gd | _exit_tree()")
@@ -68,25 +75,27 @@ func _generate(level_dims: Vector2) -> void:
 	#carve the caverns
 	var cavern_size:=Vector2(16.0, 16.0)
 	var cavern_pos:=Vector2(shallow_xpos_1, shallow_y)
-	_carve_cavern(cavern_pos, cavern_size)
+	_create_cavern(cavern_pos, cavern_size, "cavern 1")
 	cavern_pos.x = shallow_xpos_2
-	_carve_cavern(cavern_pos, cavern_size)
+	_create_cavern(cavern_pos, cavern_size, "cavern 2")
 	cavern_pos.x = shallow_xpos_3
-	_carve_cavern(cavern_pos, cavern_size)
+	_create_cavern(cavern_pos, cavern_size, "cavern 3")
 	cavern_pos.x = deep_xpos_1
 	cavern_pos.y = deep_y
-	_carve_cavern(cavern_pos, cavern_size)
+	_create_cavern(cavern_pos, cavern_size, "cavern 4")
 	cavern_pos.x = deep_xpos_2
-	_carve_cavern(cavern_pos, cavern_size)
+	_create_cavern(cavern_pos, cavern_size, "cavern 5")
 
-func _carve_cavern(pos: Vector2, size: Vector2) -> void:
-	RH.print("🔪 level_csg.gd | carving a cavern...")
+func _create_cavern(pos: Vector2, size: Vector2, cavern_name: String = "cavern") -> void:
+	RH.print("🔪 level_csg.gd | creating a cavern...")
 	var cavern := CSGBox3D.new()
 	var pos_x = pos.x
 	var pos_y = pos.y * RH.get_random_float(CAVERN_POS_MULTIPLIER_MIN, CAVERN_POS_MULTIPLIER_MAX)
+	if show_debug_visuals == true:
+		debug_visuals_instance.rh_debug_x_with_label(Vector3(pos_x, pos_y, 0.0), cavern_name, Color.WHITE)
 	cavern.position = Vector3(pos_x, pos_y, 0.0)
 	var size_x = size.x * RH.get_random_float(CAVERN_SIZE_MULTIPLIER_MIN, CAVERN_SIZE_MULTIPLIER_MAX)
-	var size_y = size.x * RH.get_random_float(CAVERN_SIZE_MULTIPLIER_MIN, CAVERN_SIZE_MULTIPLIER_MAX)
+	var size_y = size.y * RH.get_random_float(CAVERN_SIZE_MULTIPLIER_MIN, CAVERN_SIZE_MULTIPLIER_MAX)
 	cavern.size = Vector3(size_x, size_y, csg_thickness)
 	cavern.operation = CSGShape3D.OPERATION_SUBTRACTION
 	%LevelCsgCombiner.add_child(cavern)

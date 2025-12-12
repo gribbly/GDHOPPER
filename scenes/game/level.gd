@@ -1,7 +1,7 @@
 extends Node3D
 
-## The dimensions of the level to generate (in meters)
-@export var level_dimensions: Vector2
+@export var level_dimensions: Vector2 #meters
+@export var show_debug_visuals: bool
 @export var debug_visuals: PackedScene
 @export var level_light: PackedScene
 @export var level_camera: PackedScene
@@ -32,20 +32,10 @@ func _ready() -> void:
 	level_csg_instance = level_csg.instantiate()
 	add_child(level_csg_instance)
 
-	RH.print("🪨 level.gd | drawing level bounds - %s" % level_dimensions)
-	var level_bounds_start:=Vector3(0.0, 0.0, 34.0)
-	var level_bounds_endx:=Vector3(level_dimensions.x, 0.0, 34.0)
-	var level_bounds_endy:=Vector3(0.0, level_dimensions.y, 34.0)
-	debug_visuals_instance.rh_debug_line(level_bounds_start, level_bounds_endx, Color.RED)
-	debug_visuals_instance.rh_debug_line(level_bounds_start, level_bounds_endy, Color.GREEN)
-
-	RH.print("🪨 level.gd | marking level origin")
-	var level_origin := Vector3(position.x, position.y, 32.0)
-	debug_visuals_instance.rh_debug_x_with_label(level_origin, "origin", Color.WHITE)
-
-	RH.print("🪨 level.gd | temp exploring coordinate system")
-	var text_x := Vector3(level_dimensions.x / 2.0, level_dimensions.y / 2.0, 32.0)
-	debug_visuals_instance.rh_debug_x(text_x, Color.WHITE)
+	if show_debug_visuals == true:
+		RH.print("🪨 level.gd | marking level origin")
+		var level_origin := Vector3(position.x, position.y, 32.0)
+		debug_visuals_instance.rh_debug_x_with_label(level_origin, "origin", Color.WHITE)
 
 	RH.print("🪨 level.gd | moving camera to level midpoint...")
 	level_camera_instance.move_camera(level_dimensions.x / 2.0, level_dimensions.y / 2.0)
