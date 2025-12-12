@@ -7,7 +7,6 @@ extends Node3D
 @export var level_camera: PackedScene
 @export var level_csg: PackedScene
 
-var debug_visuals_instance: Node3D
 var level_csg_instance: Node3D
 var level_camera_instance: Node3D
 
@@ -18,8 +17,7 @@ func _ready() -> void:
 	RH.print("🪨 level.gd | _ready()", 1)
 
 	RH.print("🪨 level.gd | 📐 debug_visuals.instantiate")
-	debug_visuals_instance = debug_visuals.instantiate()
-	add_child(debug_visuals_instance)
+	add_child(debug_visuals.instantiate())
 
 	RH.print("🪨 level.gd | ☀️ level_light.instantiate")
 	add_child(level_light.instantiate())
@@ -35,7 +33,7 @@ func _ready() -> void:
 	if show_debug_visuals == true:
 		RH.print("🪨 level.gd | marking level origin")
 		var level_origin := Vector3(position.x, position.y, 32.0)
-		debug_visuals_instance.rh_debug_x_with_label(level_origin, "origin", Color.WHITE)
+		RH.debug_visuals.rh_debug_x_with_label(level_origin, "origin", Color.WHITE)
 
 	RH.print("🪨 level.gd | moving camera to level midpoint...")
 	level_camera_instance.move_camera(level_dimensions.x / 2.0, level_dimensions.y / 2.0)

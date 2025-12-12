@@ -1,4 +1,5 @@
 extends Node3D
+class_name DebugVisuals
 
 # Tuneables
 const DEFAULT_COLOR := Color.YELLOW
@@ -7,6 +8,12 @@ const STANDARD_Z_DEPTH := 48.0
 const LABEL_Y_SPACING_MULTIPLIER := 3.0
 
 @onready var debug_immediate_mesh : MeshInstance3D = %DebugImmediateMesh
+
+func _enter_tree() -> void:
+	RH.register_debug_visuals(self)
+
+func _exit_tree() -> void:
+	RH.unregister_debug_visuals(self)
 
 func _ready() -> void:
 	RH.print("📐 debug_visuals.gd | ready()", 1)

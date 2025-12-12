@@ -5,6 +5,10 @@ extends Node3D
 @export var show_debug_visuals: bool
 @export var debug_visuals: PackedScene
 
+# Helpers
+const LevelCSGTunnels := preload("res://scenes/game/level_csg_tunnels.gd")
+var csg_tunnels = LevelCSGTunnels.new()
+
 # Tuneables
 var csg_thickness := 32.0
 var min_cavern_size := 16.0
@@ -18,14 +22,11 @@ const CAVERN_SIZE_MULTIPLIER_MAX := 1.8
 var level_dimensions: Vector2
 var shallow_y := 0.0
 var deep_y := 0.0
-var debug_visuals_instance: Node3D
 
 func _ready() -> void:
 	RH.print("🔪 level_csg.gd | ready()", 1)
 	SignalBus.connect("level_setup_complete", Callable(self, "_generate"))
-	RH.print("🔪 level_csg.gd | 📐 debug_visuals.instantiate")
-	debug_visuals_instance = debug_visuals.instantiate()
-	add_child(debug_visuals_instance)
+	csg_tunnels.init()
 
 func _exit_tree() -> void:
 	RH.print("🔪 level_csg.gd | _exit_tree()")
@@ -92,7 +93,7 @@ func _create_cavern(pos: Vector2, size: Vector2, cavern_name: String = "cavern")
 	var pos_x = pos.x
 	var pos_y = pos.y * RH.get_random_float(CAVERN_POS_MULTIPLIER_MIN, CAVERN_POS_MULTIPLIER_MAX)
 	if show_debug_visuals == true:
-		debug_visuals_instance.rh_debug_x_with_label(Vector3(pos_x, pos_y, 0.0), cavern_name, Color.WHITE)
+		RH.debug_visuals.rh_debug_x_with_label(Vector3(pos_x, pos_y, 0.0), cavern_name, Color.WHITE)
 	cavern.position = Vector3(pos_x, pos_y, 0.0)
 	var size_x = size.x * RH.get_random_float(CAVERN_SIZE_MULTIPLIER_MIN, CAVERN_SIZE_MULTIPLIER_MAX)
 	var size_y = size.y * RH.get_random_float(CAVERN_SIZE_MULTIPLIER_MIN, CAVERN_SIZE_MULTIPLIER_MAX)
