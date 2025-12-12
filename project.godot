@@ -13,6 +13,7 @@ config_version=5
 config/name="GDHOPPER"
 run/main_scene="uid://cuukee8iqf2h8"
 config/features=PackedStringArray("4.5", "GL Compatibility")
+run/max_fps=60
 config/icon="res://icon.svg"
 
 [autoload]

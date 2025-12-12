@@ -4,7 +4,7 @@ extends Node
 # TUNEABLES
 var rh_print_verbosity_level = 1 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
 var debug_autostart := true
-var force_debug_info_panel_on = true
+var debug_force_info_panel_on = true
 
 enum MainState { TITLE, PLAYING }
 var state: MainState = MainState.TITLE
@@ -32,15 +32,15 @@ func _ready() -> void:
 	# This is configued in Project > Project Settings... > Globals
 	RH.set_rhprint_verbosity_level(rh_print_verbosity_level) 
 
+	if debug_force_info_panel_on:
+		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug info panel on...")
+		RH.show_debug_info_panel = true
+
 	if debug_autostart:
 		RH.print("🌏 App.gd | 🛠️ DEBUG - autostarting game...")
 		start_game()
 	else:
 		show_title()
-
-	if force_debug_info_panel_on:
-		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug info panel on...")
-		RH.show_debug_info_panel = true
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
@@ -105,7 +105,7 @@ func resume_game() -> void:
 	_clear_overlays()
 
 func show_debug_info_panel(show: bool) -> void:
-	RH.print("🌏 App.gd | show_debug_info_pane() - %s" % show, 1)
+	RH.print("🌏 App.gd | show_debug_info_panel() - %s" % show, 1)
 	if show:
 		if _debug_info_panel: return
 		_debug_info_panel = DIP_SCN.instantiate()
