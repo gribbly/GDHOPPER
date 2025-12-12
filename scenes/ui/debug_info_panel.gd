@@ -17,7 +17,7 @@ func _process(_delta: float) -> void:
 	ms_this_frame = Performance.get_monitor(Performance.TIME_PROCESS)
 	frame_time_label.text = "%.2f ms" % ms_this_frame
 
-	if ms_this_frame > 16.0:
+	if ms_this_frame > 16:
 		dropped_frames += 1
 
 	dropped_frames_label.text = "%d dropped" % dropped_frames
