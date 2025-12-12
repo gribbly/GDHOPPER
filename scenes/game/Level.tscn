@@ -10,6 +10,7 @@
 [node name="Level" type="Node3D"]
 script = ExtResource("1_ah5nq")
 level_dimensions = Vector2(200, 100)
+show_debug_visuals = true
 debug_visuals = ExtResource("2_5cov8")
 level_light = ExtResource("2_y0wjm")
 level_camera = ExtResource("3_alfq7")

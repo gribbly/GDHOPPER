@@ -2,7 +2,7 @@
 extends Node
 
 # TUNEABLES
-var rh_print_verbosity_level = 10 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
+var rh_print_verbosity_level = 1 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
 var debug_autostart := true
 var force_debug_info_panel_on = true
 
