@@ -6,6 +6,10 @@ extends Node3D
 var csg_thickness := 32.0
 var min_cavern_size := 16.0
 var cavern_xmargin := 16.0
+const CAVERN_POS_MULTIPLIER_MIN := 0.9
+const CAVERN_POS_MULTIPLIER_MAX := 1.1
+const CAVERN_SIZE_MULTIPLIER_MIN := 0.8
+const CAVERN_SIZE_MULTIPLIER_MAX := 1.8
 
 # Internal
 var level_dimensions: Vector2
@@ -45,7 +49,7 @@ func _generate(level_dims: Vector2) -> void:
 
 	#generate x positions for shallow caverns
 	var shallow_xtick_1 = level_dimensions.x / 3.0
-	var shallow_xtick_2 = shallow_xtick_1 * 2
+	var shallow_xtick_2 = level_dimensions.x / 2.0
 
 	var shallow_xpos_1 = RH.get_random_float(0.0 + cavern_xmargin, shallow_xtick_1 - cavern_xmargin)
 	RH.print("🔪 level_csg.gd | shallow_xpos_1 = %s" % shallow_xpos_1)
@@ -62,10 +66,9 @@ func _generate(level_dims: Vector2) -> void:
 	RH.print("🔪 level_csg.gd | deep_xpos_2 = %s" % deep_xpos_2)
 
 	#carve the caverns
-	var cavern_pos:=Vector2(shallow_xpos_1, shallow_y)
 	var cavern_size:=Vector2(16.0, 16.0)
+	var cavern_pos:=Vector2(shallow_xpos_1, shallow_y)
 	_carve_cavern(cavern_pos, cavern_size)
-
 	cavern_pos.x = shallow_xpos_2
 	_carve_cavern(cavern_pos, cavern_size)
 	cavern_pos.x = shallow_xpos_3
@@ -76,35 +79,14 @@ func _generate(level_dims: Vector2) -> void:
 	cavern_pos.x = deep_xpos_2
 	_carve_cavern(cavern_pos, cavern_size)
 
-	# Carve som test caverns out of the_rock
-	#for i in 5:
-	#	_test_cavern(100.0, 64.0)
-
-func _test_cavern(pos : float = 32, size : float = 32.0) -> void:
-	RH.print("🔪 level_csg.gd | carving test cavern...")
-
-	#position
-	var px = RH.get_random_float(-pos, pos)
-	var py = RH.get_random_float(-pos, pos)
-	var test_pos:=Vector2(px, py)
-
-	#size
-	var sx:=0.0
-	while sx < min_cavern_size:
-		sx = RH.get_random_float(-size, size)
-
-	var sy:=0.0
-	while sy < min_cavern_size:
-		sy = RH.get_random_float(-size, size)
-	
-	var test_size:=Vector2(sx, sy)
-
-	_carve_cavern(test_pos, test_size)
-
 func _carve_cavern(pos: Vector2, size: Vector2) -> void:
 	RH.print("🔪 level_csg.gd | carving a cavern...")
 	var cavern := CSGBox3D.new()
-	cavern.position = Vector3(pos.x, pos.y, 0.0)
-	cavern.size = Vector3(size.x, size.y, csg_thickness * 2)
+	var pos_x = pos.x
+	var pos_y = pos.y * RH.get_random_float(CAVERN_POS_MULTIPLIER_MIN, CAVERN_POS_MULTIPLIER_MAX)
+	cavern.position = Vector3(pos_x, pos_y, 0.0)
+	var size_x = size.x * RH.get_random_float(CAVERN_SIZE_MULTIPLIER_MIN, CAVERN_SIZE_MULTIPLIER_MAX)
+	var size_y = size.x * RH.get_random_float(CAVERN_SIZE_MULTIPLIER_MIN, CAVERN_SIZE_MULTIPLIER_MAX)
+	cavern.size = Vector3(size_x, size_y, csg_thickness)
 	cavern.operation = CSGShape3D.OPERATION_SUBTRACTION
 	%LevelCsgCombiner.add_child(cavern)
