@@ -1,7 +1,6 @@
 extends Node3D
 
 @export var level_dimensions: Vector2 #meters
-@export var show_debug_visuals: bool
 @export var debug_visuals: PackedScene
 @export var level_light: PackedScene
 @export var level_camera: PackedScene
@@ -30,7 +29,7 @@ func _ready() -> void:
 	level_csg_instance = level_csg.instantiate()
 	add_child(level_csg_instance)
 
-	if show_debug_visuals == true:
+	if RH.show_debug_visuals == true:
 		RH.print("🪨 level.gd | marking level origin")
 		var level_origin := Vector3(position.x, position.y, 32.0)
 		RH.debug_visuals.rh_debug_x_with_label(level_origin, "origin", Color.WHITE)
