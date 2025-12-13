@@ -2,7 +2,6 @@
 extends Node
 
 # TUNEABLES
-var rh_print_verbosity_level = 5 # only RH.prints below this level will be output. Set this to 1 for minimal chatter.
 var debug_autostart := true
 var force_debug_info_panel_on = true
 var force_debug_visuals_on = true
@@ -28,10 +27,6 @@ var _level: Node = null
 func _ready() -> void:
 	print("🌏 App.gd | Hello worlds...")
 	print("🌏 App.gd | Welcome to ROCKHOPPER")
-
-	# RH is an alias for Globals.gd, which is set up as an autoload in Project Settings
-	# This is configued in Project > Project Settings... > Globals
-	RH.set_rhprint_verbosity_level(rh_print_verbosity_level) 
 
 	if force_debug_info_panel_on:
 		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug info panel on...")

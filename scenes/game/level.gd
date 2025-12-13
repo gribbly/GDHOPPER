@@ -31,8 +31,7 @@ func _ready() -> void:
 
 	if RH.show_debug_visuals == true:
 		RH.print("🪨 level.gd | marking level origin")
-		var level_origin := Vector3(position.x, position.y, 32.0)
-		RH.debug_visuals.rh_debug_x_with_label(level_origin, "origin", Color.WHITE)
+		RH.debug_visuals.rh_debug_x_with_label(position, "origin", Color.WHITE)
 
 	RH.print("🪨 level.gd | moving camera to level midpoint...")
 	level_camera_instance.move_camera(level_dimensions.x / 2.0, level_dimensions.y / 2.0)

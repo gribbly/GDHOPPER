@@ -3,6 +3,7 @@ extends Node3D
 # Note: Assumes that LevelCamera.tscn has %LevelCamera3D
 
 # Tuneables
+const COSMETIC_CAMERA_TILT = -0.02
 var use_debug_size := true
 var debug_camera_size := 150
 
@@ -20,6 +21,7 @@ func _exit_tree() -> void:
 
 func move_camera(x: float, y: float):
 	global_position = Vector3(x, y, start_z)
+	global_rotate(Vector3(1, 0, 0), COSMETIC_CAMERA_TILT)
 
 func _adjust_size(level_dims: Vector3) -> void:
 	RH.print("📸 level_camera.gd | _adjust_size()", 3)
