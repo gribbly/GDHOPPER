@@ -15,6 +15,9 @@ var debug_line_count := 0
 func _ready() -> void:
 	RH.print("🪨 level.gd | _ready()", 1)
 
+	RH.print("🪨 level.gd | 🌐 setting level_dimensions in globals.gd")
+	RH.level_dimensions = level_dimensions
+
 	RH.print("🪨 level.gd | 📐 debug_visuals.instantiate")
 	add_child(debug_visuals.instantiate())
 
@@ -36,4 +39,4 @@ func _ready() -> void:
 	RH.print("🪨 level.gd | moving camera to level midpoint...")
 	level_camera_instance.move_camera(level_dimensions.x / 2.0, level_dimensions.y / 2.0)
 
-	SignalBus.emit_signal("level_setup_complete", level_dimensions)
+	SignalBus.emit_signal("level_setup_complete")

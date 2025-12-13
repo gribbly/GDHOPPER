@@ -1,24 +1,20 @@
 extends Node
 
+# Globals
 const CSG_THICKNESS := 64.0
-const RHPRINT_VERBOSITY := 3 #lower verbosity level means you'll see less output. "1" is really clean. "3" is "typical development"
+const RHPRINT_VERBOSITY := 5 #lower verbosity level means you'll see less output. "1" is really clean. "3" is "typical development"
+var level_dimensions := Vector3.ZERO
+
+# Debug
+var debug_visuals: DebugVisuals = null
+var show_debug_info_panel := false
+var show_debug_visuals := false
 
 # Internal
-var rng := RandomNumberGenerator.new()
-var debug_visuals: DebugVisuals = null
-var show_debug_info_panel := false:
-	get:
-		return show_debug_info_panel
-	set(value):
-		show_debug_info_panel = value
-var show_debug_visuals := false:
-	get:
-		return show_debug_visuals
-	set(value):
-		show_debug_visuals = value
+var _rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
-	rng.randomize()
+	_rng.randomize()
 
 func register_debug_visuals(instance: DebugVisuals) -> void:
 	RH.print("🌐 Globals.gd | register_debug_visuals", 5)
@@ -32,7 +28,7 @@ func unregister_debug_visuals(instance: DebugVisuals) -> void:
 		debug_visuals = null
 
 func get_random_float(low: float, high: float) -> float:
-	return rng.randf_range(low, high)
+	return _rng.randf_range(low, high)
 
 func print(msg: String, pri: int = 3) -> void:
 	if pri <= RHPRINT_VERBOSITY:
