@@ -21,7 +21,7 @@ func _exit_tree() -> void:
 func move_camera(x: float, y: float):
 	global_position = Vector3(x, y, start_z)
 
-func _adjust_size(level_dims: Vector2) -> void:
+func _adjust_size(level_dims: Vector3) -> void:
 	RH.print("📸 level_camera.gd | _adjust_size()", 3)
 	var new_size = level_dims.y / 2.0
 	if use_debug_size: 

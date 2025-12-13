@@ -2,12 +2,10 @@ class_name CavernData
 extends RefCounted
 
 var index: int
-var name: String
-var pos: Vector2
-var size: Vector2
+var size: Vector3
+var pos: Vector3
 
-func _init(p_index: int, p_pos: Vector2, p_name: String, p_size: Vector2) -> void:
+func _init(p_index: int, p_size: Vector3, p_pos: Vector3) -> void:
 	index = p_index
-	pos = p_pos
-	name = p_name
 	size = p_size
+	pos = p_pos

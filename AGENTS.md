@@ -13,6 +13,7 @@
   * Godot project name: GDHOPPER
 * Using GDScript
 * Default resolution is 1280x800 (primary target = Steam Deck)
+* The game is "2D in 3D". Meaning that the gameplay is primarily 2D/ortho cam. But "under the hood" everything is using Node3D, Vector3, etc. This is for two reasons: (1) We want to sometimes take advantage of depth (example, "throw debris at the camera"), and (2) in the future there will be a 3D sequel, I'd like the underlying systems to be as 3D-ready as possible so it's less of a rewrite.
 
 ### Technical goals
 
@@ -25,6 +26,7 @@
 ### Details and gotchas
 
 * When using SignalBus.connect in '_ready', you probably need to do SignalBus.disconnect in '_exit_tree'. See /scenes/game/level_csg.gd for an example.
+* Use Vector3 for everything, even though it's 2D gameplay. I many places we just ignore or zero out the z component.
 
 ## Game design
 
