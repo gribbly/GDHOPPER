@@ -11,7 +11,7 @@ var csg_tunnels = LevelCSGTunnels.new()
 # Internal
 var level_csg_combiner: Node3D = null;
 var level_dimensions: Vector3
-var level_helper: LevelHelper = null
+var lh: LevelHelper = null
 
 func _ready() -> void:
 	RH.print("🔪 level_csg.gd | ready()", 1)
@@ -19,8 +19,7 @@ func _ready() -> void:
 	level_csg_combiner = %LevelCsgCombiner
 	csg_caverns.set_combiner(level_csg_combiner)
 	csg_tunnels.set_combiner(level_csg_combiner)
-
-	level_helper = LevelHelper.new()
+	lh = LevelHelper.new()
 
 func _exit_tree() -> void:
 	RH.print("🔪 level_csg.gd | _exit_tree()")
@@ -30,7 +29,7 @@ func _generate(level_dims: Vector3) -> void:
 	RH.print("🔪 level_csg.gd | _generate()", 1)
 	level_dimensions = level_dims
 	RH.print("🔪 level_csg.gd | level_dimensions = %s" % level_dimensions, 3)
-	level_helper.set_level_dimensions(level_dimensions)
+	lh.set_level_dimensions(level_dimensions)
 	csg_caverns.set_level_dimensions(level_dimensions)
 
 	# Add first "rock" CSG... we'll carve everything else out of this
@@ -47,16 +46,16 @@ func _generate(level_dims: Vector3) -> void:
 
 	# Caverns and tunnels
 	## Create a large cavern top left
-	var spawn_point = level_helper.get_point("left", "shallow")
+	var spawn_point = lh.get_point(lh.XType.left, lh.YType.shallow)
 	csg_caverns.create_cavern("welcome", 3, spawn_point)
 
 	## Create a tunnel to the surface
 	var start_pos = csg_caverns.caverns["welcome"].pos
-	var end_pos = level_helper.get_relative_point(start_pos, "surface", "fuzzed")
+	var end_pos = lh.get_relative_point(start_pos, lh.PlacementType.surface, lh.NoiseType.fuzzed)
 	csg_tunnels.create_tunnel(start_pos, end_pos)
 
 	## Create a medium cavern to the right of "welcome"
-	spawn_point = level_helper.get_point("right", "shallow")
+	spawn_point = lh.get_point(lh.XType.center, lh.YType.shallow)
 	csg_caverns.create_cavern("c2", 2, spawn_point)
 
 	## Connect those two caverns with a tunnel
@@ -64,20 +63,34 @@ func _generate(level_dims: Vector3) -> void:
 	end_pos = csg_caverns.caverns["c2"].pos
 	csg_tunnels.create_tunnel(start_pos, end_pos)
 
-	## Create a small cavern below c2
-	spawn_point = level_helper.get_relative_point(end_pos, "below", "strictish")
-	csg_caverns.create_cavern("c3", 1, spawn_point)
+	## Create another large cavern to the right of "c2"
+	spawn_point = lh.get_point(lh.XType.right, lh.YType.shallow)
+	csg_caverns.create_cavern("c3", 3, spawn_point)	
 
-	## Create a narrow tunnel connecting c2 and c3
+	## Tunnel from c2 to c3
 	start_pos = csg_caverns.caverns["c2"].pos
 	end_pos = csg_caverns.caverns["c3"].pos
+	csg_tunnels.create_tunnel(start_pos, end_pos)
+
+	## Create a small cavern below c3
+	spawn_point = lh.get_relative_point(csg_caverns.caverns["c3"].pos, lh.PlacementType.below, lh.NoiseType.strictish)
+	csg_caverns.create_cavern("c4", 1, spawn_point)
+
+	## Create a narrow tunnel connecting c3 and c4
+	start_pos = csg_caverns.caverns["c3"].pos
+	end_pos = csg_caverns.caverns["c4"].pos
 	csg_tunnels.create_tunnel(start_pos, end_pos, 5.5)
 
 	## Create a medium deep cavern kinda in the middle
-	spawn_point = level_helper.get_point("center", "deep")
-	csg_caverns.create_cavern("c4", 2, spawn_point)
+	spawn_point = lh.get_point(lh.XType.center, lh.YType.deep)
+	csg_caverns.create_cavern("c5", 2, spawn_point)
 
-	## Create a tunnel connecting c3 and c4
-	start_pos = csg_caverns.caverns["c3"].pos
-	end_pos = csg_caverns.caverns["c4"].pos
+	## Create a tunnel connecting c4 and c5
+	start_pos = csg_caverns.caverns["c4"].pos
+	end_pos = csg_caverns.caverns["c5"].pos
+	csg_tunnels.create_tunnel(start_pos, end_pos)
+
+	## Tunnel from c2 to c5
+	start_pos = csg_caverns.caverns["c2"].pos
+	end_pos = csg_caverns.caverns["c5"].pos
 	csg_tunnels.create_tunnel(start_pos, end_pos)
