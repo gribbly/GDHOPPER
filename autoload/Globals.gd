@@ -1,5 +1,7 @@
 extends Node
 
+const CSG_THICKNESS := 32.0
+
 var rhprint_verbosity_level: int = 3 #lower verbosity level means you'll see less output. "1" is really clean. "3" is "typical development"
 var rng := RandomNumberGenerator.new()
 var debug_visuals: DebugVisuals = null

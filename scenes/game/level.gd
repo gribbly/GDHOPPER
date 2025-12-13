@@ -1,6 +1,6 @@
 extends Node3D
 
-@export var level_dimensions: Vector2 #meters
+@export var level_dimensions: Vector3 #meters
 @export var debug_visuals: PackedScene
 @export var level_light: PackedScene
 @export var level_camera: PackedScene
