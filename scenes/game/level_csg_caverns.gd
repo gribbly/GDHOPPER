@@ -11,14 +11,10 @@ const CAVERN_SIZE_LARGE := 24.0
 
 # Internals
 var level_csg_combiner: Node3D = null
-var level_dimensions: Vector3
 var _index := 0
 
 func set_combiner(combiner: Node3D) -> void:
 	level_csg_combiner = combiner
-
-func set_level_dimensions(dimensions: Vector3) -> void:
-	level_dimensions = dimensions
 
 # 'cav_size_class' is an int. 1 = small, 2 = medium, 3 = large
 func create_cavern(cav_name: String, cav_size_class: int, cav_pos: Vector3) -> void:

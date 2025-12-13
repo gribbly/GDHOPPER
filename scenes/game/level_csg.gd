@@ -10,7 +10,6 @@ var csg_tunnels = LevelCSGTunnels.new()
 
 # Internal
 var level_csg_combiner: Node3D = null;
-var level_dimensions: Vector3
 var lh: LevelHelper = null
 
 func _ready() -> void:
@@ -20,28 +19,25 @@ func _ready() -> void:
 	csg_caverns.set_combiner(level_csg_combiner)
 	csg_tunnels.set_combiner(level_csg_combiner)
 	lh = LevelHelper.new()
+	lh.init()
 
 func _exit_tree() -> void:
 	RH.print("🔪 level_csg.gd | _exit_tree()")
 	SignalBus.disconnect("level_setup_complete", Callable(self, "_generate"))
 	
-func _generate(level_dims: Vector3) -> void:
+func _generate() -> void:
 	RH.print("🔪 level_csg.gd | _generate()", 1)
-	level_dimensions = level_dims
-	RH.print("🔪 level_csg.gd | level_dimensions = %s" % level_dimensions, 3)
-	lh.set_level_dimensions(level_dimensions)
-	csg_caverns.set_level_dimensions(level_dimensions)
 
 	# Add first "rock" CSG... we'll carve everything else out of this
 	RH.print("🔪 level_csg.gd | adding \"the rock\"...")
 	var the_rock := CSGBox3D.new()
 	var rock_position = Vector3.ZERO
-	rock_position.x += level_dimensions.x / 2.0
-	rock_position.y += level_dimensions.y / 2.0
+	rock_position.x += RH.level_dimensions.x / 2.0
+	rock_position.y += RH.level_dimensions.y / 2.0
 	the_rock.position = rock_position
 	#RH.debug_visuals.rh_debug_x_with_label(the_rock.position, "the_rock", Color.LIGHT_GRAY)
 
-	the_rock.size = Vector3(level_dimensions.x, level_dimensions.y, RH.CSG_THICKNESS)
+	the_rock.size = Vector3(RH.level_dimensions.x, RH.level_dimensions.y, RH.CSG_THICKNESS)
 	level_csg_combiner.add_child(the_rock)
 
 	# Caverns and tunnels
