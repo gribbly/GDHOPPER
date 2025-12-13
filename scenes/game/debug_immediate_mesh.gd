@@ -5,9 +5,22 @@ extends MeshInstance3D
 # 	ImmediateMesh has a StandardMaterial with Vertex Color > Use as Albedo = true
 
 var _labels: Array[Label3D] = []
+var _debug_material: StandardMaterial3D
+
+const DEBUG_RENDER_PRIORITY := 127
 
 func _ready() -> void:
 	RH.print("🔺 debug_immediate_mesh.gd | ready()", 1)
+	_configure_render_on_top()
+
+func _configure_render_on_top() -> void:
+	_debug_material = StandardMaterial3D.new()
+	_debug_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	_debug_material.vertex_color_use_as_albedo = true
+	_debug_material.no_depth_test = true
+	_debug_material.depth_draw_mode = BaseMaterial3D.DEPTH_DRAW_DISABLED
+	_debug_material.render_priority = DEBUG_RENDER_PRIORITY
+	material_override = _debug_material
 
 func line(start: Vector3, end: Vector3, col: Color = Color.YELLOW) -> void:
 	RH.print("🔺 debug_immediate_mesh.gd | line()", 5)
@@ -28,9 +41,17 @@ func label(pos: Vector3, msg: String, col: Color = Color.YELLOW) -> void:
 	the_label.pixel_size = 0.1
 	the_label.modulate = col
 	the_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	the_label.set(&"render_priority", DEBUG_RENDER_PRIORITY)
+	the_label.set(&"no_depth_test", true)
 	the_label.position = pos
 	add_child(the_label)
 	_labels.append(the_label)
+
+func _has_property(obj: Object, property_name: StringName) -> bool:
+	for property_dict in obj.get_property_list():
+		if property_dict.get("name") == property_name:
+			return true
+	return false
 
 func clear() -> void:
 	RH.print("🔺 debug_immediate_mesh.gd | clear()", 5)
