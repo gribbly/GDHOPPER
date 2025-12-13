@@ -41,7 +41,9 @@ func create_tunnel(start: Vector3, end: Vector3, size: float = 8.0) -> void:
 		var p := start + direction * (i * step_distance)
 
 		var box := CSGBox3D.new()
-		box.size = Vector3(size, size, 64.0)
+		var size_randomized = RH.get_random_float(size * 0.8, size * 1.2)
+		box.size = Vector3(size_randomized, size_randomized, 64.0)
 		box.position = p
+		box.rotate_z(RH.get_random_float(0.0, 1.0))
 		box.operation = CSGShape3D.OPERATION_SUBTRACTION
 		level_csg_combiner.add_child(box)

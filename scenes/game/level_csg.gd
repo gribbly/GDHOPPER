@@ -43,9 +43,18 @@ func _generate(level_dims: Vector2) -> void:
 	the_rock.size = Vector3(level_dimensions.x, level_dimensions.y, csg_thickness)
 	level_csg_combiner.add_child(the_rock)
 
-	#caverns
+	# Caverns
 	csg_caverns.set_level_dimensions(level_dimensions)
 	csg_caverns.create_caverns()
 
-	#tunnels
-	csg_tunnels.create_tunnel(the_rock.position, Vector3.ZERO)
+	# Tunnels
+	# Connect tunnels by index, looping last back to first
+	for i in range(csg_caverns.caverns.size()):
+		var j = i + 1
+		if j >= csg_caverns.caverns.size():
+			j = 0
+		
+		var start = Vector3(csg_caverns.caverns[i].pos.x, csg_caverns.caverns[i].pos.y, 0.0)
+		var end = Vector3(csg_caverns.caverns[j].pos.x, csg_caverns.caverns[j].pos.y, 0.0)
+
+		csg_tunnels.create_tunnel(start, end)

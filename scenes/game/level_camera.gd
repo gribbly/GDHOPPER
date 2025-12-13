@@ -4,7 +4,7 @@ extends Node3D
 
 # Tuneables
 var use_debug_size := true
-var debug_camera_size := 250
+var debug_camera_size := 150
 
 # Internal
 var start_z := 64.0
