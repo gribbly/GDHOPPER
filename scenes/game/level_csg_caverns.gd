@@ -1,6 +1,6 @@
 extends RefCounted
 
-# Implements "cavern functions" for level_csg.gd
+# Implements cavern creation functions for level_csg.gd
 
 var caverns: Dictionary[String, CavernData] = {} # Dictionary of caverns by name
 

@@ -7,17 +7,19 @@ const LevelCSGCaverns := preload("res://scenes/game/level_csg_caverns.gd")
 var csg_caverns = LevelCSGCaverns.new()
 const LevelCSGTunnels := preload("res://scenes/game/level_csg_tunnels.gd")
 var csg_tunnels = LevelCSGTunnels.new()
+const LevelCSGMesh := preload("res://scenes/game/level_csg_mesh.gd")
+var csg_mesh = LevelCSGMesh.new()
 
 # Internal
-var level_csg_combiner: Node3D = null;
+var csg: Node3D = null;
 var lh: LevelHelper = null
 
 func _ready() -> void:
 	RH.print("🔪 level_csg.gd | ready()", 1)
 	SignalBus.connect("level_setup_complete", Callable(self, "_generate"))
-	level_csg_combiner = %LevelCsgCombiner
-	csg_caverns.set_combiner(level_csg_combiner)
-	csg_tunnels.set_combiner(level_csg_combiner)
+	csg = %LevelCsgCombiner
+	csg_caverns.set_combiner(csg)
+	csg_tunnels.set_combiner(csg)
 	lh = LevelHelper.new()
 	lh.init()
 
@@ -38,7 +40,7 @@ func _generate() -> void:
 	#RH.debug_visuals.rh_debug_x_with_label(the_rock.position, "the_rock", Color.LIGHT_GRAY)
 
 	the_rock.size = Vector3(RH.level_dimensions.x, RH.level_dimensions.y, RH.CSG_THICKNESS)
-	level_csg_combiner.add_child(the_rock)
+	csg.add_child(the_rock)
 
 	# Caverns and tunnels
 	## Create a large "welcome" cavern top left
@@ -93,3 +95,13 @@ func _generate() -> void:
 	start_pos = csg_caverns.caverns["c2"].pos
 	end_pos = csg_caverns.caverns["c5"].pos
 	csg_tunnels.create_tunnel(start_pos, end_pos)
+
+func convert_to_mesh() -> void:
+	# CSG meshes are often not ready until the next frame.
+	await get_tree().process_frame
+
+	# Do the conversion
+	add_child(csg_mesh.convert(csg))
+
+	# remove CSG
+	csg.queue_free()

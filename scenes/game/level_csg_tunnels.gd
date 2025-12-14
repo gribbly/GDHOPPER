@@ -1,6 +1,6 @@
 extends RefCounted
 
-# Implements "tunneling functions" for level_csg.gd
+# Implements tunneling functions for level_csg.gd
 
 # Tuneables
 const STEP_DISTANCE := 4.0
