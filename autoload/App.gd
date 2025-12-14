@@ -41,7 +41,11 @@ func _ready() -> void:
 		start_game()
 	else:
 		show_title()
-	
+
+#func _process(_delta: float) -> void:
+	# Debug - artificial slowdown
+	#OS.delay_msec(100) # adds ~100ms => ~10 FPS if it hits every frame
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		if get_tree().paused:

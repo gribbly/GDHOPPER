@@ -14,7 +14,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	fps_counter_label.text = "%.2f FPS" % Performance.get_monitor(Performance.TIME_FPS)
 	
-	ms_this_frame = Performance.get_monitor(Performance.TIME_PROCESS)
+	ms_this_frame = Performance.get_monitor(Performance.TIME_PROCESS) * 1000
 	frame_time_label.text = "%.2f ms" % ms_this_frame
 
 	if ms_this_frame > 16:

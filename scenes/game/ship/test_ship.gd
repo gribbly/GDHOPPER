@@ -8,9 +8,19 @@ extends RigidBody3D
 var thrust_side := 0.0
 
 func _ready() -> void:
+	RH.print("🚀 test_ship.gd | ready")
 	pass # Replace with function body.
 
+func reset() -> void:
+	RH.print("🚀 test_ship.gd | reset")
+	position.z = 0.0
+	transform.basis = Basis.IDENTITY
+
 func _physics_process(delta):
+
+	# Debug reset
+	if Input.is_physical_key_pressed(KEY_S):
+		reset()
 	
 	# Rotate (Z axis into the screen)
 	var rot_input := 0.0
