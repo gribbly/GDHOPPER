@@ -101,7 +101,7 @@ func convert_to_mesh() -> void:
 	await get_tree().process_frame
 
 	# Do the conversion
-	add_child(csg_mesh.convert(csg))
+	csg_mesh.convert(csg)
 
 	# remove CSG
 	csg.queue_free()
