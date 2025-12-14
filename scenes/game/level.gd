@@ -5,15 +5,16 @@ extends Node3D
 @export var level_light: PackedScene
 @export var level_camera: PackedScene
 @export var level_csg: PackedScene
+@export var test_ship: PackedScene
 
 var level_csg_instance: Node3D
 var level_camera_instance: Node3D
-
-#temp - just while implementing/test debug_visuals
-var debug_line_count := 0
+var test_ship_instance: Node3D
 
 func _ready() -> void:
 	RH.print("🪨 level.gd | _ready()", 1)
+
+	SignalBus.connect("ship_spawn_point", Callable(self, "_spawn_ship"))
 
 	RH.print("🪨 level.gd | 🌐 setting level_dimensions in globals.gd")
 	RH.level_dimensions = level_dimensions
@@ -34,9 +35,24 @@ func _ready() -> void:
 
 	if RH.show_debug_visuals == true:
 		RH.print("🪨 level.gd | marking level origin")
-		RH.debug_visuals.rh_debug_x_with_label(position, "origin", Color.WHITE)
+		#RH.debug_visuals.rh_debug_x_with_label(position, "origin", Color.WHITE)
 
 	RH.print("🪨 level.gd | moving camera to level midpoint...")
 	level_camera_instance.move_camera(level_dimensions.x / 2.0, level_dimensions.y / 2.0)
 
 	SignalBus.emit_signal("level_setup_complete")
+
+func _exit_tree() -> void:
+	RH.print("🪨 level.gd | _exit_tree()")
+	SignalBus.disconnect("ship_spawn_point", Callable(self, "_spawn_ship"))
+
+func _spawn_ship(spawn_point: Vector3) -> void:
+	RH.print("🪨 level.gd | spawning ship...")
+	test_ship_instance = test_ship.instantiate()
+	test_ship_instance.position = Vector3(spawn_point)
+	if RH.show_debug_visuals == true:
+		RH.print("🪨 level.gd | marking ship spawn")
+		RH.debug_visuals.rh_debug_x_with_label(spawn_point, "ship", Color.GREEN)
+	add_child(test_ship_instance)
+
+	level_camera_instance.follow_target = test_ship_instance

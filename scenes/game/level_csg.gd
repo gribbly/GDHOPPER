@@ -41,9 +41,12 @@ func _generate() -> void:
 	level_csg_combiner.add_child(the_rock)
 
 	# Caverns and tunnels
-	## Create a large cavern top left
+	## Create a large "welcome" cavern top left
 	var spawn_point = lh.get_point(lh.XType.left, lh.YType.shallow)
 	csg_caverns.create_cavern("welcome", 3, spawn_point)
+
+	## This is the ship spawn point (for now)
+	SignalBus.emit_signal("ship_spawn_point", spawn_point)
 
 	## Create a tunnel to the surface
 	var start_pos = csg_caverns.caverns["welcome"].pos
@@ -75,7 +78,7 @@ func _generate() -> void:
 	## Create a narrow tunnel connecting c3 and c4
 	start_pos = csg_caverns.caverns["c3"].pos
 	end_pos = csg_caverns.caverns["c4"].pos
-	csg_tunnels.create_tunnel(start_pos, end_pos, 5.5)
+	csg_tunnels.create_tunnel(start_pos, end_pos, 9.0)
 
 	## Create a medium deep cavern kinda in the middle
 	spawn_point = lh.get_point(lh.XType.center, lh.YType.deep)

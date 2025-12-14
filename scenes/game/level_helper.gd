@@ -23,7 +23,6 @@ enum YType { surface, shallow, deep }
 enum PlacementType { surface, below }
 enum NoiseType { strict, strictish, fuzzed }
 
-
 func init() -> void:
 	half_width = RH.level_dimensions.x / 2.0
 	third_width = RH.level_dimensions.x / 3.0

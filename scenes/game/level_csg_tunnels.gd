@@ -4,7 +4,7 @@ extends RefCounted
 
 # Tuneables
 const STEP_DISTANCE := 4.0
-const DEFAULT_SIZE := 8.0
+const DEFAULT_SIZE := 16.0
 
 # Internals
 var level_csg_combiner: Node3D = null

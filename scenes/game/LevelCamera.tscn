@@ -21,7 +21,6 @@ script = ExtResource("1_d5i1c")
 
 [node name="LevelCamera3D" type="Camera3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 64)
 environment = SubResource("Environment_87tfo")
 projection = 1
 size = 100.0

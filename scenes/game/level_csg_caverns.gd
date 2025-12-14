@@ -5,9 +5,9 @@ extends RefCounted
 var caverns: Dictionary[String, CavernData] = {} # Dictionary of caverns by name
 
 # Tuneables
-const CAVERN_SIZE_SMALL := 8.0
-const CAVERN_SIZE_MEDIUM := 16.0
-const CAVERN_SIZE_LARGE := 24.0
+const CAVERN_SIZE_SMALL := 16.0
+const CAVERN_SIZE_MEDIUM := 32.0
+const CAVERN_SIZE_LARGE := 48.0
 
 # Internals
 var level_csg_combiner: Node3D = null

@@ -1,5 +1,5 @@
-extends Node3D
 class_name DebugVisuals
+extends Node3D
 
 # Tuneables
 const DEFAULT_COLOR := Color.YELLOW

@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cy1f6s5878jps"]
+
+[ext_resource type="PackedScene" uid="uid://c5uvk6sgr36id" path="res://assets/models/test_ship/TestShip.glb" id="1_hkkm6"]
+[ext_resource type="Script" uid="uid://dh3sqpycsp36q" path="res://scenes/game/ship/test_ship.gd" id="1_trx1f"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pw2eq"]
+
+[node name="TestShip" type="RigidBody3D"]
+input_ray_pickable = false
+axis_lock_linear_z = true
+linear_damp = 0.25
+angular_damp = 0.75
+script = ExtResource("1_trx1f")
+thrust_left = 25.0
+thrust_right = 25.0
+
+[node name="TestShip" parent="." instance=ExtResource("1_hkkm6")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, 0, 0.45, 0)
+shape = SubResource("BoxShape3D_pw2eq")
