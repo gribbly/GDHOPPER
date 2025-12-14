@@ -2,7 +2,7 @@ extends Node
 
 # Globals
 const CSG_THICKNESS := 64.0
-const RHPRINT_VERBOSITY := 1 #lower verbosity level means you'll see less output. "1" is really clean. "3" is "typical development"
+const RHPRINT_VERBOSITY := 3 #lower verbosity level means you'll see less output. "1" is really clean. "3" is "typical development"
 var level_dimensions := Vector3.ZERO
 
 # Debug

@@ -11,9 +11,6 @@ const DEFAULT_SIZE = 32.0
 const COSMETIC_CAMERA_TILT = -0.02 # For real
 #const COSMETIC_CAMERA_TILT = 0.0 # For testing
 
-var use_debug_size := false
-var debug_camera_size := 150
-
 func _ready() -> void:
 	RH.print("📸 level_camera.gd | ready()", 1)
 	SignalBus.connect("level_setup_complete", Callable(self, "_adjust_size"))
@@ -28,16 +25,19 @@ func _process(_delta: float) -> void:
 	global_position = follow_target.global_position
 	global_position.z = Z_DISTANCE
 
+	if Input.is_physical_key_pressed(KEY_1):
+		_adjust_size(DEFAULT_SIZE)
+	if Input.is_physical_key_pressed(KEY_2):
+		_adjust_size(RH.level_dimensions.x)
+	if Input.is_physical_key_pressed(KEY_3):
+		_adjust_size(DEFAULT_SIZE * 2)
+
 func move_camera(x: float, y: float):
 	global_position = Vector3(x, y, Z_DISTANCE)
 	global_rotate(Vector3(1, 0, 0), COSMETIC_CAMERA_TILT)
 
-func _adjust_size() -> void:
+func _adjust_size(new_size: float = DEFAULT_SIZE) -> void:
 	RH.print("📸 level_camera.gd | _adjust_size()", 3)
-	var new_size = DEFAULT_SIZE
-	if use_debug_size: 
-		RH.print("📸 level_camera.gd | DEBUG - forcing size to %s" % debug_camera_size, 3)
-		new_size = debug_camera_size
 	%LevelCamera3D.size = new_size
 	RH.print("📸 level_camera.gd | new size is %.2f" % new_size, 3)
 

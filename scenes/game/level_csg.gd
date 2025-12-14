@@ -11,7 +11,7 @@ const LevelCSGMesh := preload("res://scenes/game/level_csg_mesh.gd")
 var csg_mesh = LevelCSGMesh.new()
 
 # Internal
-var csg: Node3D = null;
+var csg: Node3D = null # This is the combiner for the procgen CSG shapes
 var lh: LevelHelper = null
 
 func _ready() -> void:

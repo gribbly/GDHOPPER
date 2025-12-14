@@ -1,6 +1,9 @@
 extends RefCounted
 
-# Implements meshing functions for level_csg.gd
+# Implements meshing functions (including material support) for level_csg.gd
+
+const MATERIAL_TILING = 0.25
+var tex := load("res://assets/textures/rock_weathered_15b.webp") as Texture2D
 
 func convert(csg: CSGCombiner3D) -> Node3D:
 	RH.print("🫖 level_csg_mesh.gd | convert()")
@@ -24,6 +27,20 @@ func convert(csg: CSGCombiner3D) -> Node3D:
 		mi.transform = local_xform
 		root.add_child(mi)
 
+		# Create material
+		var mat := StandardMaterial3D.new()
+		#mat.albedo_color = Color.GREEN
+		mat.albedo_texture = tex
+		# mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+
+		# “Projected” look (no UVs needed)
+		mat.uv1_triplanar = true
+		mat.uv1_scale = Vector3(MATERIAL_TILING, MATERIAL_TILING, MATERIAL_TILING) # tiling amount; tweak
+
+		# Apply material
+		mi.material_override = mat
+
+		# Collision
 		var body := StaticBody3D.new()
 		var shape := CollisionShape3D.new()
 		shape.shape = mesh.create_trimesh_shape() # concave: good for static level geo
