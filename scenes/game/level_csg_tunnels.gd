@@ -2,11 +2,11 @@ extends RefCounted
 
 # Implements tunneling functions for level_csg.gd
 
-var cavern_mesh_scene := load("res://assets/models/CavernShape1.glb") as PackedScene
+var cavern_mesh_scene := load("res://assets/models/TunnelCarve1.glb") as PackedScene
 
 # Tuneables
 const STEP_DISTANCE := 4.0
-const DEFAULT_SIZE := 6.0
+const DEFAULT_SIZE := 2.0
 
 # Internals
 var level_csg_combiner: Node3D = null
@@ -28,7 +28,7 @@ func create_tunnel(start: Vector3, end: Vector3, size: float = DEFAULT_SIZE) -> 
 
 	# Retrieve the actual Blender mesh for tunnel carving
 	var root = cavern_mesh_scene.instantiate()
-	var node := root.find_child("CavernShape", true, false) # recursive, exact name
+	var node := root.find_child("TunnelCarve", true, false) # recursive, exact name
 	var mi := node as MeshInstance3D
 
 	if mi == null:

@@ -8,8 +8,7 @@ var follow_target: Node3D = null
 # Tuneables
 const Z_DISTANCE = 64.0
 const DEFAULT_SIZE = 32.0
-const COSMETIC_CAMERA_TILT = -0.02 # For real
-#const COSMETIC_CAMERA_TILT = 0.0 # For testing
+const COSMETIC_CAMERA_TILT = 0.0 # -0.02 is an interesting option, not sure yet!
 
 func _ready() -> void:
 	RH.print("📸 level_camera.gd | ready()", 1)
