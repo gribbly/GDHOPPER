@@ -26,7 +26,6 @@ func create_tunnel(start: Vector3, end: Vector3, size: float = DEFAULT_SIZE) -> 
 
 	for i in range(steps + 1):
 		var p := start + direction * (i * STEP_DISTANCE)
-
 		var box := CSGBox3D.new()
 		var size_randomized = RH.get_random_float(size * 0.8, size * 1.2)
 		box.size = Vector3(size_randomized, size_randomized, RH.CSG_THICKNESS)

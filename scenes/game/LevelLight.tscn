@@ -1,7 +1,9 @@
-[gd_scene format=3 uid="uid://dkcgvvjuf5u4u"]
+[gd_scene load_steps=2 format=3 uid="uid://dkcgvvjuf5u4u"]
+
+[ext_resource type="Script" uid="uid://bleadbge5q3tx" path="res://scenes/game/level_light.gd" id="1_ln662"]
 
 [node name="LevelLight" type="Node3D"]
+script = ExtResource("1_ln662")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.70710677, -0.5, 0.5, 0, 0.7071068, 0.7071068, -0.7071068, -0.49999994, 0.49999994, 32, 32, 0)
-light_color = Color(0.79803836, 0.9708571, 0.98290414, 1)
+transform = Transform3D(0.78759146, 2.9802322e-08, 0.6161977, -0.33748817, 0.8366783, 0.43135968, -0.5155592, -0.54769474, 0.6589609, 0, 0, 128)

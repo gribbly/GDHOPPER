@@ -38,7 +38,9 @@ func create_cavern(cav_name: String, cav_size_class: int, cav_pos: Vector3) -> v
 
 func _carve_cavern(cav_name: String, cav_size: Vector3, cav_pos: Vector3) -> void:
 	RH.print("🔪 level_csg_caverns.gd | creating a cavern...")
+	
 	var cavern := CSGBox3D.new()
+
 	var pos_x = cav_pos.x
 	var pos_y = cav_pos.y
 	cavern.position = Vector3(pos_x, pos_y, 0.0)
@@ -52,4 +54,3 @@ func _carve_cavern(cav_name: String, cav_size: Vector3, cav_pos: Vector3) -> voi
 
 	if RH.show_debug_visuals == true:
 		RH.debug_visuals.rh_debug_x_with_label(Vector3(pos_x, pos_y, 0.0), cav_name, Color.WHITE)
-

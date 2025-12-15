@@ -9,6 +9,7 @@ extends Node3D
 
 var level_csg_instance: Node3D
 var level_camera_instance: Node3D
+var level_light_instance: Node3D
 var test_ship_instance: Node3D
 
 func _ready() -> void:
@@ -23,7 +24,12 @@ func _ready() -> void:
 	add_child(debug_visuals.instantiate())
 
 	RH.print("🪨 level.gd | ☀️ level_light.instantiate")
-	add_child(level_light.instantiate())
+	level_light_instance = level_light.instantiate()
+	add_child(level_light_instance)
+
+	if RH.show_debug_visuals == true:
+		RH.print("🪨 level.gd | marking light position")
+		RH.debug_visuals.rh_debug_x_with_label(level_light_instance.position, "light", Color.RED)
 
 	RH.print("🪨 level.gd | 📸  level_camera.instantiate")
 	level_camera_instance = level_camera.instantiate()
