@@ -53,10 +53,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			App.pause_game()
 
-	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_R:
-			RH.print("🌏 App.gd | 🛠️ DEBUG - force regenerate level...")
-			regenerate_level()
+	# Debug keys
+	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+		match event.physical_keycode:
+			KEY_G:
+				RH.print("🌏 App.gd | 🛠️ DEBUG - regen level...")
+				regenerate_level()
+			KEY_Q:
+				RH.print("🌏 App.gd | 🛠️ DEBUG - quit app")
+				exit_game()
 
 func show_title() -> void:
 	RH.print("🌏 App.gd | show_title()")

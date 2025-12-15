@@ -6,20 +6,29 @@ extends RigidBody3D
 
 # Internal
 var thrust_side := 0.0
+var reset_requested := false
 
 func _ready() -> void:
 	RH.print("🚀 test_ship.gd | ready")
-	pass # Replace with function body.
+	reset()
 
 func reset() -> void:
 	RH.print("🚀 test_ship.gd | reset")
 	position.z = 0.0
 	transform.basis = Basis.IDENTITY
+	linear_velocity = Vector3.ZERO
+	angular_velocity = Vector3.ZERO
+	reset_requested = false
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+		match event.physical_keycode:
+			KEY_S:
+				reset_requested = true
 
 func _physics_process(delta):
-
-	# Debug reset
-	if Input.is_physical_key_pressed(KEY_S):
+	# Handle reset request
+	if reset_requested:
 		reset()
 	
 	# Rotate (Z axis into the screen)
