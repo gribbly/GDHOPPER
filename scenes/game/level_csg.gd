@@ -80,7 +80,7 @@ func _generate() -> void:
 	## Create a narrow tunnel connecting c3 and c4
 	start_pos = csg_caverns.caverns["c3"].pos
 	end_pos = csg_caverns.caverns["c4"].pos
-	csg_tunnels.create_tunnel(start_pos, end_pos, 9.0)
+	csg_tunnels.create_tunnel(start_pos, end_pos, 0.64)
 
 	## Create a medium deep cavern kinda in the middle
 	spawn_point = lh.get_point(lh.XType.center, lh.YType.deep)
