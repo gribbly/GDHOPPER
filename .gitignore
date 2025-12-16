@@ -2,9 +2,11 @@
 .import/
 .godot/
 /android/
+export_presets.cfg
 
 # MacOS
 .DS_Store
 
 # Cam
 /design/
+/builds/
