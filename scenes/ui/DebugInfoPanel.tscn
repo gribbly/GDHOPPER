@@ -12,30 +12,31 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_atsox")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
+offset_right = 96.0
+offset_bottom = 62.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="FpsCounter" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="TimeInfo" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "FpsCounter"
+theme_override_colors/font_color = Color(0.25213137, 0.91343313, 0.5040559, 1)
+theme_override_font_sizes/font_size = 24
+text = "TimeInfo"
 
-[node name="FrameTime" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="RenderInfo" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "FrameTime"
-
-[node name="DroppedFrames" type="Label" parent="MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "DroppedFrames"
+theme_override_colors/font_color = Color(0.25213137, 0.91343313, 0.5040559, 1)
+theme_override_font_sizes/font_size = 24
+text = "RenderInfo"

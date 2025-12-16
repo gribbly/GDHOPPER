@@ -1,11 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://dah8ugqwlrl"]
+[gd_scene load_steps=3 format=3 uid="uid://dah8ugqwlrl"]
 
 [ext_resource type="Script" uid="uid://ch0f2cuafeybe" path="res://scenes/game/level_camera.gd" id="1_d5i1c"]
+
+[sub_resource type="Environment" id="Environment_d5i1c"]
+background_mode = 1
+background_color = Color(0.03137255, 0.03137255, 0.1254902, 1)
 
 [node name="LevelCamera" type="Node3D"]
 script = ExtResource("1_d5i1c")
 
 [node name="LevelCamera3D" type="Camera3D" parent="."]
 unique_name_in_owner = true
+environment = SubResource("Environment_d5i1c")
 projection = 1
 size = 100.0
