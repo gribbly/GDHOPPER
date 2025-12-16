@@ -6,7 +6,7 @@ const DEFAULT_COLOR := Color.YELLOW
 const DEBUG_CROSS_SIZE := 4
 const LABEL_Y_SPACING_MULTIPLIER := 3.0
 
-@onready var debug_immediate_mesh : MeshInstance3D = %DebugImmediateMesh
+@onready var debug_immediate_mesh: MeshInstance3D = %DebugImmediateMesh
 
 func _enter_tree() -> void:
 	RH.register_debug_visuals(self)
@@ -21,7 +21,7 @@ func _ready() -> void:
 		RH.print("📐 debug_visuals.gd | found %DebugImmediateMesh", 3)
 		debug_immediate_mesh.clear() # Ensure there are no residual vertices from previous activity (e.g., we're restarting a level)
 	else:
-		RH.print("📐 debug_visuals.gd | ⚠️ WARNING - didn't fimd %DebugImmediateMesh", 1)
+		RH.print("📐 debug_visuals.gd | ⚠️ WARNING - didn't find %DebugImmediateMesh", 1)
 
 func rh_debug_line(start: Vector3, end: Vector3, col: Color = DEFAULT_COLOR):
 	if RH.show_debug_visuals == true:

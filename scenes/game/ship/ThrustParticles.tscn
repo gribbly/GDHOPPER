@@ -1,0 +1,23 @@
+[gd_scene load_steps=7 format=3 uid="uid://cfnthe70ojwtb"]
+
+[ext_resource type="Material" uid="uid://dfncv5ga461id" path="res://assets/textures/DefaultParticle.material" id="1_6ml2b"]
+[ext_resource type="Material" uid="uid://cxa0veoxu7c3f" path="res://assets/textures/DefaultParticle.tres" id="2_u3acv"]
+[ext_resource type="Texture2D" uid="uid://vfo4pmegi46k" path="res://assets/textures/DefaultParticle.webp" id="3_0gi3t"]
+[ext_resource type="Script" uid="uid://cw474atbyq10k" path="res://scenes/game/ship/thrust_particles.gd" id="4_u3acv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7rnni"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_color = Color(0.9061937, 0.6702441, 0.3556356, 1)
+albedo_texture = ExtResource("3_0gi3t")
+
+[sub_resource type="QuadMesh" id="QuadMesh_iwwt5"]
+material = SubResource("StandardMaterial3D_7rnni")
+
+[node name="ThrustParticles" type="GPUParticles3D"]
+material_override = ExtResource("1_6ml2b")
+cast_shadow = 0
+process_material = ExtResource("2_u3acv")
+draw_pass_1 = SubResource("QuadMesh_iwwt5")
+script = ExtResource("4_u3acv")

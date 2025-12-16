@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cy1f6s5878jps"]
+[gd_scene load_steps=5 format=3 uid="uid://cy1f6s5878jps"]
 
 [ext_resource type="PackedScene" uid="uid://c5uvk6sgr36id" path="res://assets/models/test_ship/TestShip.glb" id="1_hkkm6"]
 [ext_resource type="Script" uid="uid://dh3sqpycsp36q" path="res://scenes/game/ship/test_ship.gd" id="1_trx1f"]
+[ext_resource type="PackedScene" uid="uid://cfnthe70ojwtb" path="res://scenes/game/ship/ThrustParticles.tscn" id="3_pw2eq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pw2eq"]
 
@@ -20,3 +21,11 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, 0, 0.45, 0)
 shape = SubResource("BoxShape3D_pw2eq")
+
+[node name="ThrustParticles_left" parent="." instance=ExtResource("3_pw2eq")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35, -0.5, 0)
+
+[node name="ThrustParticles_right" parent="." instance=ExtResource("3_pw2eq")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35, -0.5, 0)

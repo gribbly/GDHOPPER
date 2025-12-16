@@ -23,6 +23,18 @@
 * Prefer readable and simple over "clever"
 * Only optimize when profiler says its necessary
 
+#### Ballpark technical budgets
+
+Note: Godot's monitor numbers can be inflated by Editor gizmos/UI. Do real checking in a release build!
+
+* Steam Deck games are usually CPU-limited by draw calls first, then GPU by shading/overdraw
+* Draw Calls (RENDER_TOTAL_DRAW_CALLS_IN_FRAME) < 500
+* Objects Drawn (RENDER_TOTAL_OBJECTS_IN_FRAME) < 3000
+* Primitives Drawn (RENDER_TOTAL_PRIMITIVES_IN_FRAME) < 1M
+* Active 3D Physics Objects < 500
+* Nodes < 10K
+  * A few thousand nodes is considered normal for a game targeted at Steam Deck (but depends what they're doing)
+
 ### Details and gotchas
 
 * When using SignalBus.connect in '_ready', you probably need to do SignalBus.disconnect in '_exit_tree'. See /scenes/game/level_csg.gd for an example.

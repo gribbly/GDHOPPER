@@ -1,0 +1,13 @@
+[gd_resource type="ParticleProcessMaterial" load_steps=3 format=3 uid="uid://cxa0veoxu7c3f"]
+
+[sub_resource type="Curve" id="Curve_sb14d"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.4146135), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_detji"]
+curve = SubResource("Curve_sb14d")
+
+[resource]
+angle_min = 1.0728835e-05
+angle_max = 90.000015
+scale_curve = SubResource("CurveTexture_detji")

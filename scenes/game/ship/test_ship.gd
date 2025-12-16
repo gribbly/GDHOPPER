@@ -7,6 +7,8 @@ extends RigidBody3D
 # Internal
 var thrust_side := 0.0
 var reset_requested := false
+@onready var thrust_particles_left: GPUParticles3D = %ThrustParticles_left
+@onready var thrust_particles_right: GPUParticles3D = %ThrustParticles_right
 
 func _ready() -> void:
 	RH.print("🚀 test_ship.gd | ready")
@@ -47,3 +49,8 @@ func _physics_process(delta):
 	if thrusting:
 		var up_dir := transform.basis.y
 		apply_central_force(up_dir * thrust_main)
+		thrust_particles_left.start()
+		thrust_particles_right.start()
+	else:
+		thrust_particles_left.stop()
+		thrust_particles_right.stop()
