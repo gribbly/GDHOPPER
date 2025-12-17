@@ -10,6 +10,9 @@ var csg_tunnels = LevelCSGTunnels.new()
 const LevelCSGMesh := preload("res://scenes/game/level_csg_mesh.gd")
 var csg_mesh = LevelCSGMesh.new()
 
+# Tuneables
+var the_rock_scene := load("res://assets/models/TheRock.glb") as PackedScene
+
 # Internal
 var csg: Node3D = null # This is the combiner for the procgen CSG shapes
 var lh: LevelHelper = null
@@ -30,17 +33,24 @@ func _exit_tree() -> void:
 func _generate() -> void:
 	RH.print("🔪 level_csg.gd | _generate()", 1)
 
+	# Retrieve the actual Blender mesh for tunnel carving
+	var root = the_rock_scene.instantiate()
+	var node := root.find_child("TheRock", true, false) # recursive, exact name
+	var mi := node as MeshInstance3D
+	if mi == null:
+		RH.print("🪏 level_csg.gd | ⚠️ WARNING: MeshInstance3D is null!", 1)
+
 	# Add first "rock" CSG... we'll carve everything else out of this
 	RH.print("🔪 level_csg.gd | adding \"the rock\"...")
-	var the_rock := CSGBox3D.new()
+	var rock_mesh := CSGMesh3D.new()
+	rock_mesh.mesh = mi.mesh
 	var rock_position = Vector3.ZERO
 	rock_position.x += RH.level_dimensions.x / 2.0
 	rock_position.y += RH.level_dimensions.y / 2.0
-	the_rock.position = rock_position
+	rock_mesh.position = rock_position
+	rock_mesh.name = "THE_ROCK"
 	#RH.debug_visuals.rh_debug_x_with_label(the_rock.position, "the_rock", Color.LIGHT_GRAY)
-
-	the_rock.size = Vector3(RH.level_dimensions.x, RH.level_dimensions.y, RH.CSG_THICKNESS)
-	csg.add_child(the_rock)
+	csg.add_child(rock_mesh)
 
 	# Caverns and tunnels
 	## Create a large "welcome" cavern top left
