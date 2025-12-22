@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c8rac4w1tifux"]
 
 [ext_resource type="Script" uid="uid://dhjcmvy27y0b0" path="res://Scenes/UI/title_screen.gd" id="1_bt6bf"]
-[ext_resource type="Texture2D" uid="uid://cw4cunqc0i2j5" path="res://Assets/JunkDrawer/Textures/jeremy-thomas-E0AHdsENmDg-unsplash-2.webp" id="1_ny3vc"]
+[ext_resource type="Texture2D" uid="uid://cnhvm70fn613w" path="res://Assets/JunkDrawer/Textures/jeremy-thomas-E0AHdsENmDg-unsplash-2.webp" id="1_ny3vc"]
 
 [node name="TitleScreen" type="Control"]
 layout_mode = 3
