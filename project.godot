@@ -18,9 +18,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-RH="*res://autoload/Globals.gd"
-SignalBus="*res://autoload/SignalBus.gd"
-App="*res://autoload/App.gd"
+App="*res://Autoload/App.gd"
+SignalBus="*res://Autoload/SignalBus.gd"
+RH="*res://Autoload/Globals.gd"
 
 [display]
 

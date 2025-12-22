@@ -1,4 +1,4 @@
-# /autoload/App.gd
+# /Autoload/App.gd
 extends Node
 
 # TUNEABLES

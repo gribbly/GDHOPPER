@@ -9,5 +9,5 @@ export_presets.cfg
 .DS_Store
 
 # Cam
-/design/
-/builds/
+/Design/
+/Builds/
