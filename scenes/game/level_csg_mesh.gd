@@ -3,9 +3,9 @@ extends RefCounted
 # Implements meshing functions (including material support) for level_csg.gd
 
 const MATERIAL_TILING = 0.048
-var albedo_tex := load("res://assets/textures/noise_256.webp") as Texture2D
-var normal_tex := load("res://assets/textures/noise_256_norm.webp") as Texture2D
-var rough_tex := load("res://assets/textures/rock_weathered_15b_spec.webp") as Texture2D
+var albedo_tex := load("res://Assets/JunkDrawer/Textures/noise_256.webp") as Texture2D
+var normal_tex := load("res://Assets/JunkDrawer/Textures/noise_256_norm.webp") as Texture2D
+var rough_tex := load("res://Assets/JunkDrawer/Textures/rock_weathered_15b_spec.webp") as Texture2D
 
 func convert(csg: CSGCombiner3D) -> Node3D:
 	RH.print("🫖 level_csg_mesh.gd | convert()")

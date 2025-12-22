@@ -11,7 +11,7 @@ const LevelCSGMesh := preload("res://scenes/game/level_csg_mesh.gd")
 var csg_mesh = LevelCSGMesh.new()
 
 # Tuneables
-var the_rock_scene := load("res://assets/models/TheRock.glb") as PackedScene
+var the_rock_scene := load("res://Assets/JunkDrawer/Models/TheRock.glb") as PackedScene
 
 # Internal
 var csg: Node3D = null # This is the combiner for the procgen CSG shapes

@@ -3,7 +3,7 @@ extends RefCounted
 # Implements tunneling functions for level_csg.gd
 
 # Tuneables
-var carve_mesh_scene := load("res://assets/models/TunnelCarve1.glb") as PackedScene
+var carve_mesh_scene := load("res://Assets/JunkDrawer/Models/TunnelCarve1.glb") as PackedScene
 const STEP_DISTANCE := 4.0
 const DEFAULT_SIZE := 2.0
 

@@ -3,6 +3,7 @@
 .godot/
 /android/
 export_presets.cfg
+*.depren
 
 # MacOS
 .DS_Store

@@ -5,7 +5,7 @@ extends RefCounted
 var caverns: Dictionary[String, CavernData] = {} # Dictionary of caverns by name
 
 # Tuneables
-var carve_mesh_scene := load("res://assets/models/TunnelCarve1.glb") as PackedScene
+var carve_mesh_scene := load("res://Assets/JunkDrawer/Models/TunnelCarve1.glb") as PackedScene
 const CAVERN_SIZE_SMALL := 2.0
 const CAVERN_SIZE_MEDIUM := 4.0
 const CAVERN_SIZE_LARGE := 8.0

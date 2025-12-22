@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://3kxw3p70bd58" path="res://scenes/game/level.gd" id="1_ah5nq"]
 [ext_resource type="PackedScene" uid="uid://dcaxlbfogl25t" path="res://scenes/game/DebugVisuals.tscn" id="2_5cov8"]
-[ext_resource type="PackedScene" uid="uid://bl7f4st4ckm45" path="res://assets/models/ReferenceCube1m.glb" id="2_gjy3i"]
+[ext_resource type="PackedScene" uid="uid://bl7f4st4ckm45" path="res://Assets/JunkDrawer/Models/ReferenceCube1m.glb" id="2_gjy3i"]
 [ext_resource type="PackedScene" uid="uid://dkcgvvjuf5u4u" path="res://scenes/game/LevelLight.tscn" id="2_y0wjm"]
 [ext_resource type="PackedScene" uid="uid://dah8ugqwlrl" path="res://scenes/game/LevelCamera.tscn" id="3_alfq7"]
 [ext_resource type="PackedScene" uid="uid://dsvp6fxhcgyto" path="res://scenes/game/LevelCSG.tscn" id="4_ixotf"]

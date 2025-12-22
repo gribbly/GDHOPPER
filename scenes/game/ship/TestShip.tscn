@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cy1f6s5878jps"]
 
-[ext_resource type="PackedScene" uid="uid://c5uvk6sgr36id" path="res://assets/models/test_ship/TestShip.glb" id="1_hkkm6"]
+[ext_resource type="PackedScene" uid="uid://c5uvk6sgr36id" path="res://Assets/JunkDrawer/Models/test_ship/TestShip.glb" id="1_hkkm6"]
 [ext_resource type="Script" uid="uid://dh3sqpycsp36q" path="res://scenes/game/ship/test_ship.gd" id="1_trx1f"]
 [ext_resource type="PackedScene" uid="uid://cfnthe70ojwtb" path="res://scenes/game/ship/ThrustParticles.tscn" id="3_pw2eq"]
 
