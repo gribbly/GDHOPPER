@@ -12,11 +12,11 @@ var state: MainState = MainState.TITLE
 @onready var main_layer: Node = get_tree().current_scene.get_node("MainLayer")
 @onready var overlay_layer: CanvasLayer = get_tree().current_scene.get_node("OverlayLayer")
 
-const TITLE_SCN := preload("res://scenes/ui/TitleScreen.tscn")
-const LEVEL_SCN := preload("res://scenes/game/Level.tscn")
-const PAUSE_SCN := preload("res://scenes/ui/PauseOverlay.tscn")
-const DEBUG_SCN := preload("res://scenes/ui/DebugOverlay.tscn")
-const DIP_SCN := preload("res://scenes/ui/DebugInfoPanel.tscn")
+const TITLE_SCN := preload("res://Scenes/UI/TitleScreen.tscn")
+const LEVEL_SCN := preload("res://Scenes/Game/Level.tscn")
+const PAUSE_SCN := preload("res://Scenes/UI/PauseOverlay.tscn")
+const DEBUG_SCN := preload("res://Scenes/UI/DebugOverlay.tscn")
+const DIP_SCN := preload("res://Scenes/UI/DebugInfoPanel.tscn")
 
 var _current_main: Node = null
 var _pause_overlay: Control = null

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dcaxlbfogl25t"]
 
-[ext_resource type="Script" uid="uid://cv8l5jbua868v" path="res://scenes/game/debug_visuals.gd" id="1_plono"]
-[ext_resource type="Script" uid="uid://be6tws8ipehtp" path="res://scenes/game/debug_immediate_mesh.gd" id="2_6qxek"]
+[ext_resource type="Script" uid="uid://cv8l5jbua868v" path="res://Scenes/Game/debug_visuals.gd" id="1_plono"]
+[ext_resource type="Script" uid="uid://be6tws8ipehtp" path="res://Scenes/Game/debug_immediate_mesh.gd" id="2_6qxek"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6qxek"]
 vertex_color_use_as_albedo = true

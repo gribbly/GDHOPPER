@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c2c0l3f81q5lj"]
 
-[ext_resource type="Script" uid="uid://ce0ct76wkayo4" path="res://scenes/ui/pause_overlay.gd" id="1_g1gh6"]
+[ext_resource type="Script" uid="uid://ce0ct76wkayo4" path="res://Scenes/UI/pause_overlay.gd" id="1_g1gh6"]
 
 [node name="PauseOverlay" type="Control"]
 layout_mode = 3
