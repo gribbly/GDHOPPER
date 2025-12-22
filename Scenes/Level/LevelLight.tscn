@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dkcgvvjuf5u4u"]
 
-[ext_resource type="Script" uid="uid://bleadbge5q3tx" path="res://Scenes/Game/level_light.gd" id="1_ln662"]
+[ext_resource type="Script" uid="uid://bleadbge5q3tx" path="res://Scenes/Level/level_light.gd" id="1_ln662"]
 
 [node name="LevelLight" type="Node3D"]
 script = ExtResource("1_ln662")

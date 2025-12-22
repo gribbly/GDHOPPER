@@ -3,11 +3,11 @@ extends Node3D
 # Assumes that LevelCSG.tscn has %LevelCsgCombiner
 
 # Helpers
-const LevelCSGCaverns := preload("res://Scenes/Game/level_csg_caverns.gd")
+const LevelCSGCaverns := preload("res://Scenes/Level/level_csg_caverns.gd")
 var csg_caverns = LevelCSGCaverns.new()
-const LevelCSGTunnels := preload("res://Scenes/Game/level_csg_tunnels.gd")
+const LevelCSGTunnels := preload("res://Scenes/Level/level_csg_tunnels.gd")
 var csg_tunnels = LevelCSGTunnels.new()
-const LevelCSGMesh := preload("res://Scenes/Game/level_csg_mesh.gd")
+const LevelCSGMesh := preload("res://Scenes/Level/level_csg_mesh.gd")
 var csg_mesh = LevelCSGMesh.new()
 
 # Tuneables

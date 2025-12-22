@@ -1,0 +1,20 @@
+[gd_scene load_steps=8 format=3 uid="uid://dmx3b61sxqsag"]
+
+[ext_resource type="Script" uid="uid://3kxw3p70bd58" path="res://Scenes/Level/level.gd" id="1_ah5nq"]
+[ext_resource type="PackedScene" uid="uid://dcaxlbfogl25t" path="res://Scenes/Debug/DebugVisuals.tscn" id="2_5cov8"]
+[ext_resource type="PackedScene" uid="uid://ceeus4rqcjbap" path="res://Assets/JunkDrawer/Models/ReferenceCube1m.glb" id="2_gjy3i"]
+[ext_resource type="PackedScene" uid="uid://dkcgvvjuf5u4u" path="res://Scenes/Level/LevelLight.tscn" id="2_y0wjm"]
+[ext_resource type="PackedScene" uid="uid://dah8ugqwlrl" path="res://Scenes/Level/LevelCamera.tscn" id="3_alfq7"]
+[ext_resource type="PackedScene" uid="uid://dsvp6fxhcgyto" path="res://Scenes/Level/LevelCSG.tscn" id="4_ixotf"]
+[ext_resource type="PackedScene" uid="uid://cy1f6s5878jps" path="res://Scenes/Game/Ship/TestShip.tscn" id="6_vtba3"]
+
+[node name="Level" type="Node3D"]
+script = ExtResource("1_ah5nq")
+level_dimensions = Vector3(400, 200, 0)
+debug_visuals = ExtResource("2_5cov8")
+level_light = ExtResource("2_y0wjm")
+level_camera = ExtResource("3_alfq7")
+level_csg = ExtResource("4_ixotf")
+test_ship = ExtResource("6_vtba3")
+
+[node name="ReferenceCube1m" parent="." instance=ExtResource("2_gjy3i")]
