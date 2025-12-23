@@ -80,6 +80,7 @@ func start_game() -> void:
 	RH.print("🌏 App.gd | start_game()")
 	show_debug_info_panel(RH.show_debug_info_panel)
 	state = MainState.PLAYING
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_load_fresh_level()
 
 func regenerate_level() -> void:

@@ -7,11 +7,16 @@ extends Node3D
 @export var level_csg: PackedScene
 @export var test_ship: PackedScene
 
+# Tuneables
+const GRID_ROWS := 8
+const GRID_COLS := 16
+
 var level_csg_instance: Node3D
 var level_camera_instance: Node3D
 var level_light_instance: Node3D
 var test_ship_instance: Node3D
 var level_grid: LevelGrid
+
 
 func _ready() -> void:
 	RH.print("🪨 level.gd | _ready()", 1)
@@ -36,8 +41,13 @@ func _ready() -> void:
 		RH.print("🪨 level.gd | marking level origin")
 		RH.debug_visuals.rh_debug_x_with_label(position, "origin", Color.WHITE)
 
+	# create and carve "the rock"
+	RH.print("🪨 level.gd | 🔪 level_csg.instantiate")
+	level_csg_instance = level_csg.instantiate()
+	add_child(level_csg_instance)
+
 	# Create the 2D "level grid" (we'll use this as the master template for caverns and tunnels)
-	level_grid = LevelGrid.new(8, 16, Vector2(32,32))
+	level_grid = LevelGrid.new(GRID_ROWS, GRID_COLS, _calculate_grid_cell_size(GRID_ROWS, GRID_COLS))
 
 	# Debug draw the level grid
 	if RH.show_debug_visuals == true:
@@ -45,18 +55,10 @@ func _ready() -> void:
 			var p2 := level_grid.cell_center(r, c)
 			var p3 := Vector3(p2.x, p2.y, 0.0)
 			var color := Color.WHITE
-			if c == 0:
-				if r == 0:
-					color = Color.GREEN # Mark first cell in green
-				else:
-					color = Color.BLUE
+			if c == 0 and r == 0:
+				color = Color.GREEN # Mark first cell in green
 			RH.debug_visuals.rh_debug_x(p3, color)
 		)
-
-	# create and carve "the rock"
-	RH.print("🪨 level.gd | 🔪 level_csg.instantiate")
-	level_csg_instance = level_csg.instantiate()
-	add_child(level_csg_instance)
 
 	# convert the carved rock to mesh (from CSG)
 	#RH.print("🪨 level.gd | 🔪 converting CSG to mesh...")
@@ -67,9 +69,11 @@ func _ready() -> void:
 
 	SignalBus.emit_signal("level_setup_complete")
 
+
 func _exit_tree() -> void:
 	RH.print("🪨 level.gd | _exit_tree()")
 	SignalBus.disconnect("ship_spawn_point", Callable(self, "_spawn_ship"))
+
 
 func _spawn_ship(spawn_point: Vector3) -> void:
 	RH.print("🪨 level.gd | spawning ship...")
@@ -81,3 +85,10 @@ func _spawn_ship(spawn_point: Vector3) -> void:
 	add_child(test_ship_instance)
 
 	level_camera_instance.follow_target = test_ship_instance
+
+
+# This function returns cell size by dividing the size of the rock by the number of requested rows/cols
+func _calculate_grid_cell_size(rows: int, cols: int) -> Vector2:
+	var return_x = level_csg_instance.base_rock_size.x / cols
+	var return_y = level_csg_instance.base_rock_size.y / rows
+	return Vector2(return_x, return_y)
