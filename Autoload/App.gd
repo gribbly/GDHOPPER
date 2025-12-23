@@ -12,16 +12,21 @@ var state: MainState = MainState.TITLE
 @onready var main_layer: Node = get_tree().current_scene.get_node("MainLayer")
 @onready var overlay_layer: CanvasLayer = get_tree().current_scene.get_node("OverlayLayer")
 
-const TITLE_SCN := preload("res://Scenes/UI/TitleScreen.tscn")
-const LEVEL_SCN := preload("res://Scenes/Level/Level.tscn")
-const PAUSE_SCN := preload("res://Scenes/UI/PauseOverlay.tscn")
-const DEBUG_SCN := preload("res://Scenes/UI/DebugOverlay.tscn")
-const DIP_SCN := preload("res://Scenes/UI/DebugInfoPanel.tscn")
+const TITLE_SCENE := preload("res://Scenes/UI/TitleScreen.tscn")
+const LEVEL_SCENE := preload("res://Scenes/Level/Level.tscn")
+const PAUSE_SCENE := preload("res://Scenes/UI/PauseOverlay.tscn")
+const DEBUG_OVERLAY_SCENE := preload("res://Scenes/UI/DebugOverlay.tscn")
+const DEBUG_INFO_PANEL_SCENE := preload("res://Scenes/UI/DebugInfoPanel.tscn")
+const DEBUG_CAMERA_SCENE := preload("res://Scenes/Debug/DebugCamera.tscn")
 
+# Internals
 var _current_main: Node = null
 var _pause_overlay: Control = null
 var _debug_overlay: Control = null
 var _debug_info_panel: Control = null
+var _debug_camera: Camera3D = null
+var _previous_camera: Camera3D = null
+var _using_debug_camera: bool = false
 var _level: Node = null
 
 func _ready() -> void:
@@ -59,14 +64,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_G:
 				RH.print("🌏 App.gd | 🛠️ DEBUG - regen level...")
 				regenerate_level()
-			KEY_Q:
-				RH.print("🌏 App.gd | 🛠️ DEBUG - quit app")
-				exit_game()
+			KEY_F:
+				RH.print("🌏 App.gd | 🛠️ DEBUG - toggle debug camera")
+				_using_debug_camera = !_using_debug_camera
+				switch_to_debug_camera(_using_debug_camera)
 
 func show_title() -> void:
 	RH.print("🌏 App.gd | show_title()")
 	state = MainState.TITLE
-	_swap_main(TITLE_SCN.instantiate())
+	_swap_main(TITLE_SCENE.instantiate())
 	_clear_overlays()
 	get_tree().paused = false
 
@@ -82,7 +88,7 @@ func regenerate_level() -> void:
 
 func _load_fresh_level() -> void:
 	RH.print("🌏 App.gd | _load_fresh_level()")
-	var next := LEVEL_SCN.instantiate()
+	var next := LEVEL_SCENE.instantiate()
 	_swap_main(next)
 	_level = next
 
@@ -91,7 +97,7 @@ func pause_game() -> void:
 	if state != MainState.PLAYING: return
 	if _pause_overlay: return
 	_clear_overlays()
-	_pause_overlay = PAUSE_SCN.instantiate()
+	_pause_overlay = PAUSE_SCENE.instantiate()
 	overlay_layer.add_child(_pause_overlay)
 	get_tree().paused = true # freeze gameplay
 	# Ensure overlay still processes while paused:
@@ -102,7 +108,7 @@ func debug_pause_game() -> void:
 	if state != MainState.PLAYING: return
 	if _debug_overlay: return
 	_clear_overlays()
-	_debug_overlay = DEBUG_SCN.instantiate()
+	_debug_overlay = DEBUG_OVERLAY_SCENE.instantiate()
 	overlay_layer.add_child(_debug_overlay)
 	get_tree().paused = true # freeze gameplay
 	# Ensure overlay still processes while paused:
@@ -117,13 +123,31 @@ func show_debug_info_panel(show: bool) -> void:
 	RH.print("🌏 App.gd | show_debug_info_panel() - %s" % show, 1)
 	if show:
 		if _debug_info_panel: return
-		_debug_info_panel = DIP_SCN.instantiate()
+		_debug_info_panel = DEBUG_INFO_PANEL_SCENE.instantiate()
 		overlay_layer.add_child(_debug_info_panel)
 	else:
 		if _debug_info_panel:
 			_debug_info_panel.queue_free()
 			await _debug_info_panel.tree_exited
 			_debug_info_panel = null
+
+func switch_to_debug_camera(switch: bool) -> void:
+	RH.print("🌏 App.gd | switch_to_debug_camera() - %s" % switch, 1)
+	if switch:
+		_previous_camera = get_viewport().get_camera_3d()
+		_debug_camera = DEBUG_CAMERA_SCENE.instantiate()
+		main_layer.add_child(_debug_camera)
+		_debug_camera.global_transform = _previous_camera.global_transform
+		_debug_camera.make_current()
+		
+	else:
+		if _debug_camera:
+			_debug_camera.queue_free()
+			await _debug_camera.tree_exited
+			_debug_camera = null
+		
+		if is_instance_valid(_previous_camera):
+				_previous_camera.make_current()
 
 func quit_to_title() -> void:
 	RH.print("🌏 App.gd | quit_to_title()")

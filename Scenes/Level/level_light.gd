@@ -1,6 +1,5 @@
 extends Node3D
 
-
 func _ready() -> void:
 	RH.print("🪨 level_light.gd | ☀️ ready()")
 

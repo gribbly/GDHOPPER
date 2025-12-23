@@ -27,10 +27,6 @@ func _ready() -> void:
 	level_light_instance = level_light.instantiate()
 	add_child(level_light_instance)
 
-	if RH.show_debug_visuals == true:
-		RH.print("🪨 level.gd | marking light position")
-		RH.debug_visuals.rh_debug_x_with_label(level_light_instance.position, "light", Color.RED)
-
 	RH.print("🪨 level.gd | 📸  level_camera.instantiate")
 	level_camera_instance = level_camera.instantiate()
 	add_child(level_camera_instance)
@@ -43,8 +39,8 @@ func _ready() -> void:
 		RH.print("🪨 level.gd | marking level origin")
 		#RH.debug_visuals.rh_debug_x_with_label(position, "origin", Color.WHITE)
 
-	RH.print("🪨 level.gd | 🔪 converting CSG to mesh...")
-	level_csg_instance.convert_to_mesh()
+	#RH.print("🪨 level.gd | 🔪 converting CSG to mesh...")
+	#level_csg_instance.convert_to_mesh()
 
 	RH.print("🪨 level.gd | moving camera to level midpoint...")
 	level_camera_instance.move_camera(level_dimensions.x / 2.0, level_dimensions.y / 2.0)

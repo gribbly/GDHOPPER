@@ -37,7 +37,7 @@ Note: Godot's monitor numbers can be inflated by Editor gizmos/UI. Do real check
 
 ### Details and gotchas
 
-* When using SignalBus.connect in '_ready', you probably need to do SignalBus.disconnect in '_exit_tree'. See /Scenes/Game/level_csg.gd for an example.
+* When using SignalBus.connect in '_ready', you probably need to do SignalBus.disconnect in '_exit_tree'. See /Scenes/Level/level_csg.gd for an example.
 * Use Vector3 for everything, even though it's 2D gameplay. I many places we just ignore or zero out the z component.
 
 ## Game design
