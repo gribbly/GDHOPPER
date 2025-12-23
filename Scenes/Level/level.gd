@@ -11,6 +11,7 @@ var level_csg_instance: Node3D
 var level_camera_instance: Node3D
 var level_light_instance: Node3D
 var test_ship_instance: Node3D
+var level_grid: LevelGrid
 
 func _ready() -> void:
 	RH.print("🪨 level.gd | _ready()", 1)
@@ -31,14 +32,33 @@ func _ready() -> void:
 	level_camera_instance = level_camera.instantiate()
 	add_child(level_camera_instance)
 
-	RH.print("🪨 level.gd | 🔪 level_csg.instantiate")
-	level_csg_instance = level_csg.instantiate()
-	add_child(level_csg_instance)
-
 	if RH.show_debug_visuals == true:
 		RH.print("🪨 level.gd | marking level origin")
 		#RH.debug_visuals.rh_debug_x_with_label(position, "origin", Color.WHITE)
 
+	# Create the 2D "level grid" (we'll use this as the master template for caverns and tunnels)
+	level_grid = LevelGrid.new(8, 16, Vector2(32,32))
+
+	# Debug draw the level grid
+	if RH.show_debug_visuals == true:
+		level_grid.for_each_cell(func(r: int, c: int, _v):
+			var p2 := level_grid.cell_center(r, c)
+			var p3 := Vector3(p2.x, p2.y, 0.0)
+			var color := Color.WHITE
+			if c == 0:
+				if r == 0:
+					color = Color.GREEN # Mark first cell in green
+				else:
+					color = Color.BLUE
+			RH.debug_visuals.rh_debug_x(p3, color)
+		)
+
+	# create and carve "the rock"
+	RH.print("🪨 level.gd | 🔪 level_csg.instantiate")
+	level_csg_instance = level_csg.instantiate()
+	add_child(level_csg_instance)
+
+	# convert the carved rock to mesh (from CSG)
 	#RH.print("🪨 level.gd | 🔪 converting CSG to mesh...")
 	#level_csg_instance.convert_to_mesh()
 
