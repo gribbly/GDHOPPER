@@ -20,6 +20,7 @@ var flicker_array = []
 var flicker_index := 0
 var flicker_tick := 0
 
+
 func _ready() -> void:
 	RH.print("🚀 test_ship.gd | ready")
 
@@ -28,6 +29,7 @@ func _ready() -> void:
 		flicker_array.append(RH.get_random_float(0.0, THRUST_LIGHT_ENERGY))
 	
 	reset()
+
 
 func reset() -> void:
 	RH.print("🚀 test_ship.gd | reset")
@@ -48,10 +50,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_S:
 				reset_requested = true
 
+
 func _physics_process(delta):
 	# Handle reset request
 	if reset_requested:
 		reset()
+
+	# DEBUG - mark ship position every frame
+	# RH.debug_visuals.rh_debug_x_with_label_frame(position, "SHIP", Color.PINK)
 	
 	# Rotate (Z axis into the screen)
 	var rot_input := 0.0

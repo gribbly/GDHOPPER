@@ -4,8 +4,11 @@ extends MeshInstance3D
 #	MeshInstance3D has an ImmediateMesh	
 # 	ImmediateMesh has a StandardMaterial with Vertex Color > Use as Albedo = true
 
-var _labels: Array[Label3D] = []
+var _label_pool: Array[Label3D] = []
+var _active_label_count := 0
 var _debug_material: StandardMaterial3D
+var _legacy_lines: Array[Dictionary] = []
+var _legacy_labels: Array[Dictionary] = []
 
 const DEBUG_RENDER_PRIORITY := 127
 
@@ -22,30 +25,60 @@ func _configure_render_on_top() -> void:
 	_debug_material.render_priority = DEBUG_RENDER_PRIORITY
 	material_override = _debug_material
 
-func line(start: Vector3, end: Vector3, col: Color = Color.YELLOW) -> void:
-	RH.print("🔺 debug_immediate_mesh.gd | line()", 5)
-	
-	mesh.surface_begin(Mesh.PRIMITIVE_LINES)
-	mesh.surface_set_color(col)
-	mesh.surface_add_vertex(start)
-	mesh.surface_add_vertex(end)
-	mesh.surface_end()
+func _ensure_immediate_mesh() -> void:
+	if mesh == null or not (mesh is ImmediateMesh):
+		mesh = ImmediateMesh.new()
 
-# Draw a 3D label in world space at `pos`.
-# Uses billboarding so text faces the camera.
+func _acquire_label() -> Label3D:
+	if _active_label_count < _label_pool.size():
+		return _label_pool[_active_label_count]
+
+	var new_label := Label3D.new()
+	new_label.font_size = 64
+	new_label.pixel_size = 0.1
+	new_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	new_label.set(&"render_priority", DEBUG_RENDER_PRIORITY)
+	new_label.set(&"no_depth_test", true)
+	add_child(new_label)
+	_label_pool.append(new_label)
+	return new_label
+
+# Render the provided debug primitives into a single ImmediateMesh surface.
+# `lines` items: { "start": Vector3, "end": Vector3, "col": Color }
+# `labels` items: { "pos": Vector3, "msg": String, "col": Color }
+func render(lines: Array[Dictionary], labels: Array[Dictionary]) -> void:
+	_ensure_immediate_mesh()
+	mesh.clear_surfaces()
+
+	if not lines.is_empty():
+		mesh.surface_begin(Mesh.PRIMITIVE_LINES, _debug_material)
+		for cmd in lines:
+			var col: Color = cmd.get("col", Color.YELLOW)
+			mesh.surface_set_color(col)
+			mesh.surface_add_vertex(cmd.get("start", Vector3.ZERO))
+			mesh.surface_add_vertex(cmd.get("end", Vector3.ZERO))
+		mesh.surface_end()
+
+	_active_label_count = 0
+	for cmd in labels:
+		var label_node := _acquire_label()
+		label_node.visible = true
+		label_node.text = cmd.get("msg", "")
+		label_node.modulate = cmd.get("col", Color.YELLOW)
+		label_node.position = cmd.get("pos", Vector3.ZERO)
+		_active_label_count += 1
+
+	for i in range(_active_label_count, _label_pool.size()):
+		_label_pool[i].visible = false
+
+# Legacy convenience API (kept for compatibility). These rebuild the mesh each call.
+func line(start: Vector3, end: Vector3, col: Color = Color.YELLOW) -> void:
+	_legacy_lines.append({ "start": start, "end": end, "col": col })
+	render(_legacy_lines, _legacy_labels)
+
 func label(pos: Vector3, msg: String, col: Color = Color.YELLOW) -> void:
-	RH.print("🔺 debug_immediate_mesh.gd | label()", 5)
-	var the_label := Label3D.new()
-	the_label.text = msg
-	the_label.font_size = 64
-	the_label.pixel_size = 0.1
-	the_label.modulate = col
-	the_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	the_label.set(&"render_priority", DEBUG_RENDER_PRIORITY)
-	the_label.set(&"no_depth_test", true)
-	the_label.position = pos
-	add_child(the_label)
-	_labels.append(the_label)
+	_legacy_labels.append({ "pos": pos, "msg": msg, "col": col })
+	render(_legacy_lines, _legacy_labels)
 
 func _has_property(obj: Object, property_name: StringName) -> bool:
 	for property_dict in obj.get_property_list():
@@ -55,8 +88,12 @@ func _has_property(obj: Object, property_name: StringName) -> bool:
 
 func clear() -> void:
 	RH.print("🔺 debug_immediate_mesh.gd | clear()", 5)
+	_ensure_immediate_mesh()
 	mesh.clear_surfaces()
-	for label_node in _labels:
+	_legacy_lines.clear()
+	_legacy_labels.clear()
+	for label_node in _label_pool:
 		if is_instance_valid(label_node):
 			label_node.queue_free()
-	_labels.clear()
+	_label_pool.clear()
+	_active_label_count = 0

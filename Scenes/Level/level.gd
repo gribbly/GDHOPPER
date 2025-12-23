@@ -34,7 +34,7 @@ func _ready() -> void:
 
 	if RH.show_debug_visuals == true:
 		RH.print("🪨 level.gd | marking level origin")
-		#RH.debug_visuals.rh_debug_x_with_label(position, "origin", Color.WHITE)
+		RH.debug_visuals.rh_debug_x_with_label(position, "origin", Color.WHITE)
 
 	# Create the 2D "level grid" (we'll use this as the master template for caverns and tunnels)
 	level_grid = LevelGrid.new(8, 16, Vector2(32,32))
