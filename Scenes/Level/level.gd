@@ -6,6 +6,7 @@ extends Node3D
 @export var level_camera: PackedScene
 @export var level_csg: PackedScene
 @export var test_ship: PackedScene
+@export var test_cargo: PackedScene
 
 # Tuneables
 const GRID_ROWS := 8
@@ -126,6 +127,7 @@ func _spawn_ship(spawn_point: Vector3) -> void:
 
 	level_camera_instance.follow_target = test_ship_instance
 
+
 func _run_procgen() -> void:
 	var gen_caverns := LevelGenCavernsScript.new()
 	gen_caverns.init_grid_unblocked(level_grid)
@@ -203,10 +205,12 @@ func _run_procgen() -> void:
 				tunnel_carve_step_distance,
 				tunnel_carve_scale_xy,
 				tunnel_carve_size_variation,
-				TAU
+			TAU
 			)
 
 	_carve_entrance_tunnel(caverns)
+	_spawn_one_test_cargo_in_cavern(caverns, cavern_template_half_size_xy)
+
 
 # This function returns cell size by dividing the size of the rock by the number of requested rows/cols
 func _calculate_grid_cell_size(rows: int, cols: int) -> Vector2:
@@ -214,6 +218,7 @@ func _calculate_grid_cell_size(rows: int, cols: int) -> Vector2:
 	var return_x = rock_size.x / cols
 	var return_y = rock_size.y / rows
 	return Vector2(return_x, return_y)
+
 
 func _carve_entrance_tunnel(caverns: Array[LevelGenCavern]) -> void:
 	if not entrance_tunnel_enabled:
@@ -241,3 +246,34 @@ func _carve_entrance_tunnel(caverns: Array[LevelGenCavern]) -> void:
 		tunnel_carve_size_variation,
 		TAU
 	)
+
+
+func _spawn_one_test_cargo_in_cavern(caverns: Array[LevelGenCavern], cavern_template_half_size_xy: Vector2) -> void:
+	if test_cargo == null:
+		return
+	if caverns.is_empty():
+		return
+	if cavern_template_half_size_xy == Vector2.ZERO:
+		return
+
+	var cav := caverns[RH.get_random_index(caverns.size())]
+	var half := cavern_template_half_size_xy * cav.scale_xy
+
+	# Place somewhere safely inside the cavern bounds (and let physics drop it onto the floor).
+	var offset := Vector3(
+		RH.get_random_float(-half.x * 0.35, half.x * 0.35),
+		RH.get_random_float(-half.y * 0.35, half.y * 0.35),
+		0.0
+	)
+	var spawn_pos := cav.center_3d + offset
+
+	var cargo_instance := test_cargo.instantiate() as Node3D
+	if cargo_instance == null:
+		RH.print("🪨 level.gd | ⚠️ test_cargo scene did not instantiate as Node3D", 1)
+		return
+
+	cargo_instance.position = spawn_pos
+	add_child(cargo_instance)
+
+	if RH.show_debug_visuals == true:
+		RH.debug_visuals.rh_debug_x_with_label(spawn_pos, "cargo", Color(0.9, 0.6, 0.2))

@@ -21,6 +21,7 @@ var base_rock_size: Vector2 = Vector2.ZERO
 var _cavern_template: CSGMesh3D = null
 var _tunnel_template: CSGMesh3D = null
 
+
 func _ready() -> void:
 	RH.print("🔪 level_csg.gd | ready() with base_rock_size %s" % base_rock_size, 1)
 	csg = %LevelCsgCombiner
@@ -42,11 +43,14 @@ func _ready() -> void:
 	base_rock_size.y = base_rock_top_right_corner.global_position.y
 	RH.print("🔪 level_csg.gd | ready() with base_rock_size %s" % base_rock_size, 1)
 
+
 func _exit_tree() -> void:
 	RH.print("🔪 level_csg.gd | _exit_tree()")
 
+
 func get_base_rock_size() -> Vector2:
 	return base_rock_size
+
 
 func cavern_template_half_size_xy() -> Vector2:
 	if _cavern_template == null or _cavern_template.mesh == null:
@@ -54,8 +58,10 @@ func cavern_template_half_size_xy() -> Vector2:
 	var aabb := _cavern_template.mesh.get_aabb()
 	return Vector2(aabb.size.x * 0.5, aabb.size.y * 0.5)
 
+
 func carve_cavern(id: int, pos: Vector3, scale_xy: float) -> void:
 	csg_caverns.carve_cavern(id, pos, scale_xy)
+
 
 func carve_tunnel_segment(
 	start: Vector3,
@@ -66,6 +72,7 @@ func carve_tunnel_segment(
 	rotation_range_radians: float
 ) -> void:
 	csg_tunnels.carve_segment(start, end, step_distance, base_scale_xy, size_variation, rotation_range_radians)
+
 
 func _build_fallback_template(glb_path: String, mesh_node_name: String) -> CSGMesh3D:
 	var packed := load(glb_path) as PackedScene
@@ -87,6 +94,7 @@ func _build_fallback_template(glb_path: String, mesh_node_name: String) -> CSGMe
 	root.free()
 	return t
 
+
 func convert_to_mesh() -> void:
 	# CSG meshes are often not ready until the next frame.
 	await get_tree().process_frame
@@ -94,5 +102,9 @@ func convert_to_mesh() -> void:
 	# Do the conversion
 	csg_mesh.convert(csg)
 
-	# remove CSG
+	# Remove CSG
 	csg.queue_free()
+
+	# Remove "carve objects"
+	_cavern_template.queue_free()
+	_tunnel_template.queue_free()

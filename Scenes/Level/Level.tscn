@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dmx3b61sxqsag"]
+[gd_scene load_steps=9 format=3 uid="uid://dmx3b61sxqsag"]
 
 [ext_resource type="Script" uid="uid://3kxw3p70bd58" path="res://Scenes/Level/level.gd" id="1_ah5nq"]
 [ext_resource type="PackedScene" uid="uid://dcaxlbfogl25t" path="res://Scenes/Debug/DebugVisuals.tscn" id="2_5cov8"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dah8ugqwlrl" path="res://Scenes/Level/LevelCamera.tscn" id="3_alfq7"]
 [ext_resource type="PackedScene" uid="uid://dsvp6fxhcgyto" path="res://Scenes/Level/LevelCSG.tscn" id="4_ixotf"]
 [ext_resource type="PackedScene" uid="uid://cy1f6s5878jps" path="res://Scenes/Game/Ship/TestShip.tscn" id="6_vtba3"]
+[ext_resource type="PackedScene" uid="uid://73sfl2yeowf6" path="res://Scenes/Game/Objects/Cargo01.tscn" id="7_t3e81"]
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_ah5nq")
@@ -16,6 +17,7 @@ level_light = ExtResource("2_y0wjm")
 level_camera = ExtResource("3_alfq7")
 level_csg = ExtResource("4_ixotf")
 test_ship = ExtResource("6_vtba3")
+test_cargo = ExtResource("7_t3e81")
 bake_csg_to_mesh = true
 debug_draw_connections = false
 caverns_large_count = 3
