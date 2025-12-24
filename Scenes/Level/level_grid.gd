@@ -1,3 +1,6 @@
+## Logical 2D grid used during procgen (pure data, no Nodes).
+## - Cells can store arbitrary values; in procgen we currently store a `bool` "blocked" flag.
+## - World space for the grid is 2D (`Vector2`); final placements are converted to `Vector3` by callers.
 class_name LevelGrid
 extends RefCounted
 
@@ -101,4 +104,3 @@ func col_iter(col: int) -> Array:
 	for row in range(rows):
 		out[row] = _cells[_idx(row, col)]
 	return out
-

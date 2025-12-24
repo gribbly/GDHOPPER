@@ -1,6 +1,8 @@
+## CSG-to-mesh baking step (performance).
+## - Converts a `CSGCombiner3D` result into regular `MeshInstance3D` nodes with material + collision.
+## - Called by `LevelCSG.convert_to_mesh()` when `Level` enables baking.
+class_name LevelCSGMesh
 extends RefCounted
-
-# Implements meshing functions (including material support) for level_csg.gd
 
 const MATERIAL_TILING = 0.048
 var albedo_tex := load("res://Assets/JunkDrawer/Textures/noise_256.webp") as Texture2D

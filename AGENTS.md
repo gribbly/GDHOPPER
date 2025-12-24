@@ -2,7 +2,8 @@
 
 ## Project status
 
-* Early! We are still setting up the basic framework. Most of the game is not implemented.
+* Early-ish! We have set up the basic framework, but most of the game is not implemented.
+* Current focus is level generation. Generating good levels is a crucial component of the ROCKHOPPER project.
 * Project author (Cam) is still learning Godot. So we're going slow and steady.
   * Cam is experienced with Unity, so explaining things by comparing to Unity concepts can be useful (but don't overdo it)
 * When helping, don't "race ahead". Go step-by-step and be patient.
@@ -17,9 +18,9 @@
 
 ### Technical goals
 
-* Never drop below 60FPS during gameplay, on Steam Deck
+* Never drop below 60FPS during gameplay, on Steam Deck (it is OK to drop frames during level generation, within reason)
 * Minimal dependencies
-* Clean, maintainable code, separated into focused units
+* Clean, maintainable code, separated into focused units (i.e., separate files, scenes, etc.)
 * Prefer readable and simple over "clever"
 * Only optimize when profiler says its necessary
 
@@ -38,7 +39,11 @@ Note: Godot's monitor numbers can be inflated by Editor gizmos/UI. Do real check
 ### Details and gotchas
 
 * When using SignalBus.connect in '_ready', you probably need to do SignalBus.disconnect in '_exit_tree'. See /Scenes/Level/level_csg.gd for an example.
-* Use Vector3 for everything, even though it's 2D gameplay. I many places we just ignore or zero out the z component.
+* Prefer Vector3 for everything, even though it's 2D gameplay. In many places we just ignore or zero out the z component. There are some exceptions to this (e.g., the "logical" level generation grid is 2D) but generally anything that directly "touches" the game world should use Vector3 for consistency.
+
+## Level generation
+
+ROCKHOPPER depends heavily on generated levels. For details, see PROCGEN.md.
 
 ## Game design
 

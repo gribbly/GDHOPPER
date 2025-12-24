@@ -30,6 +30,17 @@ func unregister_debug_visuals(instance: DebugVisuals) -> void:
 func get_random_float(low: float, high: float) -> float:
 	return _rng.randf_range(low, high)
 
+func get_random_int(low_inclusive: int, high_inclusive: int) -> int:
+	return _rng.randi_range(low_inclusive, high_inclusive)
+
+func get_random_bool(probability: float) -> bool:
+	return _rng.randf() < clampf(probability, 0.0, 1.0)
+
+func get_random_index(size: int) -> int:
+	if size <= 0:
+		return 0
+	return _rng.randi_range(0, size - 1)
+
 func print(msg: String, pri: int = 3) -> void:
 	if pri <= RHPRINT_VERBOSITY:
 		print(msg)

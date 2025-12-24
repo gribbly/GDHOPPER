@@ -1,3 +1,6 @@
+## Legacy helper for picking random points in the level bounds.
+## - Originally used for early experimentation before the current grid/MST/tunnel procgen pipeline.
+## - Not currently referenced by the new procgen steps, but kept as a handy utility for future work.
 class_name LevelHelper
 extends RefCounted
 

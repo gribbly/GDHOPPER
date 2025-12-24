@@ -16,6 +16,7 @@ level_light = ExtResource("2_y0wjm")
 level_camera = ExtResource("3_alfq7")
 level_csg = ExtResource("4_ixotf")
 test_ship = ExtResource("6_vtba3")
+debug_draw_tunnel_paths = true
 
 [node name="ReferenceCube1m" parent="." instance=ExtResource("2_gjy3i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.5, 0)

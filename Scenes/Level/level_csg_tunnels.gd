@@ -1,50 +1,50 @@
+## CSG tunnel carving step (scene graph / geometry).
+## - Used by `LevelCSG` to instantiate repeated subtraction shapes along a tunnel segment.
+## - This file does NOT decide tunnel routes; routing logic lives in `level_gen_tunnel_paths.gd`.
+class_name LevelCSGTunnels
 extends RefCounted
 
-# Implements tunneling functions for level_csg.gd
-
-# Tuneables
-var carve_mesh_scene := load("res://Assets/JunkDrawer/Models/TunnelCarve1.glb") as PackedScene
-const STEP_DISTANCE := 4.0
-const DEFAULT_SIZE := 2.0
-
 # Internals
-var level_csg_combiner: Node3D = null
+var level_csg_combiner: CSGCombiner3D = null
+var tunnel_template: CSGMesh3D = null
 
-func set_combiner(combiner: Node3D) -> void:
+func configure(combiner: CSGCombiner3D, p_tunnel_template: CSGMesh3D) -> void:
 	level_csg_combiner = combiner
+	tunnel_template = p_tunnel_template
 
-func create_tunnel(start: Vector3, end: Vector3, scale: float = 1.0) -> void:
-	RH.print("🪏 level_csg_tunnels | create_tunnel()", 3)
+func carve_segment(
+	start: Vector3,
+	end: Vector3,
+	step_distance: float,
+	base_scale_xy: float,
+	size_variation: float,
+	rotation_range_radians: float
+) -> void:
+	RH.print("🪏 level_csg_tunnels.gd | carve_segment()", 4)
+	if level_csg_combiner == null or tunnel_template == null:
+		RH.print("🪏 level_csg_tunnels.gd | ⚠️ missing combiner/template; cannot carve tunnel", 1)
+		return
+
 	var delta := end - start
 	var dist := delta.length()
 
 	if dist <= 0.1:
-		RH.print("🪏 level_csg_tunnels | abort... distance between start and end is too short", 3)
+		RH.print("🪏 level_csg_tunnels.gd | abort... distance between start and end is too short", 4)
 		return
 	
 	var direction := delta/dist
-	var steps := int(floor(dist / STEP_DISTANCE))
-
-	# Retrieve the actual Blender mesh for tunnel carving
-	var root = carve_mesh_scene.instantiate()
-	var node := root.find_child("TunnelCarve", true, false) # recursive, exact name
-	var mi := node as MeshInstance3D
-
-	if mi == null:
-		RH.print("🪏 level_csg_tunnels | ⚠️ WARNING: MeshInstance3D is null!", 1)
+	var actual_step_distance := maxf(step_distance, 0.1)
+	var steps := int(floor(dist / actual_step_distance))
 
 	for i in range(steps + 1):
-		var p := start + direction * (i * STEP_DISTANCE)
+		var p := start + direction * (i * actual_step_distance)
 
-		var carve_mesh := CSGMesh3D.new()
-		carve_mesh.mesh = mi.mesh
-
-		if carve_mesh.mesh == null:
-			RH.print("🪏 level_csg_tunnels | ⚠️ WARNING: CSGMesh3D is null!", 1)
-
-		var carve_mesh_scale = DEFAULT_SIZE * scale * RH.get_random_float(0.8, 1.2)
-		carve_mesh.scale = Vector3(carve_mesh_scale, carve_mesh_scale, RH.CSG_THICKNESS)
+		var carve_mesh := tunnel_template.duplicate() as CSGMesh3D
+		carve_mesh.unique_name_in_owner = false
+		var variation := clampf(size_variation, 0.0, 1.0)
+		var scale_xy := base_scale_xy * (1.0 + RH.get_random_float(-variation, variation))
+		carve_mesh.scale = Vector3(scale_xy, scale_xy, RH.CSG_THICKNESS)
 		carve_mesh.position = p
-		carve_mesh.rotate_z(RH.get_random_float(0.0, 1.0))
+		carve_mesh.rotate_z(RH.get_random_float(0.0, rotation_range_radians))
 		carve_mesh.operation = CSGShape3D.OPERATION_SUBTRACTION
 		level_csg_combiner.add_child(carve_mesh)
