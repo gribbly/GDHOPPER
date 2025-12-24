@@ -59,29 +59,28 @@ func _physics_process(delta):
 	# DEBUG - mark ship position every frame
 	# RH.debug_visuals.rh_debug_x_with_label_frame(position, "SHIP", Color.PINK)
 	
-	# Rotate (Z axis into the screen)
+	# Side thrust - rotate around Z axis
 	var rot_input := 0.0
 	if Input.is_action_pressed("thrust_left"):
 		rot_input += 1.0
 		thrust_side = thrust_left
+		_start_left_thrust_VFX()
 	if Input.is_action_pressed("thrust_right"):
 		rot_input -= 1.0
 		thrust_side = thrust_right
+		_start_right_thrust_VFX()
 	if rot_input != 0.0:
 		apply_torque(Vector3(0, 0, rot_input * thrust_side * delta))
 
-	# Thrust (along local up)
+	# Main thrust (along local up)
 	var thrusting := Input.is_action_pressed("thrust_main")
 	if thrusting:
 		var up_dir := transform.basis.y
 		apply_central_force(up_dir * thrust_main)
 
-		thrust_particles_left.start()
-		thrust_particles_right.start()
-
-		# Thrust lights...
-		thrust_light_left.visible = true
-		thrust_light_right.visible = true
+		if thrusting:
+			_start_left_thrust_VFX()
+			_start_right_thrust_VFX()
 
 		# ...with flickering
 		flicker_tick += 1
@@ -92,10 +91,32 @@ func _physics_process(delta):
 			thrust_light_right.light_energy = flicker_array[b]
 			flicker_index += 1
 			flicker_tick = 0
+			
+			# Defensive: Zero flicker_index when it gets too large
+			if flicker_index > FLICKER_TICK * 100:
+				flicker_index = 0
 	else:
-		thrust_light_left.visible = false
-		thrust_light_right.visible = false
-		flicker_index = 0
-		flicker_tick = 0
-		thrust_particles_left.stop()
-		thrust_particles_right.stop()
+		if rot_input < 0.0:
+			_stop_left_thrust_VFX()
+		if rot_input > 0.0:
+			_stop_right_thrust_VFX()
+		if rot_input == 0.0:
+			_stop_left_thrust_VFX()
+			_stop_right_thrust_VFX()
+
+
+func _start_left_thrust_VFX() -> void:
+	thrust_particles_left.start()
+	thrust_light_left.visible = true
+
+func _start_right_thrust_VFX() -> void:
+	thrust_particles_right.start()
+	thrust_light_right.visible = true
+
+func _stop_left_thrust_VFX() -> void:
+	thrust_particles_left.stop()
+	thrust_light_left.visible = false
+
+func _stop_right_thrust_VFX() -> void:
+	thrust_particles_right.stop()
+	thrust_light_right.visible = false

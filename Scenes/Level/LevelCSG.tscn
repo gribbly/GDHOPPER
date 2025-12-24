@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://7jwahe3oe461" path="res://Scenes/Level/level_csg.gd" id="1_4dr6r"]
 [ext_resource type="ArrayMesh" uid="uid://320ovqls535k" path="res://Assets/Meshes/CSG/BaseRock01.res" id="2_jq8b0"]
-[ext_resource type="ArrayMesh" uid="uid://d2mmdljtfykja" path="res://Assets/Meshes/CSG/CavernCarve01.res" id="3_c23ww"]
-[ext_resource type="ArrayMesh" uid="uid://c1kpe868acwyf" path="res://Assets/Meshes/CSG/TunnelCarve01.res" id="4_evbow"]
+[ext_resource type="ArrayMesh" uid="uid://df73kpjw43vnn" path="res://Assets/Meshes/CSG/CavernCarve01.res" id="3_c23ww"]
+[ext_resource type="ArrayMesh" uid="uid://e8d1qs04rmn7" path="res://Assets/Meshes/CSG/TunnelCarve01.res" id="4_evbow"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4dr6r"]
 albedo_color = Color(0.45646393, 0.456464, 0.456464, 1)

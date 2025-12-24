@@ -34,6 +34,10 @@ const GRID_COLS := 16
 @export var tunnel_carve_step_distance := 6.0
 @export var tunnel_carve_scale_xy := 1.0
 @export var tunnel_carve_size_variation := 0.0
+@export var tunnel_cells_before_first_turn := 2
+
+@export var entrance_tunnel_enabled := true
+@export var entrance_tunnel_extra_height := 32.0 # extend above surface so the opening is carved
 
 var level_csg_instance: LevelCSG
 var level_camera_instance: LevelCamera
@@ -126,8 +130,8 @@ func _run_procgen() -> void:
 	var gen_caverns := LevelGenCavernsScript.new()
 	gen_caverns.init_grid_unblocked(level_grid)
 
-	var cavern_half_size_xy: Vector2 = level_csg_instance.cavern_template_half_size_xy()
-	if cavern_half_size_xy == Vector2.ZERO:
+	var cavern_template_half_size_xy: Vector2 = level_csg_instance.cavern_template_half_size_xy()
+	if cavern_template_half_size_xy == Vector2.ZERO:
 		RH.print("🪨 level.gd | ⚠️ cavern template size is zero; skipping procgen", 1)
 		return
 
@@ -139,7 +143,7 @@ func _run_procgen() -> void:
 
 	var caverns := gen_caverns.place_caverns(
 		level_grid,
-		cavern_half_size_xy,
+		cavern_template_half_size_xy,
 		requests,
 		cavern_avoid_borders,
 		cavern_border_margin_cells,
@@ -167,10 +171,26 @@ func _run_procgen() -> void:
 				RH.debug_visuals.rh_debug_line(caverns[e.x].center_3d, caverns[e.y].center_3d, Color(0.7, 0.7, 0.7))
 
 	var path_builder := LevelGenTunnelPathsScript.new()
+	var min_turn_world_xy := level_grid.cell_size * float(tunnel_cells_before_first_turn)
 	for e in edges:
 		var a := caverns[e.x]
 		var b := caverns[e.y]
-		var points := path_builder.build_l_path_with_bends(a.center_3d, b.center_3d, tunnel_max_extra_bends)
+		var a_clearance := Vector2(
+			(cavern_template_half_size_xy.x * a.scale_xy) + min_turn_world_xy.x,
+			(cavern_template_half_size_xy.y * a.scale_xy) + min_turn_world_xy.y
+		)
+		var b_clearance := Vector2(
+			(cavern_template_half_size_xy.x * b.scale_xy) + min_turn_world_xy.x,
+			(cavern_template_half_size_xy.y * b.scale_xy) + min_turn_world_xy.y
+		)
+
+		var points := path_builder.build_l_path_with_bends(
+			a.center_3d,
+			b.center_3d,
+			tunnel_max_extra_bends,
+			a_clearance,
+			b_clearance
+		)
 
 		if RH.show_debug_visuals == true and debug_draw_tunnel_paths:
 			for i in range(points.size() - 1):
@@ -186,9 +206,38 @@ func _run_procgen() -> void:
 				TAU
 			)
 
+	_carve_entrance_tunnel(caverns)
+
 # This function returns cell size by dividing the size of the rock by the number of requested rows/cols
 func _calculate_grid_cell_size(rows: int, cols: int) -> Vector2:
 	var rock_size: Vector2 = level_csg_instance.get_base_rock_size()
 	var return_x = rock_size.x / cols
 	var return_y = rock_size.y / rows
 	return Vector2(return_x, return_y)
+
+func _carve_entrance_tunnel(caverns: Array[LevelGenCavern]) -> void:
+	if not entrance_tunnel_enabled:
+		return
+	if caverns.is_empty():
+		return
+
+	var topmost := caverns[0]
+	for cav in caverns:
+		if cav.center_3d.y > topmost.center_3d.y:
+			topmost = cav
+
+	var surface_y := level_csg_instance.get_base_rock_size().y
+	var end := Vector3(topmost.center_3d.x, surface_y + entrance_tunnel_extra_height, 0.0)
+
+	RH.print("🪨 level.gd | procgen: entrance tunnel from cav_%s to surface" % topmost.id, 2)
+	if RH.show_debug_visuals == true:
+		RH.debug_visuals.rh_debug_line(topmost.center_3d, end, Color(0.9, 0.85, 0.2))
+
+	level_csg_instance.carve_tunnel_segment(
+		topmost.center_3d,
+		end,
+		tunnel_carve_step_distance,
+		tunnel_carve_scale_xy,
+		tunnel_carve_size_variation,
+		TAU
+	)

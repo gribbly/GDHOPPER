@@ -7,10 +7,11 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_pw2eq"]
 
 [node name="TestShip" type="RigidBody3D"]
+physics_interpolation_mode = 1
 input_ray_pickable = false
 axis_lock_linear_z = true
 linear_damp = 0.25
-angular_damp = 0.75
+angular_damp = 1.0
 script = ExtResource("1_trx1f")
 thrust_left = 30.0
 thrust_right = 30.0
