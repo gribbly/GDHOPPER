@@ -13,7 +13,7 @@ var follow_target: Node3D = null
 # Tuneables
 const Z_DISTANCE = 64.0
 const DEFAULT_SIZE = 32.0 # 32.0 is closer to actual default size
-const COSMETIC_CAMERA_TILT = -0.04 # -0.02 is an interesting option, not sure yet!
+const COSMETIC_CAMERA_TILT = 0.0 # -0.04 is an interesting option, not sure yet!
 
 # Internals
 var in_level_gen_mode: bool = false

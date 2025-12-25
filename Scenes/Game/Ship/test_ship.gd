@@ -4,6 +4,11 @@ extends RigidBody3D
 @export var thrust_left := 20.0
 @export var thrust_right := 20.0
 
+const Explosion01Scene := preload("res://Scenes/Game/Effects/Explosion01.tscn")
+
+# Simple state machine.
+enum ShipState { FLYING, CRASHED }
+
 # Tuneables
 const THRUST_LIGHT_ENERGY := 32.0
 const FLICKER_ARRAY_LENGTH := 32
@@ -12,8 +17,10 @@ const FLICKER_TICK := 10
 # Internal
 var _base_mass := 0.0
 var _inventory: ShipInventory = ShipInventory.new()
+var _state: ShipState = ShipState.FLYING
 var thrust_side := 0.0
 var reset_requested := false
+@onready var ship_hull_collision: CollisionShape3D = %ShipHullCollision
 @onready var thrust_particles_left: GPUParticles3D = %ThrustParticles_left
 @onready var thrust_particles_right: GPUParticles3D = %ThrustParticles_right
 @onready var thrust_light_left: SpotLight3D = %ThrustLight_left
@@ -28,6 +35,15 @@ func _ready() -> void:
 	RH.print("🚀 test_ship.gd | ready")
 
 	_base_mass = mass
+
+	# Enable collision callbacks for the ship. (RigidBody3D doesn't emit body/area signals unless monitoring is enabled.)
+	contact_monitor = true
+	max_contacts_reported = 1
+	body_shape_entered.connect(_on_ship_body_shape_entered)
+
+	if ship_hull_collision == null:
+		RH.print("🚀 test_ship.gd | ❌ ERROR: Didn't find %ShipHullCollision", 1)
+
 	pickup_area.body_entered.connect(_on_pickup_area_body_entered)
 	pickup_area.body_exited.connect(_on_pickup_area_body_exited)
 
@@ -40,6 +56,7 @@ func _ready() -> void:
 
 func reset() -> void:
 	RH.print("🚀 test_ship.gd | reset")
+	_set_state(ShipState.FLYING)
 	position.z = 0.0
 	transform.basis = Basis.IDENTITY
 	linear_velocity = Vector3.ZERO
@@ -52,6 +69,8 @@ func reset() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _state != ShipState.FLYING:
+		return
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		match event.physical_keycode:
 			KEY_S:
@@ -106,7 +125,28 @@ func drop_last_cargo() -> void:
 		return
 
 	parent.add_child(instance)
-	instance.global_position = global_position + Vector3(0.0, 2.0, 0.0)
+	var up_dir := transform.basis.y.normalized()
+	var right_dir := transform.basis.x.normalized()
+	var side_sign := -1.0 if RH.get_random_float(0.0, 1.0) < 0.5 else 1.0
+
+	var spawn_offset := up_dir * 6.0 + right_dir * side_sign * 4.0
+	spawn_offset += up_dir * RH.get_random_float(-0.5, 0.5)
+	spawn_offset += right_dir * RH.get_random_float(-0.75, 0.75)
+
+	instance.global_position = global_position + spawn_offset
+	instance.global_position.z = 0.0
+
+	var cargo_rb := instance as RigidBody3D
+	if cargo_rb != null:
+		cargo_rb.linear_velocity = linear_velocity
+		cargo_rb.angular_velocity = Vector3.ZERO
+
+		var throw_impulse := up_dir * RH.get_random_float(200.0, 320.0)
+		throw_impulse += right_dir * side_sign * RH.get_random_float(160.0, 260.0)
+		throw_impulse += Vector3(RH.get_random_float(-40.0, 40.0), RH.get_random_float(-40.0, 40.0), 0.0)
+		cargo_rb.apply_central_impulse(throw_impulse)
+		cargo_rb.apply_torque_impulse(Vector3(0.0, 0.0, RH.get_random_float(-40.0, 40.0)))
+
 	var cargo := instance as CargoPickup
 	if cargo != null:
 		# Prevent immediate re-pickup; cargo must leave the pickup area first.
@@ -118,6 +158,9 @@ func _update_mass_from_inventory() -> void:
 
 
 func _physics_process(delta):
+	if _state != ShipState.FLYING:
+		return
+
 	# Handle reset request
 	if reset_requested:
 		reset()
@@ -169,6 +212,93 @@ func _physics_process(delta):
 		if rot_input == 0.0:
 			_stop_left_thrust_VFX()
 			_stop_right_thrust_VFX()
+
+func _set_state(new_state: ShipState) -> void:
+	if _state == new_state:
+		return
+
+	_state = new_state
+	match _state:
+		ShipState.FLYING:
+			RH.print("🚀 test_ship.gd | state = Flying", 1)
+		ShipState.CRASHED:
+			RH.print("🚀 test_ship.gd | state = Crashed", 1)
+			reset_requested = false
+			_stop_left_thrust_VFX()
+			_stop_right_thrust_VFX()
+			apply_torque_impulse(Vector3(0.0, 0.0, RH.get_random_float(-120.0, 120.0)))
+			_spawn_crash_explosions(global_position)
+
+
+func _spawn_crash_explosions(crash_pos: Vector3) -> void:
+	var parent := get_parent()
+	if parent == null:
+		return
+
+	var count := RH.get_random_int(8, 16)
+	var max_total_frames := 20
+	var frame_offsets: Array[int] = []
+	frame_offsets.resize(count)
+	frame_offsets[0] = 0 # first explosion immediately
+	for i in range(1, count):
+		frame_offsets[i] = RH.get_random_int(1, max_total_frames)
+	frame_offsets.sort()
+
+	var current_offset := 0
+	for frame_offset in frame_offsets:
+		var wait_frames := frame_offset - current_offset
+		current_offset = frame_offset
+		for _f in range(wait_frames):
+			await get_tree().process_frame
+
+		var explosion := Explosion01Scene.instantiate() as Node3D
+		if explosion == null:
+			continue
+
+		explosion.prime() #set up first frame white flash
+		parent.add_child(explosion)
+
+		var spread := 4.0
+		var offset := Vector3(
+			RH.get_random_float(-spread, spread),
+			RH.get_random_float(-spread, spread),
+			0.0
+		)
+		explosion.global_position = crash_pos + offset
+		explosion.global_position.z = 0.0
+
+		var uniform_scale := RH.get_random_float(0.5, 1.0)
+		explosion.scale = Vector3.ONE * uniform_scale
+		#explosion.rotation.z = RH.get_random_float(0.0, TAU)
+
+
+func _crash() -> void:
+	if _state == ShipState.CRASHED:
+		return
+	_set_state(ShipState.CRASHED)
+
+
+func _is_ship_collision_shape(local_shape_index: int) -> bool:
+	if ship_hull_collision == null:
+		return true
+
+	var owner_id := shape_find_owner(local_shape_index)
+	if owner_id == -1:
+		return true
+	var shape_owner_node := shape_owner_get_owner(owner_id)
+	if shape_owner_node == null:
+		return true
+	return shape_owner_node == ship_hull_collision or shape_owner_node == self
+
+
+func _on_ship_body_shape_entered(_body_rid: RID, body: Node, _body_shape_index: int, local_shape_index: int) -> void:
+	if _state != ShipState.FLYING:
+		return
+	if body == self:
+		return
+	if not _is_ship_collision_shape(local_shape_index):
+		return
+	_crash()
 
 
 func _start_left_thrust_VFX() -> void:
