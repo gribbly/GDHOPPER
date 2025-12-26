@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://wquy4jb1f7fr"]
 
-[ext_resource type="ArrayMesh" uid="uid://dteuir1fj1skg" path="res://Assets/Meshes/Enemies/Missile01.res" id="1_5d85g"]
+[ext_resource type="ArrayMesh" uid="uid://djll0qrsvrome" path="res://Assets/Meshes/Enemies/Missile01.res" id="1_5d85g"]
 [ext_resource type="Script" uid="uid://bcoeuncobjq84" path="res://Scenes/Game/Enemies/missile_01.gd" id="2_u3fbr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5d85g"]

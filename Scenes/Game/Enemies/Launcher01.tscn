@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://d2253in6m8ie"]
 
-[ext_resource type="ArrayMesh" uid="uid://cfvvt5men4705" path="res://Assets/Meshes/Enemies/Launcher01_LauncherBase.res" id="1_x7xpm"]
+[ext_resource type="ArrayMesh" uid="uid://hesb3m5cqhyc" path="res://Assets/Meshes/Enemies/Launcher01_LauncherBase.res" id="1_x7xpm"]
 [ext_resource type="Script" uid="uid://cjpjfrtx3nvau" path="res://Scenes/Game/Enemies/launcher_01.gd" id="2_3mmu6"]
 [ext_resource type="PackedScene" uid="uid://wquy4jb1f7fr" path="res://Scenes/Game/Enemies/Missile01.tscn" id="3_ejkox"]
 
