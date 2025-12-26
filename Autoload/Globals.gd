@@ -12,9 +12,19 @@ var show_debug_visuals := false
 
 # Internal
 var _rng := RandomNumberGenerator.new()
+var _level_node: Node3D
 
 func _ready() -> void:
 	_rng.randomize()
+
+func set_level_node(node: Node3D):
+	_level_node = node
+
+func get_level_node():
+	if _level_node == null:
+		RH.print("🌐 Globals.gd | ⚠️ WARNING - attempt to get _level_node while it's null", 1)
+	else:
+		return _level_node
 
 func register_debug_visuals(instance: DebugVisuals) -> void:
 	RH.print("🌐 Globals.gd | register_debug_visuals", 5)

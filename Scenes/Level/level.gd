@@ -74,6 +74,7 @@ var _cavern_template_half_size_xy := Vector2.ZERO
 func _ready() -> void:
 	RH.print("🪨 level.gd | _ready()", 1)
 	SignalBus.connect("ship_spawn_point", Callable(self, "_spawn_ship"))
+	RH.set_level_node(self)
 
 	# Start instantiating level components
 	add_child(debug_visuals.instantiate())

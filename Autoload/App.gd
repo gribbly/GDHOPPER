@@ -5,6 +5,7 @@ extends Node
 var debug_autostart := true
 var force_debug_info_panel_on = true
 var force_debug_visuals_on = true
+const SLOW_MOTION_TIMESCALE = 0.25
 
 enum MainState { TITLE, PLAYING }
 var state: MainState = MainState.TITLE
@@ -27,6 +28,7 @@ var _debug_info_panel: Control = null
 var _debug_camera: Camera3D = null
 var _previous_camera: Camera3D = null
 var _using_debug_camera: bool = false
+var _slow_motion_activated: bool = false
 var _level: Node = null
 
 func _ready() -> void:
@@ -65,9 +67,16 @@ func _unhandled_input(event: InputEvent) -> void:
 				RH.print("🌏 App.gd | 🛠️ DEBUG - regen level...")
 				regenerate_level()
 			KEY_F:
-				RH.print("🌏 App.gd | 🛠️ DEBUG - toggle debug camera")
 				_using_debug_camera = !_using_debug_camera
+				RH.print("🌏 App.gd | 🛠️ DEBUG - toggle debug camera = %s" % _using_debug_camera, 1)
 				switch_to_debug_camera(_using_debug_camera)
+			KEY_T:
+				_slow_motion_activated = !_slow_motion_activated
+				RH.print("🌏 App.gd | 🛠️ DEBUG - toggle slow motion = %s" % _slow_motion_activated, 1)
+				if _slow_motion_activated:
+					Engine.time_scale = SLOW_MOTION_TIMESCALE
+				else:
+					Engine.time_scale = 1.0
 
 func show_title() -> void:
 	RH.print("🌏 App.gd | show_title()")
