@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dmx3b61sxqsag"]
+[gd_scene load_steps=10 format=3 uid="uid://dmx3b61sxqsag"]
 
 [ext_resource type="Script" uid="uid://3kxw3p70bd58" path="res://Scenes/Level/level.gd" id="1_ah5nq"]
 [ext_resource type="PackedScene" uid="uid://dcaxlbfogl25t" path="res://Scenes/Debug/DebugVisuals.tscn" id="2_5cov8"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dsvp6fxhcgyto" path="res://Scenes/Level/LevelCSG.tscn" id="4_ixotf"]
 [ext_resource type="PackedScene" uid="uid://cy1f6s5878jps" path="res://Scenes/Game/Ship/TestShip.tscn" id="6_vtba3"]
 [ext_resource type="PackedScene" uid="uid://73sfl2yeowf6" path="res://Scenes/Game/Objects/Cargo01.tscn" id="7_t3e81"]
+[ext_resource type="PackedScene" uid="uid://d2253in6m8ie" path="res://Scenes/Game/Enemies/Launcher01.tscn" id="8_lvwdj"]
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_ah5nq")
@@ -17,7 +18,9 @@ level_camera = ExtResource("3_alfq7")
 level_csg = ExtResource("4_ixotf")
 test_ship = ExtResource("6_vtba3")
 test_cargo = ExtResource("7_t3e81")
+test_launcher = ExtResource("8_lvwdj")
 extra_connection_probability = 0.5
 
 [node name="ReferenceCube1m" parent="." instance=ExtResource("2_gjy3i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.5, 0)
+visible = false

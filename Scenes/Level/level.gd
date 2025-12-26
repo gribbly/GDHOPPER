@@ -8,6 +8,9 @@ extends Node3D
 @export var level_csg: PackedScene
 @export var test_ship: PackedScene
 @export var test_cargo: PackedScene
+@export var test_launcher: PackedScene
+@export_range(0.0, 1.0, 0.05) var test_launcher_probability := 0.5
+@export_range(0.0, 8.0, 0.1) var test_launcher_extra_depth := 0.5
 
 # Bake step toggle
 @export var bake_csg_to_mesh := true
@@ -56,6 +59,7 @@ const GRID_COLS := 32
 const LevelGenCavernsScript := preload("res://Scenes/Level/level_gen_caverns.gd")
 const LevelGenGraphScript := preload("res://Scenes/Level/level_gen_graph.gd")
 const LevelGenTunnelPathsScript := preload("res://Scenes/Level/level_gen_tunnel_paths.gd")
+const LevelEnemyPlacerScript := preload("res://Scenes/Level/level_enemy_placer.gd")
 
 # Internals
 var level_csg_instance: LevelCSG
@@ -63,6 +67,8 @@ var level_camera_instance: LevelCamera
 var level_light_instance: Node3D
 var test_ship_instance: Node3D
 var level_grid: LevelGrid
+var _generated_caverns: Array[LevelGenCavern] = []
+var _cavern_template_half_size_xy := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -88,10 +94,15 @@ func _ready() -> void:
 	# Kick off actual level gen
 	_run_procgen()
 
+	# If we rely on CSG collision (no baking), give the engine a frame to update.
+	await get_tree().process_frame
+
 	# Bake generated CSG to mesh
 	if bake_csg_to_mesh:
 		RH.print("🪨 level.gd | 🔪 converting CSG to mesh...")
 		await level_csg_instance.convert_to_mesh()
+
+	_place_test_launchers()
 
 	level_camera_instance.move_camera(rock_size.x / 2.0, rock_size.y / 2.0)
 	var spawn_point := Vector3(rock_size.x / 2.0, rock_size.y + 16.0, 0.0)
@@ -136,6 +147,7 @@ func _run_procgen() -> void:
 	gen_caverns.init_grid_unblocked(level_grid)
 
 	var cavern_template_half_size_xy: Vector2 = level_csg_instance.cavern_template_half_size_xy()
+	_cavern_template_half_size_xy = cavern_template_half_size_xy
 
 	# 'distance_weight' is a tuning knob passed into cavern placement scoring. It controls how strongly the placer prefers candidate cells that are farther from already-placed caverns.
 	# There's no fixed range, but 0.0 means “don’t prefer far-from-others” (spacing comes only from the footprint blocking).
@@ -161,6 +173,7 @@ func _run_procgen() -> void:
 	)
 
 	RH.print("🪨 level.gd | procgen: caverns=%s" % caverns.size(), 2)
+	_generated_caverns = caverns
 	for cav in caverns:
 		level_csg_instance.carve_cavern(cav.id, cav.center_3d, cav.scale_xy)
 
@@ -311,3 +324,27 @@ func _spawn_one_test_cargo_in_cavern(caverns: Array[LevelGenCavern], cavern_temp
 
 	if RH.show_debug_visuals == true:
 		RH.debug_visuals.rh_debug_x_with_label(spawn_pos, "cargo", Color(0.9, 0.6, 0.2))
+
+
+func _place_test_launchers() -> void:
+	if test_launcher == null:
+		return
+	if _generated_caverns.is_empty():
+		return
+	if _cavern_template_half_size_xy == Vector2.ZERO:
+		return
+
+	var placer_obj := LevelEnemyPlacerScript.new()
+	var placer := placer_obj as LevelEnemyPlacer
+	if placer == null:
+		return
+
+	var placed := placer.place_one_test_launcher_per_cavern(
+		self,
+		_generated_caverns,
+		_cavern_template_half_size_xy,
+		test_launcher,
+		test_launcher_probability,
+		test_launcher_extra_depth
+	)
+	RH.print("🪨 level.gd | procgen: launchers=%s" % placed, 2)

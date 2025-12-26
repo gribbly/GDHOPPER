@@ -1,6 +1,7 @@
 # Godot 4+ specific ignores
 .import/
 *.import
+*.uid
 .godot/
 /android/
 export_presets.cfg
@@ -13,3 +14,4 @@ export_presets.cfg
 /Design/
 /Builds/
 *.blend1
+.tmp_home/

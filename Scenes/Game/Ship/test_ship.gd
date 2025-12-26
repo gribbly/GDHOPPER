@@ -33,6 +33,7 @@ var flicker_tick := 0
 
 func _ready() -> void:
 	RH.print("🚀 test_ship.gd | ready")
+	add_to_group("ship")
 
 	_base_mass = mass
 
