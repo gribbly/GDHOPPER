@@ -3,7 +3,6 @@ extends Node3D
 @export var missile: PackedScene
 @export var sensing_range: float = 5.0
 @export var fire_rate: float = 3.0
-
 @export var missile_impulse: float = 240.0
 @export var missile_spawn_offset: Vector3 = Vector3(0.0, 2.0, 0.0)
 
@@ -100,17 +99,7 @@ func _fire_once() -> void:
 		RH.print("🚀 launcher_01.gd | ⚠️ missile is not a RigidBody3D", 1)
 		return
 
-	var from := missile_instance.global_position
-	var to := _ship.global_position
-	from.z = 0.0
-	to.z = 0.0
-
-	var dir := to - from
-	dir.z = 0.0
-	if dir.length_squared() < 0.0001:
-		dir = Vector3.UP
-
-	var impulse := dir.normalized() * maxf(missile_impulse, 0.0)
+	var impulse := Vector3.UP.normalized() * missile_impulse
 	impulse += Vector3(
 		RH.get_random_float(-20.0, 20.0),
 		RH.get_random_float(-20.0, 20.0),

@@ -9,7 +9,7 @@ script = ExtResource("2_3mmu6")
 missile = ExtResource("3_ejkox")
 sensing_range = 40.0
 fire_rate = 5.0
-missile_impulse = 48.0
+missile_impulse = 64.0
 
 [node name="LauncherBase" type="MeshInstance3D" parent="."]
 mesh = ExtResource("1_x7xpm")
