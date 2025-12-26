@@ -13,9 +13,10 @@ Level gen happens at runtime, so it is important that it remains performant on t
 * Get random numbers from `Globals.gd` (references as `RH.*`) - this is important as we will later implement seeded randomness for reproducible level gens, so randomness must be centralized.
 * The necessary CSG mesh primitives are supplied in `LevelCSG.tscn`. Look for them there.
   * The base rock (that everything will be carved into) is already hand placed under `%LevelCsgCombiner`.
-  * There are two CSGShape3DNodes pre-placed in `LevelCSG.tscn`. These are the source for copies that are instantiated under `%LevelCsgCombiner`.
+  * There are CSGShape3DNodes pre-placed in `LevelCSG.tscn`. These are the source for copies that are instantiated under `%LevelCsgCombiner`.
     * `%CavernCarve01` - this is the shape to use for caverns. At 1.0 scale, it is the right size for a "large" cavern. So medium and small caverns should be scaled down in X and Y (not Z) as needed. Pre-configured with Operation=Subtraction.
-    * `%TunnelCarve01` - this is the shape to use for tunnels. It needs to be placed repeatedly along the tunnel path, close enough to overlap. Pre-configured with Operation=Subtraction.
+    * `%TunnelCarve01` - this is the shape to use for tunnels. The shapes need to be placed repeatedly along the tunnel path, close enough to overlap. Pre-configured with Operation=Subtraction.
+    * In the future, there will be multiple alternatives shapes to choose from randomly for both Cavern and Tunnel. For now, we ar ejust using one to keep things simple.
   * Important: Don't scale down "carve" CSG meshes on the Z axis. If you do, they may no longer be "deep" enough to carve all the way through the base rock. Only scale on X and Y.
 
 # Carving "The Rock"
@@ -84,6 +85,7 @@ Tuneable parameters:
 
 * Build a complete graph where nodes = caverns, edge weight = Manhattan distance (or world distance).
 * Compute a Minimum Spanning Tree. Suggest ugins Prim’s algorithm as it is easy to implement and understand.
+* Special case: Find the top-most cavern and create a tunnel straight up to the "surface" (the top edge of "The Rock")
 
 Tuneable parameters:
 
@@ -91,8 +93,10 @@ Tuneable parameters:
 
 Generation goals:
 
+* Tunnels are forbidden from entering/existing the bottom edge of a cavern. Tunnels must always connect at the top, left or right. To "go down" a tunnel should exit from the left/right, then "turn down" once clear of the cavern.
 * Everything is connected with minimal total tunnel length.
 * Natural layouts: mostly tree-like with occasional cycles.
+
 
 ## 4. Carve the tunnels
 

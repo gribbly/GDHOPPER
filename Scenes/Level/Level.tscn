@@ -11,24 +11,13 @@
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_ah5nq")
-level_dimensions = Vector3(400, 200, 0)
 debug_visuals = ExtResource("2_5cov8")
 level_light = ExtResource("2_y0wjm")
 level_camera = ExtResource("3_alfq7")
 level_csg = ExtResource("4_ixotf")
 test_ship = ExtResource("6_vtba3")
 test_cargo = ExtResource("7_t3e81")
-bake_csg_to_mesh = true
-debug_draw_connections = false
-caverns_large_count = 3
-caverns_medium_count = 3
-caverns_small_count = 3
-cavern_medium_scale_xy = 0.6
-cavern_small_scale_xy = 0.4
-cavern_padding_cells = 2
 extra_connection_probability = 0.5
-tunnel_max_extra_bends = 3
-tunnel_carve_step_distance = 4.0
 
 [node name="ReferenceCube1m" parent="." instance=ExtResource("2_gjy3i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.5, 0)

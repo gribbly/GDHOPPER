@@ -16,12 +16,14 @@ func place_caverns(
 	requests: Array[Dictionary],
 	avoid_borders: bool,
 	border_margin_cells: int,
+	scale_variation: float,
 	padding_cells: int,
 	attempts_per_cavern: int,
 	best_of_k: int
 ) -> Array[LevelGenCavern]:
 	var caverns: Array[LevelGenCavern] = []
 	var next_id := 0
+	var variation := clampf(scale_variation, 0.0, 1.0)
 
 	for req in requests:
 		var count: int = req.get("count", 0)
@@ -29,12 +31,14 @@ func place_caverns(
 		var size_class: int = req.get("size_class", LevelGenCavern.SizeClass.LARGE)
 		var distance_weight: float = req.get("distance_weight", 0.0)
 		for _i in range(count):
+			var noisy_scale_xy := scale_xy * (1.0 + RH.get_random_float(-variation, variation))
+			noisy_scale_xy = maxf(noisy_scale_xy, 0.01)
 			var placed: LevelGenCavern = null
 			for pad in range(padding_cells, -1, -1):
 				placed = _try_place_one(
 					grid,
 					cavern_template_half_size_xy,
-					scale_xy,
+					noisy_scale_xy,
 					size_class,
 					distance_weight,
 					caverns,

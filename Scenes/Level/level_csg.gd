@@ -24,16 +24,17 @@ var _tunnel_template: CSGMesh3D = null
 
 func _ready() -> void:
 	RH.print("🔪 level_csg.gd | ready() with base_rock_size %s" % base_rock_size, 1)
+	
+	# Find required nodes
 	csg = %LevelCsgCombiner
+	_cavern_template = %CavernCarve01
+	_tunnel_template = %TunnelCarve01
 
-	_cavern_template = (get_node_or_null("%CavernCarve01") as CSGMesh3D)
-	_tunnel_template = (get_node_or_null("%TunnelCarve01") as CSGMesh3D)
-
-	# Fallback: allow procgen to run even if the scene doesn't have the carve templates yet.
+	# Report error if we didn't find carve templates
 	if _cavern_template == null or _cavern_template.mesh == null:
-		_cavern_template = _build_fallback_template("res://Assets/JunkDrawer/Models/TunnelCarve1.glb", "TunnelCarve")
+		RH.print("🔪 level_csg.gd | ❌ ERROR - didn't find %CavernCarve01", 1)
 	if _tunnel_template == null or _tunnel_template.mesh == null:
-		_tunnel_template = _build_fallback_template("res://Assets/JunkDrawer/Models/TunnelCarve1.glb", "TunnelCarve")
+		RH.print("🔪 level_csg.gd | ❌ ERROR - didn't find %TunnelCarve01", 1)
 
 	csg_caverns.configure(csg, _cavern_template)
 	csg_tunnels.configure(csg, _tunnel_template)
@@ -72,27 +73,6 @@ func carve_tunnel_segment(
 	rotation_range_radians: float
 ) -> void:
 	csg_tunnels.carve_segment(start, end, step_distance, base_scale_xy, size_variation, rotation_range_radians)
-
-
-func _build_fallback_template(glb_path: String, mesh_node_name: String) -> CSGMesh3D:
-	var packed := load(glb_path) as PackedScene
-	if packed == null:
-		RH.print("🔪 level_csg.gd | ⚠️ fallback template load failed: %s" % glb_path, 1)
-		return null
-
-	var root := packed.instantiate()
-	var node := root.find_child(mesh_node_name, true, false)
-	var mi := node as MeshInstance3D
-	if mi == null or mi.mesh == null:
-		RH.print("🔪 level_csg.gd | ⚠️ fallback mesh missing: %s in %s" % [mesh_node_name, glb_path], 1)
-		root.free()
-		return null
-
-	var t := CSGMesh3D.new()
-	t.mesh = mi.mesh
-	t.operation = CSGShape3D.OPERATION_SUBTRACTION
-	root.free()
-	return t
 
 
 func convert_to_mesh() -> void:

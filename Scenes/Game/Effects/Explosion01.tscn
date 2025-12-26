@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bedevdg6iksk5"]
 
-[ext_resource type="ArrayMesh" uid="uid://c03bd851t76yh" path="res://Assets/Meshes/Explosion01.res" id="1_6osf0"]
+[ext_resource type="ArrayMesh" uid="uid://ba07ed4tpr7rr" path="res://Assets/Meshes/Explosion01.res" id="1_6osf0"]
 [ext_resource type="Shader" uid="uid://2t0ea6fibgve" path="res://Assets/Shaders/scroll_uv.gdshader" id="2_cyo87"]
 [ext_resource type="Texture2D" uid="uid://d4jxkj2jstr6s" path="res://Assets/JunkDrawer/Textures/ExplosionChecker.png" id="2_gsob1"]
 [ext_resource type="Script" uid="uid://npg48grd3euc" path="res://Scenes/Game/Effects/explosion_01.gd" id="4_2tq2r"]
@@ -10,8 +10,7 @@ render_priority = 0
 shader = ExtResource("2_cyo87")
 shader_parameter/albedo_tex = ExtResource("2_gsob1")
 shader_parameter/scroll_speed = 0.25
-shader_parameter/start_time = 0.0
-shader_parameter/flash_duration = 0.0167
+shader_parameter/flash = true
 
 [node name="Explosion01" type="MeshInstance3D"]
 mesh = ExtResource("1_6osf0")
