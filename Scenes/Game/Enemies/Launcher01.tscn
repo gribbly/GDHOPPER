@@ -7,7 +7,7 @@
 [node name="Launcher01" type="Node3D"]
 script = ExtResource("2_3mmu6")
 missile = ExtResource("3_ejkox")
-sensing_range = 48.0
+sensing_range = 40.0
 fire_rate = 5.0
 missile_impulse = 48.0
 

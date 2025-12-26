@@ -4,18 +4,20 @@
 [ext_resource type="Script" uid="uid://bcoeuncobjq84" path="res://Scenes/Game/Enemies/missile_01.gd" id="2_u3fbr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5d85g"]
-size = Vector3(2, 4.5, 2)
+size = Vector3(0.4, 0.8, 0.4)
 
 [node name="Missile01" type="RigidBody3D"]
 axis_lock_linear_z = true
 mass = 5.0
 continuous_cd = true
 script = ExtResource("2_u3fbr")
-thrust_amount = 80.0
+fuse_time = 0.3
+turn_rate = 250.0
+thrust_amount = 100.0
 
 [node name="Missile01" type="MeshInstance3D" parent="."]
 mesh = ExtResource("1_5d85g")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07922363, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.035705566, 0)
 shape = SubResource("BoxShape3D_5d85g")
