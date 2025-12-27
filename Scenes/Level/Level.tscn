@@ -21,6 +21,7 @@ level_starfield = ExtResource("6_aei0q")
 test_ship = ExtResource("6_vtba3")
 test_cargo = ExtResource("7_t3e81")
 test_launcher = ExtResource("8_lvwdj")
+test_launcher_probability = 0.8
 extra_connection_probability = 0.5
 
 [node name="ReferenceCube1m" parent="." instance=ExtResource("2_gjy3i")]
