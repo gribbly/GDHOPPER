@@ -10,6 +10,9 @@ extends Node3D
 
 # Assumes that LevelCSG.tscn has %LevelCsgCombiner
 
+# Exports
+@export var base_rock_material: StandardMaterial3D
+
 # Helpers
 var csg_caverns: LevelCSGCaverns = LevelCSGCaverns.new()
 var csg_tunnels: LevelCSGTunnels = LevelCSGTunnels.new()
@@ -80,7 +83,7 @@ func convert_to_mesh() -> void:
 	await get_tree().process_frame
 
 	# Do the conversion
-	csg_mesh.convert(csg)
+	csg_mesh.convert(csg, base_rock_material)
 
 	# Remove CSG
 	csg.queue_free()

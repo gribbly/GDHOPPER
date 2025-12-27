@@ -1,0 +1,127 @@
+[gd_scene load_steps=10 format=3 uid="uid://cfm4jcptlig0a"]
+
+[ext_resource type="Script" uid="uid://d1aac4dnfs87a" path="res://Scenes/Level/starfield.gd" id="1_uibu6"]
+[ext_resource type="Material" uid="uid://bbhpxlom0uq2u" path="res://Assets/JunkDrawer/Materials/Starfield_StarsNear.tres" id="2_3tsoe"]
+[ext_resource type="Material" uid="uid://bw8u468f2j1q7" path="res://Assets/JunkDrawer/Materials/Starfield_StarsMid.tres" id="3_t4b4w"]
+[ext_resource type="Material" uid="uid://h2wrusdtpam7" path="res://Assets/JunkDrawer/Materials/Starfield_StarsFar.tres" id="4_p5kdo"]
+[ext_resource type="Material" uid="uid://b7ddjk5763iun" path="res://Assets/JunkDrawer/Materials/Starfield_NebulaFar.tres" id="5_p5kdo"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_k82i2"]
+size = Vector2(128, 64)
+
+[sub_resource type="QuadMesh" id="QuadMesh_p5kdo"]
+size = Vector2(144, 70)
+
+[sub_resource type="QuadMesh" id="QuadMesh_tj2cj"]
+size = Vector2(160, 86)
+
+[sub_resource type="QuadMesh" id="QuadMesh_gb4v4"]
+size = Vector2(176, 102)
+
+[node name="Starfield" type="Node3D"]
+script = ExtResource("1_uibu6")
+parallax_axes = Vector2i(1, 1)
+stars_near_path = NodePath("StarsNear")
+stars_near_tile_size = Vector2(128, 64)
+stars_near_factor = 0.8
+stars_mid_path = NodePath("StarsMid")
+stars_mid_tile_size = Vector2(144, 70)
+stars_mid_factor = 0.9
+stars_far_path = NodePath("StarsFar")
+stars_far_tile_size = Vector2(160, 86)
+stars_far_factor = 0.99
+nebular_far_path = NodePath("NebulaFar")
+nebular_far_tile_size = Vector2(176, 102)
+nebular_far_factor = 1.0
+
+[node name="StarsNear" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -64)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StarsNear"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 32, 0)
+mesh = SubResource("QuadMesh_k82i2")
+surface_material_override/0 = ExtResource("2_3tsoe")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="StarsNear"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 32, 0)
+mesh = SubResource("QuadMesh_k82i2")
+surface_material_override/0 = ExtResource("2_3tsoe")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="StarsNear"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, -32, 0)
+mesh = SubResource("QuadMesh_k82i2")
+surface_material_override/0 = ExtResource("2_3tsoe")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="StarsNear"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, -32, 0)
+mesh = SubResource("QuadMesh_k82i2")
+surface_material_override/0 = ExtResource("2_3tsoe")
+
+[node name="StarsMid" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -70)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StarsMid"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -72, 35, 0)
+mesh = SubResource("QuadMesh_p5kdo")
+surface_material_override/0 = ExtResource("3_t4b4w")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="StarsMid"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 35, 0)
+mesh = SubResource("QuadMesh_p5kdo")
+surface_material_override/0 = ExtResource("3_t4b4w")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="StarsMid"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -72, -35, 0)
+mesh = SubResource("QuadMesh_p5kdo")
+surface_material_override/0 = ExtResource("3_t4b4w")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="StarsMid"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, -35, 0)
+mesh = SubResource("QuadMesh_p5kdo")
+surface_material_override/0 = ExtResource("3_t4b4w")
+
+[node name="StarsFar" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -86)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StarsFar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80, 43, 0)
+mesh = SubResource("QuadMesh_tj2cj")
+surface_material_override/0 = ExtResource("4_p5kdo")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="StarsFar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 43, 0)
+mesh = SubResource("QuadMesh_tj2cj")
+surface_material_override/0 = ExtResource("4_p5kdo")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="StarsFar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80, -43, 0)
+mesh = SubResource("QuadMesh_tj2cj")
+surface_material_override/0 = ExtResource("4_p5kdo")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="StarsFar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, -43, 0)
+mesh = SubResource("QuadMesh_tj2cj")
+surface_material_override/0 = ExtResource("4_p5kdo")
+
+[node name="NebulaFar" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -102)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NebulaFar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88, 51, 0)
+mesh = SubResource("QuadMesh_gb4v4")
+surface_material_override/0 = ExtResource("5_p5kdo")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="NebulaFar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 51, 0)
+mesh = SubResource("QuadMesh_gb4v4")
+surface_material_override/0 = ExtResource("5_p5kdo")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="NebulaFar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88, -51, 0)
+mesh = SubResource("QuadMesh_gb4v4")
+surface_material_override/0 = ExtResource("5_p5kdo")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="NebulaFar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, -51, 0)
+mesh = SubResource("QuadMesh_gb4v4")
+surface_material_override/0 = ExtResource("5_p5kdo")

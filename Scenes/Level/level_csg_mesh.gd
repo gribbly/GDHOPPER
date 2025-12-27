@@ -9,7 +9,7 @@ var albedo_tex := load("res://Assets/JunkDrawer/Textures/noise_256.webp") as Tex
 var normal_tex := load("res://Assets/JunkDrawer/Textures/noise_256_norm.webp") as Texture2D
 var rough_tex := load("res://Assets/JunkDrawer/Textures/rock_weathered_15b_spec.webp") as Texture2D
 
-func convert(csg: CSGCombiner3D) -> Node3D:
+func convert(csg: CSGCombiner3D, _mat: StandardMaterial3D = null) -> Node3D:
 	RH.print("🫖 level_csg_mesh.gd | convert()")
 
 	var meshes = csg.get_meshes() # [Transform3D, Mesh, Transform3D, Mesh, ...]
@@ -31,20 +31,18 @@ func convert(csg: CSGCombiner3D) -> Node3D:
 		mi.transform = local_xform
 		root.add_child(mi)
 
-		# Create material
+		# Material handling
 		var mat := StandardMaterial3D.new()
-		#mat.albedo_color = Color.GRAY
-		mat.albedo_texture = albedo_tex
-		mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
-		
-		mat.normal_enabled = true
-		mat.normal_texture = normal_tex
-		mat.normal_scale = 0.5
 
-		#mat.metallic = 0.0
-		#mat.specular = 1.0
-		#mat.roughness = 1.0
-		#mat.roughness_texture = rough_tex	
+		if _mat == null:
+			mat.albedo_texture = albedo_tex
+			mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+			
+			mat.normal_enabled = true
+			mat.normal_texture = normal_tex
+			mat.normal_scale = 0.5
+		else:
+			mat = _mat
 
 		# “Projected” look (no UVs needed)
 		mat.uv1_triplanar = true

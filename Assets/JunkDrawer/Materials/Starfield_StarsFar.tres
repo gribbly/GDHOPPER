@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://h2wrusdtpam7"]
+
+[ext_resource type="Texture2D" uid="uid://dhitbu2edtk4f" path="res://Assets/JunkDrawer/Textures/Starfield/Starfield_StarsFar.png" id="1_t5ho3"]
+
+[resource]
+blend_mode = 1
+shading_mode = 0
+albedo_texture = ExtResource("1_t5ho3")
+uv1_scale = Vector3(1, 0.5, 1)

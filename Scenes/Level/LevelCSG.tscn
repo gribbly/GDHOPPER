@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dsvp6fxhcgyto"]
+[gd_scene load_steps=7 format=3 uid="uid://dsvp6fxhcgyto"]
 
 [ext_resource type="Script" uid="uid://7jwahe3oe461" path="res://Scenes/Level/level_csg.gd" id="1_4dr6r"]
 [ext_resource type="ArrayMesh" uid="uid://320ovqls535k" path="res://Assets/Meshes/CSG/BaseRock01.res" id="2_jq8b0"]
+[ext_resource type="Material" uid="uid://dk0pu76csojij" path="res://Assets/JunkDrawer/Materials/regolith_cratered.tres" id="2_w020w"]
 [ext_resource type="ArrayMesh" uid="uid://df73kpjw43vnn" path="res://Assets/Meshes/CSG/CavernCarve01.res" id="3_c23ww"]
 [ext_resource type="ArrayMesh" uid="uid://e8d1qs04rmn7" path="res://Assets/Meshes/CSG/TunnelCarve01.res" id="4_evbow"]
 
@@ -10,6 +11,7 @@ albedo_color = Color(0.45646393, 0.456464, 0.456464, 1)
 
 [node name="LevelCsg" type="Node3D"]
 script = ExtResource("1_4dr6r")
+base_rock_material = ExtResource("2_w020w")
 
 [node name="LevelCsgCombiner" type="CSGCombiner3D" parent="."]
 unique_name_in_owner = true

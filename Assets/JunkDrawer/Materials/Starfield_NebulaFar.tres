@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://b7ddjk5763iun"]
+
+[ext_resource type="Texture2D" uid="uid://hu86nptvief3" path="res://Assets/JunkDrawer/Textures/Starfield/Starfield_NebulaFar.png" id="1_mfilk"]
+
+[resource]
+blend_mode = 1
+shading_mode = 0
+albedo_texture = ExtResource("1_mfilk")
+uv1_scale = Vector3(1, 0.5, 1)

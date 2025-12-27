@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dk0pu76csojij"]
+
+[ext_resource type="Texture2D" uid="uid://doyohoyip6pev" path="res://Assets/JunkDrawer/Textures/CrateredRegolith.png" id="1_82oji"]
+[ext_resource type="Texture2D" uid="uid://dal783sb0gdb4" path="res://Assets/JunkDrawer/Textures/CrateredRegolith_Norm.png" id="2_w8jhh"]
+
+[resource]
+albedo_texture = ExtResource("1_82oji")
+normal_enabled = true
+normal_texture = ExtResource("2_w8jhh")

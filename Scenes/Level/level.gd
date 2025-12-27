@@ -6,6 +6,7 @@ extends Node3D
 @export var level_light: PackedScene
 @export var level_camera: PackedScene
 @export var level_csg: PackedScene
+@export var level_starfield: PackedScene
 @export var test_ship: PackedScene
 @export var test_cargo: PackedScene
 @export var test_launcher: PackedScene
@@ -24,7 +25,7 @@ extends Node3D
 @export_range(1, 4, 1) var do_procgen_steps := 4
 
 # Level gen tuning
-# Cavern count a nd scale
+# Cavern count and scale
 @export var caverns_large_count := 3
 @export var caverns_medium_count := 3
 @export var caverns_small_count := 3
@@ -63,6 +64,7 @@ const LevelEnemyPlacerScript := preload("res://Scenes/Level/level_enemy_placer.g
 
 # Internals
 var level_csg_instance: LevelCSG
+var level_starfield_instance: StarfieldParallax3D
 var level_camera_instance: LevelCamera
 var level_light_instance: Node3D
 var test_ship_instance: Node3D
@@ -83,6 +85,7 @@ func _ready() -> void:
 	level_camera_instance = level_camera.instantiate() as LevelCamera
 	add_child(level_camera_instance)
 	level_camera_instance.toggle_level_gen_mode() # DEBUG: immediately enter level gen mode for easy viewing of procgen. Press L to exit.
+	_spawn_starfield()
 
 	# Instantiate CSG scene, which sets us up for level gen, and set global level_dimensions
 	level_csg_instance = level_csg.instantiate() as LevelCSG
@@ -121,6 +124,13 @@ func _spawn_ship(spawn_point: Vector3) -> void:
 	test_ship_instance.position = Vector3(spawn_point)
 	add_child(test_ship_instance)
 	level_camera_instance.follow_target = test_ship_instance
+
+
+func _spawn_starfield() -> void:
+	RH.print("🪨 level.gd | spawning starfield...")
+	level_starfield_instance = level_starfield.instantiate()
+	level_starfield_instance.set_camera(level_camera_instance)
+	add_child(level_starfield_instance)
 
 
 func _run_procgen() -> void:
