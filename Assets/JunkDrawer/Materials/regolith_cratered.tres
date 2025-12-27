@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dal783sb0gdb4" path="res://Assets/JunkDrawer/Textures/CrateredRegolith_Norm.png" id="2_w8jhh"]
 
 [resource]
+albedo_color = Color(0.5689727, 0.56897277, 0.5689727, 1)
 albedo_texture = ExtResource("1_82oji")
 normal_enabled = true
 normal_texture = ExtResource("2_w8jhh")
