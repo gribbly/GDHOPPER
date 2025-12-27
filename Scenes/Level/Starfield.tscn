@@ -23,16 +23,16 @@ script = ExtResource("1_uibu6")
 parallax_axes = Vector2i(1, 1)
 stars_near_path = NodePath("StarsNear")
 stars_near_tile_size = Vector2(128, 64)
-stars_near_factor = 0.8
+stars_near_factor = 0.9
 stars_mid_path = NodePath("StarsMid")
 stars_mid_tile_size = Vector2(144, 70)
-stars_mid_factor = 0.9
+stars_mid_factor = 0.95
 stars_far_path = NodePath("StarsFar")
 stars_far_tile_size = Vector2(160, 86)
 stars_far_factor = 0.99
 nebular_far_path = NodePath("NebulaFar")
 nebular_far_tile_size = Vector2(176, 102)
-nebular_far_factor = 1.0
+nebular_far_factor = 0.999
 
 [node name="StarsNear" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -64)
