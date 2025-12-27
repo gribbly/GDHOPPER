@@ -3,6 +3,10 @@ extends RigidBody3D
 @export var thrust_main := 20.0
 @export var thrust_left := 20.0
 @export var thrust_right := 20.0
+@export var ship_hull_collision_main: CollisionShape3D = null
+@export var ship_hull_collision_left: CollisionShape3D = null
+@export var ship_hull_collision_right: CollisionShape3D = null
+@export var ship_info_panel: PackedScene = null
 
 const Explosion01Scene := preload("res://Scenes/Game/Effects/Explosion01.tscn")
 
@@ -20,7 +24,6 @@ var _inventory: ShipInventory = ShipInventory.new()
 var _state: ShipState = ShipState.FLYING
 var thrust_side := 0.0
 var reset_requested := false
-@onready var ship_hull_collision: CollisionShape3D = %ShipHullCollision
 @onready var thrust_particles_left: GPUParticles3D = %ThrustParticles_left
 @onready var thrust_particles_right: GPUParticles3D = %ThrustParticles_right
 @onready var thrust_light_left: SpotLight3D = %ThrustLight_left
@@ -29,7 +32,7 @@ var reset_requested := false
 var flicker_array = []
 var flicker_index := 0
 var flicker_tick := 0
-
+var _ship_info_panel: Control = null
 
 func _ready() -> void:
 	RH.print("🚀 test_ship.gd | ready()", 2)
@@ -42,8 +45,11 @@ func _ready() -> void:
 	max_contacts_reported = 1
 	body_shape_entered.connect(_on_ship_body_shape_entered)
 
-	if ship_hull_collision == null:
-		push_error("🚀 test_ship.gd | ❌ ERROR: Didn't find %ShipHullCollision")
+	var hull_colliders := _get_ship_hull_colliders()
+	if hull_colliders.is_empty():
+		push_error("🚀 test_ship.gd | ❌ ERROR: No ship_hull_collision_* assigned; ship collision filtering may be wrong")
+	elif hull_colliders.size() < 3:
+		push_warning("🚀 test_ship.gd | ⚠️ Only %d ship_hull_collision_* assigned; others will be ignored" % hull_colliders.size())
 
 	pickup_area.body_entered.connect(_on_pickup_area_body_entered)
 	pickup_area.body_exited.connect(_on_pickup_area_body_exited)
@@ -51,9 +57,17 @@ func _ready() -> void:
 	RH.print("🚀 test_ship.gd | generating thrust_light_* flicker arrays", 4)
 	for i in range(0, FLICKER_ARRAY_LENGTH):
 		flicker_array.append(RH.get_random_float(0.0, THRUST_LIGHT_ENERGY))
+
+	RH.print("🚀 test_ship.gd | creating ship info panel", 2)
+	_ship_info_panel = ship_info_panel.instantiate()
+	_ship_info_panel.set_ship(self)
+	RH.get_overlay_layer().add_child(_ship_info_panel)
 	
 	reset()
 
+func _exit_tree() -> void:
+	RH.print("🚀 test_ship.gd | removing ship info panel", 2)
+	_ship_info_panel.queue_free()
 
 func reset() -> void:
 	RH.print("🚀 test_ship.gd | reset", 3)
@@ -279,9 +293,20 @@ func _crash() -> void:
 		return
 	_set_state(ShipState.CRASHED)
 
+func _get_ship_hull_colliders() -> Array[CollisionShape3D]:
+	var out: Array[CollisionShape3D] = []
+	if ship_hull_collision_main != null:
+		out.append(ship_hull_collision_main)
+	if ship_hull_collision_left != null:
+		out.append(ship_hull_collision_left)
+	if ship_hull_collision_right != null:
+		out.append(ship_hull_collision_right)
+	return out
+
 
 func _is_ship_collision_shape(local_shape_index: int) -> bool:
-	if ship_hull_collision == null:
+	var hull_colliders := _get_ship_hull_colliders()
+	if hull_colliders.is_empty():
 		return true
 
 	var owner_id := shape_find_owner(local_shape_index)
@@ -290,7 +315,7 @@ func _is_ship_collision_shape(local_shape_index: int) -> bool:
 	var shape_owner_node := shape_owner_get_owner(owner_id)
 	if shape_owner_node == null:
 		return true
-	return shape_owner_node == ship_hull_collision or shape_owner_node == self
+	return shape_owner_node == self or hull_colliders.has(shape_owner_node)
 
 
 func _on_ship_body_shape_entered(_body_rid: RID, body: Node, _body_shape_index: int, local_shape_index: int) -> void:

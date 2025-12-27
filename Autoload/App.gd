@@ -35,6 +35,8 @@ func _ready() -> void:
 	print("🌏 App.gd | Hello worlds...")
 	print("🌏 App.gd | Welcome to ROCKHOPPER")
 
+	RH.set_overlay_layer(overlay_layer)
+
 	if force_debug_info_panel_on:
 		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug info panel on...", 2)
 		RH.show_debug_info_panel = true

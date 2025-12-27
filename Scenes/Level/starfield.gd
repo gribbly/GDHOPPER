@@ -2,6 +2,7 @@ extends Node3D
 class_name StarfieldParallax3D
 
 @export var parallax_axes := Vector2i(1, 0) # (X, Y) as 0/1 toggles
+@export var ambient_drift := Vector2.ZERO # Units/sec, treated as "as-if camera velocity" for parallax.
 
 # Each layer config: which node, its tile size (the single-quad size), and its parallax factor.
 # Tile size MUST match the QuadMesh size you used when building the 2x2 grid.
@@ -30,6 +31,7 @@ class_name StarfieldParallax3D
 # ---- Internal state ----
 var _cam: Node3D = null
 var _base_cam_pos := Vector3.ZERO
+var _ambient_drift_offset_xy := Vector2.ZERO
 
 const _TILE_SIZE_EPSILON := 0.01
 const _SWAP_HYSTERESIS_TILES := 0.02
@@ -81,22 +83,23 @@ func _ready() -> void:
 
 	RH.print("✨ starfield.gd | _ready()", 2)
 
-func _process(_dt: float) -> void:
+func _process(dt: float) -> void:
 	if _cam == null:
 		return
 
 	var cam_pos := _cam.global_position
+	_ambient_drift_offset_xy += ambient_drift * dt
 
 	for ls in _layers:
 		var out_x := ls.base_pos.x
 		var out_y := ls.base_pos.y
 
 		if parallax_axes.x == 1:
-			var desired_x := (cam_pos.x * ls.factor) + ls.offset_xy.x
+			var desired_x := ((cam_pos.x + _ambient_drift_offset_xy.x) * ls.factor) + ls.offset_xy.x
 			out_x = _wrap_axis(desired_x, cam_pos.x, ls.tile_size.x, true, ls)
 
 		if parallax_axes.y == 1:
-			var desired_y := (cam_pos.y * ls.factor) + ls.offset_xy.y
+			var desired_y := ((cam_pos.y + _ambient_drift_offset_xy.y) * ls.factor) + ls.offset_xy.y
 			out_y = _wrap_axis(desired_y, cam_pos.y, ls.tile_size.y, false, ls)
 
 		# Apply to the layer root, preserving your authored Z depth and any base offsets.
@@ -188,7 +191,7 @@ func recenter_to_camera() -> void:
 	for ls in _layers:
 		# Solve: layer_pos = cam_pos * factor + offset  (before wrapping).
 		# At the anchor moment, we want cam_pos=_base_cam_pos to produce the authored base_pos.
-		ls.offset_xy = Vector2(ls.base_pos.x, ls.base_pos.y) - (base_cam_xy * ls.factor)
+		ls.offset_xy = Vector2(ls.base_pos.x, ls.base_pos.y) - ((base_cam_xy + _ambient_drift_offset_xy) * ls.factor)
 
 		# Pick initial wrap steps so the layer's 2x2 tile grid is centered near the camera immediately.
 		if ls.tile_size.x != 0.0:

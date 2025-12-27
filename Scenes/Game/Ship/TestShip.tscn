@@ -1,8 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://cy1f6s5878jps"]
+[gd_scene load_steps=9 format=3 uid="uid://cy1f6s5878jps"]
 
 [ext_resource type="PackedScene" uid="uid://0khn4xmn7hu7" path="res://Assets/JunkDrawer/Models/test_ship/TestShip.glb" id="1_hkkm6"]
 [ext_resource type="Script" uid="uid://dh3sqpycsp36q" path="res://Scenes/Game/Ship/test_ship.gd" id="1_trx1f"]
+[ext_resource type="PackedScene" uid="uid://1nr3ocime1c1" path="res://Scenes/UI/ShipInfoPanel.tscn" id="2_fel7i"]
 [ext_resource type="PackedScene" uid="uid://cfnthe70ojwtb" path="res://Scenes/Game/Ship/ThrustParticles.tscn" id="3_pw2eq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dt5ff"]
+size = Vector3(0.6, 0.6, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fel7i"]
+size = Vector3(0.25, 0.3, 0.21)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pw2eq"]
 size = Vector3(0.9, 0.09, 0.6)
@@ -10,7 +17,7 @@ size = Vector3(0.9, 0.09, 0.6)
 [sub_resource type="SphereShape3D" id="SphereShape3D_pickup"]
 radius = 4.0
 
-[node name="TestShip" type="RigidBody3D"]
+[node name="TestShip" type="RigidBody3D" node_paths=PackedStringArray("ship_hull_collision_main", "ship_hull_collision_left", "ship_hull_collision_right")]
 physics_interpolation_mode = 1
 input_ray_pickable = false
 axis_lock_linear_z = true
@@ -24,14 +31,27 @@ script = ExtResource("1_trx1f")
 thrust_main = 2000.0
 thrust_left = 40000.0
 thrust_right = 40000.0
+ship_hull_collision_main = NodePath("ShipHullCollision1")
+ship_hull_collision_left = NodePath("ShipHullCollision2")
+ship_hull_collision_right = NodePath("ShipHullCollision3")
+ship_info_panel = ExtResource("2_fel7i")
 
 [node name="TestShip" parent="." instance=ExtResource("1_hkkm6")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
-[node name="ShipHullCollision" type="CollisionShape3D" parent="."]
-unique_name_in_owner = true
-transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, -0.0019134507, 0.5556628, 0)
-shape = SubResource("BoxShape3D_pw2eq")
+[node name="ShipHullCollision1" type="CollisionShape3D" parent="."]
+transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, -0.009526953, 0.9526012, 0)
+shape = SubResource("BoxShape3D_dt5ff")
+debug_color = Color(0, 0.6, 0.69803923, 0.7882353)
+
+[node name="ShipHullCollision2" type="CollisionShape3D" parent="."]
+transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, 1.4, 0.36, 0.0011682212)
+shape = SubResource("BoxShape3D_fel7i")
+debug_color = Color(0, 0.6, 0.69803923, 0.7882353)
+
+[node name="ShipHullCollision3" type="CollisionShape3D" parent="."]
+transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, -1.4, 0.36, 0.001)
+shape = SubResource("BoxShape3D_fel7i")
 debug_color = Color(0, 0.6, 0.69803923, 0.7882353)
 
 [node name="ShipLandingCollision" type="CollisionShape3D" parent="."]
@@ -44,7 +64,6 @@ debug_color = Color(0, 0.6, 0.69803923, 0.7882353)
 unique_name_in_owner = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PickupArea"]
-visible = false
 shape = SubResource("SphereShape3D_pickup")
 
 [node name="ThrustParticles_left" parent="." instance=ExtResource("3_pw2eq")]

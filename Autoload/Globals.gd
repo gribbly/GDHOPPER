@@ -13,6 +13,7 @@ var show_debug_visuals := false
 # Internals
 var _rng := RandomNumberGenerator.new()
 var _level_node: Node3D
+var _overlay_layer: CanvasLayer
 
 
 func _ready() -> void:
@@ -28,9 +29,23 @@ func set_level_node(node: Node3D):
 
 func get_level_node():
 	if _level_node == null:
-		push_warning("🌐 Globals.gd | ⚠️ WARNING - attempt to get _level_node while it's null")
+		push_warning("⚠️ WARNING - attempt to get _level_node while it's null")
 	else:
 		return _level_node
+
+
+# App.gd will set overlay layer at boot
+# overlay layer is stable for entire app run
+func set_overlay_layer(layer: CanvasLayer):
+	_overlay_layer = layer
+	RH.print("🌐 Globals.gd | set_overlay_layer (layer = %s)" % _overlay_layer, 2)
+
+
+func get_overlay_layer():
+	if _overlay_layer == null:
+		push_warning("⚠️ WARNING - attempt to get _overlay_layer while it's null")
+	else:
+		return _overlay_layer
 
 
 # Global print - access using 'RH.print'
