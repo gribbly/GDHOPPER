@@ -9,3 +9,6 @@ signal level_setup_complete() #level_csg.gd was first customer
 
 @warning_ignore("unused_signal")
 signal ship_spawn_point(spawn_point: Vector3) #level.gd was first customer
+
+@warning_ignore("unused_signal")
+signal explosion() #level_camera.gd was first customer
