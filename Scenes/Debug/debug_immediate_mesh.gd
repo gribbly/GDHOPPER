@@ -13,7 +13,7 @@ var _legacy_labels: Array[Dictionary] = []
 const DEBUG_RENDER_PRIORITY := 127
 
 func _ready() -> void:
-	RH.print("🔺 debug_immediate_mesh.gd | ready()", 1)
+	RH.print("🔺 debug_immediate_mesh.gd | ready()", 2)
 	_configure_render_on_top()
 
 func _configure_render_on_top() -> void:
@@ -70,6 +70,7 @@ func render(lines: Array[Dictionary], labels: Array[Dictionary]) -> void:
 
 	for i in range(_active_label_count, _label_pool.size()):
 		_label_pool[i].visible = false
+
 
 # Legacy convenience API (kept for compatibility). These rebuild the mesh each call.
 func line(start: Vector3, end: Vector3, col: Color = Color.YELLOW) -> void:

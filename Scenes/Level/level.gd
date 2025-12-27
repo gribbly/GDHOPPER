@@ -74,7 +74,9 @@ var _cavern_template_half_size_xy := Vector2.ZERO
 
 
 func _ready() -> void:
-	RH.print("🪨 level.gd | _ready()", 1)
+	RH.print("🪨 level.gd | ready() - pre level gen", 2)
+	var t0 := Time.get_ticks_usec()
+	
 	SignalBus.connect("ship_spawn_point", Callable(self, "_spawn_ship"))
 	RH.set_level_node(self)
 
@@ -111,6 +113,11 @@ func _ready() -> void:
 	level_camera_instance.move_camera(rock_size.x / 2.0, rock_size.y / 2.0)
 	var spawn_point := Vector3(rock_size.x / 2.0, rock_size.y + 16.0, 0.0)
 	SignalBus.emit_signal("ship_spawn_point", spawn_point)
+	
+	var elapsed_usec := Time.get_ticks_usec() - t0
+	var elapsed_ms := elapsed_usec / 1000.0
+	var elapsed_seconds := elapsed_ms / 1000.0
+	RH.print("🪨 level.gd | ready() - level gen complete in %.2f seconds (%.2f ms)" % [elapsed_seconds, elapsed_ms], 2)
 
 
 func _exit_tree() -> void:
@@ -127,7 +134,7 @@ func _spawn_ship(spawn_point: Vector3) -> void:
 
 
 func _spawn_starfield() -> void:
-	RH.print("🪨 level.gd | spawning starfield...")
+	RH.print("🪨 level.gd | spawning starfield")
 	level_starfield_instance = level_starfield.instantiate()
 	level_starfield_instance.set_camera(level_camera_instance)
 	add_child(level_starfield_instance)

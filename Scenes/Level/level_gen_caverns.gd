@@ -10,6 +10,7 @@ func init_grid_unblocked(grid: LevelGrid) -> void:
 		set_cell.call(false)
 	)
 
+
 func place_caverns(
 	grid: LevelGrid,
 	cavern_template_half_size_xy: Vector2,
@@ -51,14 +52,14 @@ func place_caverns(
 				)
 				if placed != null:
 					if pad < padding_cells:
-						RH.print("🗺️ level_gen_caverns.gd | reduced padding %s→%s to fit cavern (class=%s)" % [padding_cells, pad, size_class], 2)
+						RH.print("🗺️ level_gen_caverns.gd | reduced padding %s→%s to fit cavern (class=%s)" % [padding_cells, pad, size_class], 3)
 					break
 
 			if placed != null:
 				caverns.append(placed)
 				next_id += 1
 			else:
-				RH.print("🗺️ level_gen_caverns.gd | ⚠️ failed to place cavern (class=%s); skipping" % size_class, 1)
+				RH.print("🗺️ level_gen_caverns.gd | ⚠️ failed to place cavern (class=%s); skipping" % size_class, 2)
 
 	return caverns
 
@@ -102,6 +103,7 @@ func _try_place_one(
 
 	return null
 
+
 func _build_candidates(grid: LevelGrid, avoid_borders: bool, border_margin_cells: int) -> Array[Vector2i]:
 	var out: Array[Vector2i] = []
 	for row in range(grid.rows):
@@ -115,6 +117,7 @@ func _build_candidates(grid: LevelGrid, avoid_borders: bool, border_margin_cells
 					continue
 			out.append(Vector2i(row, col))
 	return out
+
 
 func _choose_candidate_best_of_k(
 	grid: LevelGrid,
@@ -137,6 +140,7 @@ func _choose_candidate_best_of_k(
 			best_cell = cell
 
 	return best_cell
+
 
 func _score_candidate(
 	grid: LevelGrid,
@@ -169,11 +173,13 @@ func _score_candidate(
 
 	return (nearest * distance_weight) - (edge_penalty * float(border_margin_cells)) + noise
 
+
 func _footprint_radius_cells(grid: LevelGrid, cavern_template_half_size_xy: Vector2, scale_xy: float, padding_cells: int) -> Vector2i:
 	var half_world := cavern_template_half_size_xy * scale_xy
 	var radius_x := int(ceili(half_world.x / grid.cell_size.x)) + padding_cells
 	var radius_y := int(ceili(half_world.y / grid.cell_size.y)) + padding_cells
 	return Vector2i(maxi(radius_y, 1), maxi(radius_x, 1))
+
 
 func _footprint_fits(grid: LevelGrid, center_cell: Vector2i, radius_cells: Vector2i) -> bool:
 	for row in range(center_cell.x - radius_cells.x, center_cell.x + radius_cells.x + 1):
@@ -186,6 +192,7 @@ func _footprint_fits(grid: LevelGrid, center_cell: Vector2i, radius_cells: Vecto
 				return false
 	return true
 
+
 func _mark_footprint_blocked(grid: LevelGrid, center_cell: Vector2i, radius_cells: Vector2i) -> void:
 	for row in range(center_cell.x - radius_cells.x, center_cell.x + radius_cells.x + 1):
 		for col in range(center_cell.y - radius_cells.y, center_cell.y + radius_cells.y + 1):
@@ -194,6 +201,7 @@ func _mark_footprint_blocked(grid: LevelGrid, center_cell: Vector2i, radius_cell
 			if not _in_ellipse(center_cell, Vector2i(row, col), radius_cells):
 				continue
 			grid.set_cell(row, col, true)
+
 
 func _in_ellipse(center: Vector2i, cell: Vector2i, radius: Vector2i) -> bool:
 	var rx := float(maxi(radius.y, 1))

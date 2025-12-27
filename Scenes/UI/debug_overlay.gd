@@ -5,7 +5,6 @@ extends Control
 @onready var back_btn: Button = %Back
 
 func _ready() -> void:
-	RH.print("👾 debug_overlay.gd | _ready()", 1)
 	debug_info_toggle.button_pressed = RH.show_debug_info_panel # make button state match global state
 	debug_visuals_toggle.button_pressed = RH.show_debug_visuals # make button state match global state
 
@@ -20,6 +19,8 @@ func _ready() -> void:
 	)
 
 	back_btn.grab_focus.call_deferred()
+	
+	RH.print("🎛️ debug_overlay.gd | _ready()", 2)
 
 func _on_debug_info_toggle_toggled(toggled_on: bool) -> void:
 	if toggled_on:

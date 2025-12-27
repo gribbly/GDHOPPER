@@ -1,14 +1,15 @@
 extends Camera3D
 
+# Exports
 @export var move_speed: float = 32.0
 @export var sprint_multiplier: float = 4.0
 @export var acceleration: float = 12.0
 @export var deceleration: float = 16.0
-
 @export var mouse_sensitivity: float = 0.002
 @export var look_smoothing: float = 22.0
 @export_range(0.0, 89.9, 0.1) var pitch_limit_degrees: float = 85.0
 
+# Internals
 var _velocity: Vector3 = Vector3.ZERO
 var _target_yaw: float = 0.0
 var _target_pitch: float = 0.0
@@ -25,7 +26,7 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _exit_tree() -> void:
-	RH.print("🤳 debug_camera.gd | _exit_tree()", 1)
+	RH.print("🤳 debug_camera.gd | _exit_tree()", 4)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _physics_process(delta: float) -> void:

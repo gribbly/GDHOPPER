@@ -22,14 +22,14 @@ func carve_segment(
 ) -> void:
 	RH.print("🪏 level_csg_tunnels.gd | carve_segment()", 4)
 	if level_csg_combiner == null or tunnel_template == null:
-		RH.print("🪏 level_csg_tunnels.gd | ⚠️ missing combiner/template; cannot carve tunnel", 1)
+		push_error("🪏 level_csg_tunnels.gd | ⚠️ missing combiner/template; cannot carve tunnel")
 		return
 
 	var delta := end - start
 	var dist := delta.length()
 
 	if dist <= 0.1:
-		RH.print("🪏 level_csg_tunnels.gd | abort... distance between start and end is too short", 4)
+		RH.print("🪏 level_csg_tunnels.gd | ⚠️ carve_segment() early out. Distance between start and end is too short", 2)
 		return
 	
 	var direction := delta/dist

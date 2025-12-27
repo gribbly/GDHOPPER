@@ -36,15 +36,15 @@ func _ready() -> void:
 	print("🌏 App.gd | Welcome to ROCKHOPPER")
 
 	if force_debug_info_panel_on:
-		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug info panel on...")
+		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug info panel on...", 2)
 		RH.show_debug_info_panel = true
 
 	if force_debug_visuals_on:
-		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug visuals on...")
+		RH.print("🌏 App.gd | 🛠️ DEBUG - forcing debug visuals on...", 2)
 		RH.show_debug_visuals = true
 
 	if debug_autostart:
-		RH.print("🌏 App.gd | 🛠️ DEBUG - autostarting game...")
+		RH.print("🌏 App.gd | 🛠️ DEBUG - autostarting game...", 2)
 		start_game()
 	else:
 		show_title()
@@ -64,46 +64,42 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		match event.physical_keycode:
 			KEY_G:
-				RH.print("🌏 App.gd | 🛠️ DEBUG - regen level...")
+				RH.print("🌏 App.gd | 🛠️ DEBUG - regen level...", 2)
 				regenerate_level()
 			KEY_F:
 				_using_debug_camera = !_using_debug_camera
-				RH.print("🌏 App.gd | 🛠️ DEBUG - toggle debug camera = %s" % _using_debug_camera, 1)
+				RH.print("🌏 App.gd | 🛠️ DEBUG - toggle debug camera = %s" % _using_debug_camera, 2)
 				switch_to_debug_camera(_using_debug_camera)
 			KEY_T:
 				_slow_motion_activated = !_slow_motion_activated
-				RH.print("🌏 App.gd | 🛠️ DEBUG - toggle slow motion = %s" % _slow_motion_activated, 1)
+				RH.print("🌏 App.gd | 🛠️ DEBUG - toggle slow motion = %s" % _slow_motion_activated, 2)
 				if _slow_motion_activated:
 					Engine.time_scale = SLOW_MOTION_TIMESCALE
 				else:
 					Engine.time_scale = 1.0
 
 func show_title() -> void:
-	RH.print("🌏 App.gd | show_title()")
 	state = MainState.TITLE
 	_swap_main(TITLE_SCENE.instantiate())
 	_clear_overlays()
 	get_tree().paused = false
 
 func start_game() -> void:
-	RH.print("🌏 App.gd | start_game()")
 	show_debug_info_panel(RH.show_debug_info_panel)
 	state = MainState.PLAYING
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_load_fresh_level()
 
 func regenerate_level() -> void:
-	RH.print("🌏 App.gd | regenerate_level()")
 	_load_fresh_level() # note: _swap_main will tear down and replace the existing level
 
 func _load_fresh_level() -> void:
-	RH.print("🌏 App.gd | _load_fresh_level()")
 	var next := LEVEL_SCENE.instantiate()
 	_swap_main(next)
 	_level = next
 
 func pause_game() -> void:
-	RH.print("🌏 App.gd | pause_game()", 1)
+	RH.print("🌏 App.gd | PAUSE menu", 2)
 	if state != MainState.PLAYING: return
 	if _pause_overlay: return
 	_clear_overlays()
@@ -114,7 +110,7 @@ func pause_game() -> void:
 	_pause_overlay.process_mode = Node.PROCESS_MODE_ALWAYS
 
 func debug_pause_game() -> void:
-	RH.print("🌏 App.gd | debug_pause_game()", 1)
+	RH.print("🌏 App.gd | DEBUG menu", 2)
 	if state != MainState.PLAYING: return
 	if _debug_overlay: return
 	_clear_overlays()
@@ -125,12 +121,12 @@ func debug_pause_game() -> void:
 	_debug_overlay.process_mode = Node.PROCESS_MODE_ALWAYS
 
 func resume_game() -> void:
-	RH.print("🌏 App.gd | resume_game()", 1)
+	RH.print("🌏 App.gd | RESUME", 2)
 	get_tree().paused = false
 	_clear_overlays()
 
 func show_debug_info_panel(show: bool) -> void:
-	RH.print("🌏 App.gd | show_debug_info_panel() - %s" % show, 1)
+	RH.print("🌏 App.gd | show_debug_info_panel() - %s" % show, 4)
 	if show:
 		if _debug_info_panel: return
 		_debug_info_panel = DEBUG_INFO_PANEL_SCENE.instantiate()
@@ -142,7 +138,6 @@ func show_debug_info_panel(show: bool) -> void:
 			_debug_info_panel = null
 
 func switch_to_debug_camera(switch: bool) -> void:
-	RH.print("🌏 App.gd | switch_to_debug_camera() - %s" % switch, 1)
 	if switch:
 		_previous_camera = get_viewport().get_camera_3d()
 		_debug_camera = DEBUG_CAMERA_SCENE.instantiate()
@@ -160,7 +155,7 @@ func switch_to_debug_camera(switch: bool) -> void:
 				_previous_camera.make_current()
 
 func quit_to_title() -> void:
-	RH.print("🌏 App.gd | quit_to_title()")
+	RH.print("🌏 App.gd | QUIT", 2)
 	show_debug_info_panel(false) # hide debug_info_panel in title screen, but don't touch global setting
 	show_title()
 
@@ -170,15 +165,15 @@ func exit_game() -> void:
 
 func _swap_main(new_root: Node) -> void:
 	if _current_main:
-		RH.print("🌏 App.gd | freeing _current_main")
+		RH.print("🌏 App.gd | freeing _current_main", 4)
 		_current_main.queue_free()
 		await _current_main.tree_exited
 	_current_main = new_root
-	RH.print("🌏 App.gd | adding new_root")
+	RH.print("🌏 App.gd | adding %s" % new_root)
 	main_layer.add_child(new_root)
 
 func _clear_overlays() -> void:
-	RH.print("🌏 App.gd | _clear_overlays()", 3)
+	RH.print("🌏 App.gd | _clear_overlays()", 4)
 	var overlays := [
 		_pause_overlay,
 		_debug_overlay
@@ -186,7 +181,7 @@ func _clear_overlays() -> void:
 
 	for overlay in overlays:
 		if overlay:
-			RH.print("🌏 App.gd | freeing overlay %s" % overlay, 3)
+			RH.print("🌏 App.gd | freeing overlay %s" % overlay, 5)
 			overlay.queue_free()
 			await overlay.tree_exited
 			overlay = null

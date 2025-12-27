@@ -9,8 +9,9 @@ var albedo_tex := load("res://Assets/JunkDrawer/Textures/noise_256.webp") as Tex
 var normal_tex := load("res://Assets/JunkDrawer/Textures/noise_256_norm.webp") as Texture2D
 var rough_tex := load("res://Assets/JunkDrawer/Textures/rock_weathered_15b_spec.webp") as Texture2D
 
+
 func convert(csg: CSGCombiner3D, _mat: StandardMaterial3D = null) -> Node3D:
-	RH.print("🫖 level_csg_mesh.gd | convert()")
+	RH.print("🫖 level_csg_mesh.gd | convert()", 3)
 
 	var meshes = csg.get_meshes() # [Transform3D, Mesh, Transform3D, Mesh, ...]
 	if meshes.size() < 2 or meshes[1] == null:

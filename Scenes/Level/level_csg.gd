@@ -25,9 +25,7 @@ var _cavern_template: CSGMesh3D = null
 var _tunnel_template: CSGMesh3D = null
 
 
-func _ready() -> void:
-	RH.print("🔪 level_csg.gd | ready() with base_rock_size %s" % base_rock_size, 1)
-	
+func _ready() -> void:	
 	# Find required nodes
 	csg = %LevelCsgCombiner
 	_cavern_template = %CavernCarve01
@@ -35,21 +33,23 @@ func _ready() -> void:
 
 	# Report error if we didn't find carve templates
 	if _cavern_template == null or _cavern_template.mesh == null:
-		RH.print("🔪 level_csg.gd | ❌ ERROR - didn't find %CavernCarve01", 1)
+		push_error("🔪 level_csg.gd | ❌ Didn't find %CavernCarve01")
 	if _tunnel_template == null or _tunnel_template.mesh == null:
-		RH.print("🔪 level_csg.gd | ❌ ERROR - didn't find %TunnelCarve01", 1)
+		push_error("🔪 level_csg.gd | ❌ Didn't find %TunnelCarve01")
 
 	csg_caverns.configure(csg, _cavern_template)
 	csg_tunnels.configure(csg, _tunnel_template)
 
-	var base_rock_top_right_corner: Node3D = %BaseRockTopRightCorner
-	base_rock_size.x = base_rock_top_right_corner.global_position.x
-	base_rock_size.y = base_rock_top_right_corner.global_position.y
-	RH.print("🔪 level_csg.gd | ready() with base_rock_size %s" % base_rock_size, 1)
+	var _base_rock_top_right_corner: Node3D = %BaseRockTopRightCorner
+	if _base_rock_top_right_corner == null:
+		push_error("🔪 level_csg.gd | ❌ Didn't find %BaseRockTopRightCorner")
+	base_rock_size.x = _base_rock_top_right_corner.global_position.x
+	base_rock_size.y = _base_rock_top_right_corner.global_position.y
+	RH.print("🔪 level_csg.gd | ready() - with base_rock_size %s" % base_rock_size, 2)
 
 
 func _exit_tree() -> void:
-	RH.print("🔪 level_csg.gd | _exit_tree()")
+	RH.print("🔪 level_csg.gd | _exit_tree()", 4)
 
 
 func get_base_rock_size() -> Vector2:

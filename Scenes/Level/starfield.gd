@@ -48,8 +48,6 @@ class LayerState:
 var _layers: Array[LayerState] = []
 
 func _ready() -> void:
-	RH.print("✨ starfield.gd | _ready()", 1)
-
 	# We depend on reading the camera's position each frame. Ensure we run AFTER the camera node
 	# so we don't get a 1-frame lag at tile-swap boundaries.
 	process_priority = 10
@@ -80,6 +78,8 @@ func _ready() -> void:
 	# compute per-layer offsets now.
 	if _cam != null:
 		recenter_to_camera()
+
+	RH.print("✨ starfield.gd | _ready()", 2)
 
 func _process(_dt: float) -> void:
 	if _cam == null:
@@ -169,7 +169,7 @@ func _find_first_quad_mesh_size(root: Node) -> Vector2:
 	return Vector2(-1.0, -1.0)
 
 func set_camera(cam: Node3D):
-	RH.print("✨ starfield.gd | set_camera()", 1)
+	RH.print("✨ starfield.gd | set_camera()", 4)
 	_cam = cam
 
 	# If the camera node has a custom priority, make sure we stay after it.

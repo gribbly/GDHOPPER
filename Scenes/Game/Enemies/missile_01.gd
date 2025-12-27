@@ -39,10 +39,10 @@ func _on_timeout() -> void:
 
 func _on_body_entered(body: Node) -> void:
 	if debug_logs:
-		RH.print( "🚀 missile_01.gd | body_entered body=%s fuse_left=%s" % [body, _fuse_left], 1)
+		RH.print( "🎯 missile_01.gd | body_entered body=%s fuse_left=%s" % [body, _fuse_left], 3)
 	
 	if not _impact_armed:
-		RH.print( "🚀 missile_01.gd | body_entered - not _impact_armed. Returning", 1)
+		RH.print( "🎯 missile_01.gd | body_entered - not _impact_armed. Returning", 3)
 		return
 	else:
 		_die("body_entered", body)
@@ -63,7 +63,7 @@ func _physics_process(delta: float) -> void:
 	elif debug_logs and not _engine_started:
 		_engine_started = true
 		missile_thrust_vfx.emitting = true
-		RH.print("🚀 missile_01.gd | fuse done; starting engine!", 1)
+		RH.print("🎯 missile_01.gd | fuse done; starting engine!", 3)
 
 	# Homing behavior
 	var _target_direction := _target.global_position - transform.origin
@@ -84,7 +84,7 @@ func _update_impact_arming(delta: float) -> void:
 	_impact_armed = true
 
 	if debug_logs:
-		RH.print("🚀 missile_01.gd | impact ARMED", 1)
+		RH.print("👾 missile_01.gd | impact ARMED", 3)
 
 
 func _die( reason: String, other: Node = null) -> void:
@@ -97,13 +97,13 @@ func _die( reason: String, other: Node = null) -> void:
 
 	if debug_logs:
 		RH.print(
-			"🚀 missile_01.gd | DIE reason=%s other=%s pos=%s vel=%s" % [
+			"🎯 missile_01.gd | DIE reason=%s other=%s pos=%s vel=%s" % [
 				reason,
 				other,
 				global_position,
 				linear_velocity
 			],
-			1
+			3
 		)
 	call_deferred("queue_free")
 
@@ -123,12 +123,12 @@ func _apply_physics_push(other: Node) -> void:
 
 	if debug_logs:
 		RH.print(
-			"🚀 missile_01.gd | _apply_physics_push other=%s pos=%s vel=%s" % [
+			"🎯 missile_01.gd | _apply_physics_push other=%s pos=%s vel=%s" % [
 				other,
 				global_position,
 				linear_velocity
 			],
-			1
+			3
 		)
 
 	var _impulse_direction := body.global_position - transform.origin

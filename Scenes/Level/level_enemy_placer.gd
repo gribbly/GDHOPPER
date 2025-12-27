@@ -4,8 +4,6 @@
 class_name LevelEnemyPlacer
 extends RefCounted
 
-const _UP := Vector3.UP
-
 
 func place_one_test_launcher_per_cavern(
 	level: Node3D,
@@ -33,11 +31,11 @@ func place_one_test_launcher_per_cavern(
 
 		var launcher_instance := test_launcher.instantiate() as Node3D
 		if launcher_instance == null:
-			RH.print("🪨 level_enemy_placer.gd | ⚠️ test_launcher scene did not instantiate as Node3D", 1)
+			push_error("❌ test_launcher scene did not instantiate as Node3D")
 			continue
 
 		var hit_pos_global: Vector3 = floor_hit["position"]
-		var hit_normal: Vector3 = floor_hit.get("normal", _UP)
+		var hit_normal: Vector3 = floor_hit.get("normal", Vector3.UP)
 		var pos_global := hit_pos_global - (hit_normal * maxf(extra_depth, 0.0))
 
 		level.add_child(launcher_instance)
@@ -69,7 +67,7 @@ func _raycast_cavern_floor(
 
 	var ray_len := (half.y * 2.5) + 64.0
 	var from := probe_origin_global
-	var to := probe_origin_global - (_UP * ray_len)
+	var to := probe_origin_global - (Vector3.UP * ray_len)
 
 	var query := PhysicsRayQueryParameters3D.create(from, to)
 	query.collide_with_areas = false

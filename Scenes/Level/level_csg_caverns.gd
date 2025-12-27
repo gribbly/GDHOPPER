@@ -15,7 +15,7 @@ func configure(combiner: CSGCombiner3D, p_cavern_template: CSGMesh3D) -> void:
 
 func carve_cavern(id: int, pos: Vector3, scale_xy: float) -> void:
 	if level_csg_combiner == null or cavern_template == null:
-		RH.print("🔪 level_csg_caverns.gd | ⚠️ missing combiner/template; cannot carve cavern", 1)
+		push_error("🔪 level_csg_caverns.gd | ⚠️ missing combiner/template; cannot carve cavern")
 		return
 
 	var carve_mesh := cavern_template.duplicate() as CSGMesh3D

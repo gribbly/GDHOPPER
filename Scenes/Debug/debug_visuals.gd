@@ -26,13 +26,13 @@ func _exit_tree() -> void:
 	RH.unregister_debug_visuals(self)
 
 func _ready() -> void:
-	RH.print("📐 debug_visuals.gd | ready()", 1)
+	RH.print("📐 debug_visuals.gd | ready()", 2)
 
 	if debug_immediate_mesh:
-		RH.print("📐 debug_visuals.gd | found %DebugImmediateMesh", 3)
+		RH.print("📐 debug_visuals.gd | found %DebugImmediateMesh", 4)
 		clear() # Ensure there are no residual vertices/commands from previous activity (e.g., we're restarting a level)
 	else:
-		RH.print("📐 debug_visuals.gd | ⚠️ WARNING - didn't find %DebugImmediateMesh", 1)
+		push_warning("📐 debug_visuals.gd | ⚠️ WARNING - didn't find %DebugImmediateMesh")
 
 func _process(_delta: float) -> void:
 	if debug_immediate_mesh:

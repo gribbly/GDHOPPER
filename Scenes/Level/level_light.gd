@@ -4,6 +4,7 @@
 extends Node3D
 
 func _ready() -> void:
-	RH.print("🪨 level_light.gd | ☀️ ready()")
+	var _sun_rotation = Vector3(-32.0, -45.0, 0.0)
+	rotation_degrees = _sun_rotation
 
-	rotation_degrees = Vector3(-32.0, -45.0, 0.0)
+	RH.print("☀️ level_light.gd | ready() - set sun rotation to %s" % _sun_rotation, 2)

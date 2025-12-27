@@ -20,7 +20,6 @@ func _ready() -> void:
 	if _mat:
 		_mat.set_shader_parameter("flash", false)
 
-	RH.print("📸 explosion_01.gd | emit signal \"explosion\"", 1)
 	SignalBus.emit_signal("explosion") #Note: Add params after "explosion", ...
 
 	await get_tree().create_timer(lifetime_seconds).timeout

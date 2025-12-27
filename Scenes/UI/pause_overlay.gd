@@ -6,8 +6,6 @@ extends Control
 @onready var abandon_btn: Button = %Abandon
 
 func _ready() -> void:
-	RH.print("📺 pause_overlay.gd | _ready()", 1)
-
 	# Button signals:
 	resume_btn.pressed.connect(func(): 
 		App.resume_game()
@@ -25,3 +23,5 @@ func _ready() -> void:
 	)
 
 	resume_btn.grab_focus.call_deferred()
+	
+	RH.print("📺 pause_overlay.gd | _ready()", 1)

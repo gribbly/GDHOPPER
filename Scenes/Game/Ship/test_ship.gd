@@ -32,7 +32,7 @@ var flicker_tick := 0
 
 
 func _ready() -> void:
-	RH.print("🚀 test_ship.gd | ready")
+	RH.print("🚀 test_ship.gd | ready()", 2)
 	add_to_group("ship")
 
 	_base_mass = mass
@@ -43,12 +43,12 @@ func _ready() -> void:
 	body_shape_entered.connect(_on_ship_body_shape_entered)
 
 	if ship_hull_collision == null:
-		RH.print("🚀 test_ship.gd | ❌ ERROR: Didn't find %ShipHullCollision", 1)
+		push_error("🚀 test_ship.gd | ❌ ERROR: Didn't find %ShipHullCollision")
 
 	pickup_area.body_entered.connect(_on_pickup_area_body_entered)
 	pickup_area.body_exited.connect(_on_pickup_area_body_exited)
 
-	RH.print("🚀 test_ship.gd | generating thrust_light_* flicker arrays", 5)
+	RH.print("🚀 test_ship.gd | generating thrust_light_* flicker arrays", 4)
 	for i in range(0, FLICKER_ARRAY_LENGTH):
 		flicker_array.append(RH.get_random_float(0.0, THRUST_LIGHT_ENERGY))
 	
@@ -56,7 +56,7 @@ func _ready() -> void:
 
 
 func reset() -> void:
-	RH.print("🚀 test_ship.gd | reset")
+	RH.print("🚀 test_ship.gd | reset", 3)
 	_set_state(ShipState.FLYING)
 	position.z = 0.0
 	transform.basis = Basis.IDENTITY
@@ -96,6 +96,7 @@ func _on_pickup_area_body_entered(body: Node3D) -> void:
 	cargo.queue_free()
 	_update_mass_from_inventory()
 
+
 func _on_pickup_area_body_exited(body: Node3D) -> void:
 	var cargo := body as CargoPickup
 	if cargo == null:
@@ -112,12 +113,12 @@ func drop_last_cargo() -> void:
 
 	var packed := load(item.scene_path) as PackedScene
 	if packed == null:
-		RH.print("🚀 test_ship.gd | ⚠️ could not load cargo scene: %s" % item.scene_path, 1)
+		push_warning("🚀 test_ship.gd | ⚠️ could not load cargo scene: %s" % item.scene_path)
 		return
 
 	var instance := packed.instantiate() as Node3D
 	if instance == null:
-		RH.print("🚀 test_ship.gd | ⚠️ cargo scene did not instantiate as Node3D: %s" % item.scene_path, 1)
+		push_warning("🚀 test_ship.gd | ⚠️ cargo scene did not instantiate as Node3D: %s" % item.scene_path)
 		return
 
 	var parent := get_parent()
@@ -227,7 +228,7 @@ func _set_state(new_state: ShipState) -> void:
 			reset_requested = false
 			_stop_left_thrust_VFX()
 			_stop_right_thrust_VFX()
-			apply_torque_impulse(Vector3(0.0, 0.0, RH.get_random_float(-120.0, 120.0)))
+			# apply_torque_impulse(Vector3(0.0, 0.0, RH.get_random_float(-120.0, 120.0)))
 			_spawn_crash_explosions(global_position)
 
 

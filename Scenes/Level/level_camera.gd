@@ -7,7 +7,7 @@ extends Node3D
 
 # Note: Assumes that LevelCamera.tscn has %LevelCamera3D
 
-# External
+# Externals
 var follow_target: Node3D = null
 
 # Tuneables
@@ -37,15 +37,16 @@ class _Shake:
 var _camera_base_position: Vector3 = Vector3.ZERO
 var _active_shakes: Array[_Shake] = []
 
+
 func _ready() -> void:
-	RH.print("📸 level_camera.gd | ready()", 1)
+	RH.print("📸 level_camera.gd | ready()", 2)
 	SignalBus.connect("explosion", Callable(self, "_on_explosion"))
 
 	#_adjust_size(DEFAULT_SIZE)
 	_camera_base_position = camera_node.position
 
+
 func _exit_tree() -> void:
-	RH.print("📸 level_camera.gd | _exit_tree()", 1)
 	SignalBus.disconnect("explosion", Callable(self, "_on_explosion"))
 
 
@@ -124,7 +125,6 @@ func _update_camera_shake(delta: float) -> void:
 
 
 func _adjust_size(new_size: float = DEFAULT_SIZE) -> void:	
-	RH.print("📸 level_camera.gd | _adjust_size()", 5)
 	camera_node.size = new_size
 	RH.print("📸 level_camera.gd | new size is %.2f" % new_size, 3)
 
@@ -138,5 +138,4 @@ func toggle_level_gen_mode() -> void:
 
 
 func _on_explosion():
-	RH.print("📸 level_camera.gd | _on_explosion()", 1)
 	camera_shake(0.5, 400)
