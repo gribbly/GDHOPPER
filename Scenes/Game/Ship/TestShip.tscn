@@ -1,18 +1,21 @@
-[gd_scene load_steps=9 format=3 uid="uid://cy1f6s5878jps"]
+[gd_scene load_steps=12 format=3 uid="uid://cy1f6s5878jps"]
 
-[ext_resource type="PackedScene" uid="uid://0khn4xmn7hu7" path="res://Assets/JunkDrawer/Models/test_ship/TestShip.glb" id="1_hkkm6"]
 [ext_resource type="Script" uid="uid://dh3sqpycsp36q" path="res://Scenes/Game/Ship/test_ship.gd" id="1_trx1f"]
 [ext_resource type="PackedScene" uid="uid://1nr3ocime1c1" path="res://Scenes/UI/ShipInfoPanel.tscn" id="2_fel7i"]
 [ext_resource type="PackedScene" uid="uid://cfnthe70ojwtb" path="res://Scenes/Game/Ship/ThrustParticles.tscn" id="3_pw2eq"]
+[ext_resource type="ArrayMesh" uid="uid://crawbx3b8tiq0" path="res://Assets/Meshes/Ship/Struts01.res" id="5_i3llg"]
+[ext_resource type="ArrayMesh" uid="uid://c4fagfbo6scuy" path="res://Assets/Meshes/Ship/Hull01.res" id="6_tnio0"]
+[ext_resource type="ArrayMesh" uid="uid://bu3klbeiiwc6m" path="res://Assets/Meshes/Ship/Thrusters01.res" id="7_ik72x"]
+[ext_resource type="ArrayMesh" uid="uid://crh3v02gwduyi" path="res://Assets/Meshes/Ship/Cockpit01.res" id="8_qhh8o"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dt5ff"]
-size = Vector3(0.6, 0.6, 0.6)
+size = Vector3(0.6, 0.6059326, 0.6)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fel7i"]
-size = Vector3(0.25, 0.3, 0.21)
+size = Vector3(0.25, 0.29375, 0.21)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pw2eq"]
-size = Vector3(0.9, 0.09, 0.6)
+size = Vector3(0.9, 0.09, 0.61035156)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_pickup"]
 radius = 4.0
@@ -36,16 +39,13 @@ ship_hull_collision_left = NodePath("ShipHullCollision2")
 ship_hull_collision_right = NodePath("ShipHullCollision3")
 ship_info_panel = ExtResource("2_fel7i")
 
-[node name="TestShip" parent="." instance=ExtResource("1_hkkm6")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
-
 [node name="ShipHullCollision1" type="CollisionShape3D" parent="."]
-transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, -0.009526953, 0.9526012, 0)
+transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, -0.009526953, 0.9984837, 0)
 shape = SubResource("BoxShape3D_dt5ff")
 debug_color = Color(0, 0.6, 0.69803923, 0.7882353)
 
 [node name="ShipHullCollision2" type="CollisionShape3D" parent="."]
-transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, 1.4, 0.36, 0.0011682212)
+transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, 1.4, 0.3645117, 0.0011682212)
 shape = SubResource("BoxShape3D_fel7i")
 debug_color = Color(0, 0.6, 0.69803923, 0.7882353)
 
@@ -56,7 +56,7 @@ debug_color = Color(0, 0.6, 0.69803923, 0.7882353)
 
 [node name="ShipLandingCollision" type="CollisionShape3D" parent="."]
 physics_interpolation_mode = 1
-transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, 0, -1.05, 0)
+transform = Transform3D(3.3, 0, 0, 0, 3.3, 0, 0, 0, 3.3, 0, -0.856114, 0)
 shape = SubResource("BoxShape3D_pw2eq")
 debug_color = Color(0, 0.6, 0.69803923, 0.7882353)
 
@@ -93,3 +93,17 @@ light_energy = 16.0
 spot_range = 32.0
 spot_angle = 12.0
 spot_angle_attenuation = 3.4822028
+
+[node name="Mesh_Struts" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("5_i3llg")
+
+[node name="Mesh_Hull" type="MeshInstance3D" parent="Mesh_Struts"]
+mesh = ExtResource("6_tnio0")
+
+[node name="Mesh_Thrusters" type="MeshInstance3D" parent="Mesh_Struts/Mesh_Hull"]
+mesh = ExtResource("7_ik72x")
+
+[node name="Mesh_Cockpit" type="MeshInstance3D" parent="Mesh_Struts/Mesh_Hull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 2)
+mesh = ExtResource("8_qhh8o")
